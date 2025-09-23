@@ -1,0 +1,28 @@
+﻿/*
+Theme Name:     Demo-child
+Theme URI:
+Description:    gopet child theme.
+Author:         Me
+Author URI:
+Template:       gopet
+Version:        1.0.0
+*/
+
+ul.products li.product img,
+ul.products .wc-block-grid__product img,
+.wc-block-grid__products li.product img,
+.wc-block-grid__products .wc-block-grid__product img{
+    aspect-ratio: 2/3;
+}
+
+.home-free .logo-free{
+    position: absolute;
+    top: -22px;
+    left: 0;
+}
+.home-free .logo-free svg{
+    width: 78px !important;
+}
+.home-free .hfe-site-logo-container{
+    position: relative;
+}
