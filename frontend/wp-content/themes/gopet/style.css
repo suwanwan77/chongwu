@@ -449,13 +449,13 @@ th {
 1.1 Typography
 --------------------------------------------------------------*/
 :root {
-  --primary: #FFC600;
+  --primary: #2F562A;
   --primary_hover: #e5b200;
   --text: #666666;
-  --accent: #000000;
+  --accent: #153619;
   --light: #999999;
   --border: #E5E5E5;
-  --background: #ffffff;
+  --background: #FFF9E9;
   --background-input: #F6F6F6;
   --e-global-typography-text-font-family: "Farro", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   --e-global-typography-accent-font-family: "Farro", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -1574,10 +1574,11 @@ body.home #page .gopet-breadcrumb, body.error404 #page .gopet-breadcrumb {
 .site-header-account > a {
   white-space: nowrap;
   display: block;
+  color: #5C7524;
 }
 .site-header-account > a i {
   line-height: 1;
-  color: var(--primary);
+  color: #5C7524;
 }
 .site-header-account .login-form-title {
   font-size: 18px;
@@ -1772,13 +1773,14 @@ body.home #page .gopet-breadcrumb, body.error404 #page .gopet-breadcrumb {
 }
 .site-header-cart.header-cart-mobile .cart-contents:before {
   font-size: 20px;
-  color: var(--primary);
+  color: #5C7524;
 }
 .site-header-cart.header-cart-mobile .cart-title {
   font-weight: 500;
   line-height: 19px;
   font-size: 14px;
   margin: 0 5px;
+  color: #5C7524;
 }
 .site-header-cart.header-cart-mobile .count {
   display: inline-block;
@@ -1790,8 +1792,8 @@ body.home #page .gopet-breadcrumb, body.error404 #page .gopet-breadcrumb {
   padding: 0 2px;
   font-weight: 500;
   text-align: center;
-  color: var(--accent);
-  background-color: var(--primary);
+  color: #153619 !important;
+  background-color: #FFF9E9 !important;
 }
 .site-header-cart.header-cart-mobile .amount {
   display: none;
@@ -1801,15 +1803,64 @@ body.home #page .gopet-breadcrumb, body.error404 #page .gopet-breadcrumb {
 }
 @media (max-width: 767px) {
   .site-header-cart.header-cart-mobile .cart-title {
-    display: none;
+    display: none !important;
   }
   .site-header-cart.header-cart-mobile .count {
-    position: absolute;
-    right: -12px;
-    top: -10px;
-    border: 2px solid #fff;
-    font-size: 10px;
-    line-height: 17px;
+    position: absolute !important;
+    right: -12px !important;
+    top: -4px !important; /* move downward */
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    line-height: 20px !important;
+    border-radius: 50% !important; /* make circle */
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid #fff !important;
+    font-size: 10px !important;
+  }
+
+  /* 小于 767px 时的导航栏布局 */
+  .elementor-section.header-absolute .elementor-container {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+  }
+
+  /* 菜单按钮列 - 左边 */
+  .elementor-section.header-absolute .elementor-col-33.elementor-element-552f70f {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    order: 1 !important;
+    padding-left: 15px !important;
+    padding-right: 0 !important;
+  }
+
+  /* Logo 列 - 中间 */
+  .elementor-section.header-absolute .elementor-col-33.elementor-element-df3fe89 {
+    flex: 1 1 auto !important;
+    max-width: 100% !important;
+    order: 2 !important;
+    text-align: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* 购物车列 - 右边 */
+  .elementor-section.header-absolute .elementor-col-33.elementor-element-7a9145c {
+    flex: 0 0 auto !important;
+    max-width: none !important;
+    order: 3 !important;
+    padding-right: 15px !important;
+    padding-left: 0 !important;
+  }
+
+  /* 隐藏其他列 */
+  .elementor-section.header-absolute .elementor-col-33.elementor-element-3f7d850,
+  .elementor-section.header-absolute .elementor-col-33.elementor-element-c275075 {
+    display: none !important;
   }
 }
 
@@ -1843,55 +1894,75 @@ body.home #page .gopet-breadcrumb, body.error404 #page .gopet-breadcrumb {
 }
 .header-group-action .site-header-account a {
   line-height: 1;
+  color: #5C7524;
+}
+.header-group-action .site-header-account a .content-content {
+  transition: all 0.3s ease;
+}
+.header-group-action .site-header-account a:hover .content-content {
+  color: #2F562A !important;
 }
 .header-group-action .site-header-account a i {
   font-size: 20px;
+  color: #5C7524;
 }
 .header-group-action .site-header-wishlist a i {
   font-size: 20px;
   margin-right: 5px;
-  color: var(--primary);
+  color: #5C7524;
 }
 .header-group-action .site-header-cart .cart-contents {
   position: relative;
 }
 .header-group-action .site-header-cart .cart-contents:before {
   font-size: 20px;
-  color: var(--primary);
+  color: #5C7524;
 }
 .header-group-action .site-header-cart .cart-title {
   font-weight: 500;
   line-height: 19px;
   font-size: 14px;
   margin: 0 5px;
+  color: #5C7524;
 }
 .header-group-action .site-header-cart .count {
-  display: inline-block;
-  min-width: 20px;
-  height: 20px;
-  border-radius: 20px;
-  font-size: 12px;
-  line-height: 20px;
-  padding: 0 2px;
-  font-weight: 500;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  min-width: 18px !important;
+  padding: 0 6px !important;
+  margin-left: 6px !important;
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
   text-align: center;
-  color: var(--accent);
-  background-color: var(--primary);
+  color: #153619 !important;
+  background-color: #5C7524 !important;
 }
 .header-group-action .site-header-cart .woocommerce-Price-amount {
   display: none;
 }
 @media (max-width: 767px) {
   .header-group-action .site-header-cart .cart-title {
-    display: none;
+    display: none !important;
   }
   .header-group-action .site-header-cart .count {
-    position: absolute;
-    right: -12px;
-    top: -10px;
-    border: 2px solid #fff;
-    font-size: 10px;
-    line-height: 17px;
+    position: absolute !important;
+    right: -12px !important;
+    top: -4px !important; /* move downward */
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    line-height: 20px !important;
+    border-radius: 50% !important; /* make circle */
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid #fff !important;
+    font-size: 10px !important;
   }
 }
 
@@ -2420,7 +2491,7 @@ ul.menu li.current-menu-item > a, ul.menu li.current-menu-ancestor > a, ul.menu 
   position: absolute;
   width: 0;
   height: 1px;
-  background-color: var(--primary);
+  background-color: #2F562A;
   left: 0;
   bottom: -2px;
   -ms-transition: all 0.4s ease;
@@ -2430,32 +2501,32 @@ ul.menu li.current-menu-item > a, ul.menu li.current-menu-ancestor > a, ul.menu 
   transition: all 0.4s ease;
 }
 .main-navigation ul.menu > li.menu-item.current-menu-parent > a, .main-navigation ul.menu > li.menu-item.current-menu-item > a, .main-navigation ul.menu > li.menu-item.current-menu-ancestor > a {
-  color: var(--primary);
+  color: #2F562A !important;
 }
 .main-navigation ul.menu > li.menu-item:hover > a {
-  color: var(--primary);
+  color: #2F562A;
 }
 .main-navigation ul.menu > li.menu-item:hover > a > span:before {
   width: 100%;
 }
 .main-navigation ul.menu li.menu-item .sub-menu .menu-item a {
   width: 100%;
-  color: var(--text);
+  color: #153619;
 }
 .main-navigation ul.menu li.menu-item .sub-menu .menu-item:hover > a {
-  color: var(--accent);
+  color: #2F562A;
   font-weight: 600;
 }
 .main-navigation ul.menu li.menu-item .sub-menu .menu-item.current-menu-item > a {
-  color: var(--accent);
+  color: #2F562A;
   font-weight: 600;
 }
 .main-navigation ul > li.menu-item > a,
 .main-navigation ul.nav-menu > li.menu-item > a {
-  color: var(--accent);
+  color: #5C7524;
 }
 .main-navigation .sub-menu {
-  background-color: #ffffff;
+  background-color: #FFF9E9;
   box-shadow: 0px 2px 45px rgba(0, 0, 0, 0.07);
   padding: 10px 0;
   border-radius: 20px;
@@ -4508,7 +4579,7 @@ nav.post-navigation .nav-next img {
 .widget_product_search form::before,
 .site-search form::before {
   font-size: 18px;
-  color: var(--accent);
+  color: #5C7524;
 }
 .widget_search form input[type=text],
 .widget_search form input[type=search],
@@ -4516,14 +4587,14 @@ nav.post-navigation .nav-next img {
 .widget_product_search form input[type=search],
 .site-search form input[type=text],
 .site-search form input[type=search] {
-  border: none;
+  border: none !important;
   width: 100%;
   line-height: 1;
   padding: 18px 20px;
   padding-right: 55px;
   flex: 1;
-  color: var(--text);
-  background-color: #fff;
+  color: #5C7524 !important;
+  background-color: #FFF9E9 !important;
   border-radius: 55px;
 }
 .widget_search form input[type=text]::placeholder,
@@ -4532,7 +4603,7 @@ nav.post-navigation .nav-next img {
 .widget_product_search form input[type=search]::placeholder,
 .site-search form input[type=text]::placeholder,
 .site-search form input[type=search]::placeholder {
-  color: var(--text);
+  color: #5C7524;
 }
 .widget_search form input[type=submit],
 .widget_search form button[type=submit],
@@ -7498,7 +7569,7 @@ a#variations_clear::before {
     font-size: 10px;
     margin-bottom: 3px;
     font-weight: 700;
-    color: var(--primary);
+    color: #2F562A;
   }
   .gecko .main-navigation ul.menu > li.menu-item-has-children > a:after, .gecko .main-navigation ul.menu > li.page_item_has_children > a:after, .gecko .main-navigation ul.menu > li.has-mega-menu > a:after,
 .gecko .main-navigation ul.nav-menu > li.menu-item-has-children > a:after,
@@ -8180,4 +8251,125 @@ html[dir=rtl] .mega-menu.mega-stretchwidth {
 
 /* ===== End RTL CSS ===== */
 
+/* Revolution Slider Text Colors */
+rs-layer#slider-1-slide-1-layer-5,
+#slider-1-slide-1-layer-5,
+rs-layer#slider-1-slide-1-layer-5 span,
+#slider-1-slide-1-layer-5 span,
+rs-layer#slider-1-slide-1-layer-5 *,
+#slider-1-slide-1-layer-5 * {
+  color: #000000 !important;
+  text-shadow: 4px 4px 0 #AFB25B !important;
+}
+
+rs-layer#slider-1-slide-1-layer-9,
+#slider-1-slide-1-layer-9,
+rs-layer#slider-1-slide-1-layer-9 span,
+#slider-1-slide-1-layer-9 span,
+rs-layer#slider-1-slide-1-layer-9 *,
+#slider-1-slide-1-layer-9 * {
+  color: #5C7524 !important;
+}
+
+/* LOGIN Button Styling */
+.btn.btn-primary,
+button.btn-primary,
+.gopet-login-form-ajax button[type="submit"] {
+  background-color: #5C7524 !important;
+  color: #2F562A !important;
+}
+
+.btn.btn-primary::after,
+button.btn-primary::after,
+.gopet-login-form-ajax button[type="submit"]::after {
+  color: #2F562A !important;
+}
+
+/* Key Features Section Colors */
+/* Key Features Title */
+.elementor-element-c8d91b1 .elementor-heading-title {
+  color: #153619 !important;
+}
+
+/* Feature Icons */
+.elementor-element-b56de67 .elementor-icon,
+.elementor-element-80bb375 .elementor-icon,
+.elementor-element-24f526f .elementor-icon,
+.elementor-element-b3d5979 .elementor-icon {
+  color: #153619 !important;
+}
+
+/* Feature Titles */
+.elementor-element-b56de67 .elementor-icon-box-title,
+.elementor-element-80bb375 .elementor-icon-box-title,
+.elementor-element-24f526f .elementor-icon-box-title,
+.elementor-element-b3d5979 .elementor-icon-box-title {
+  color: #153619 !important;
+}
+
+/* Feature Descriptions */
+.elementor-element-aa9a6b2 .elementor-widget-container,
+.elementor-element-b56de67 .elementor-icon-box-description,
+.elementor-element-80bb375 .elementor-icon-box-description,
+.elementor-element-24f526f .elementor-icon-box-description,
+.elementor-element-b3d5979 .elementor-icon-box-description {
+  color: #5C7524 !important;
+}
+
 /*# sourceMappingURL=style.css.map */
+
+/* ========================================
+   自定义修改：隐藏移动端底部导航栏的 Wishlist
+   ======================================== */
+
+/* 隐藏 Wishlist 按钮 */
+.gopet-handheld-footer-bar ul li.wishlist {
+  display: none !important;
+}
+
+/* 将剩余3个按钮调整为等宽布局 (Shop, My Account, Search) */
+.gopet-handheld-footer-bar ul.columns-4 li {
+  width: 33.33333% !important;
+}
+
+/* 确保在所有移动端尺寸下生效 */
+@media (max-width: 1024px) {
+  .gopet-handheld-footer-bar ul li.wishlist {
+    display: none !important;
+  }
+
+  .gopet-handheld-footer-bar ul li {
+    width: 33.33333% !important;
+  }
+}
+
+/* ========================================
+   FAQ页面折叠面板图标颜色修改
+   ======================================== */
+
+/* 修改FAQ页面所有折叠面板的图标颜色 */
+.elementor-144 .elementor-accordion-icon-closed i.gopet-icon-button-icon,
+.elementor-144 .elementor-accordion-icon-opened i.gopet-icon-button-icon {
+  color: #FF6B6B !important;  /* 红色 */
+}
+
+/* 鼠标悬停时的图标颜色 */
+.elementor-144 .elementor-tab-title:hover .elementor-accordion-icon-closed i.gopet-icon-button-icon,
+.elementor-144 .elementor-tab-title:hover .elementor-accordion-icon-opened i.gopet-icon-button-icon {
+  color: #FF4444 !important;  /* 深红色 */
+}
+
+/* 展开状态的图标颜色 */
+.elementor-144 .elementor-tab-title.elementor-active .elementor-accordion-icon-opened i.gopet-icon-button-icon {
+  color: #2F562A !important;  /* 绿色 */
+}
+
+/* 修改面包屑导航中的分隔符点颜色为#2F562A */
+.woocommerce-breadcrumb span.icon {
+  color: #2F562A !important;
+}
+
+.woocommerce-breadcrumb span.icon::before {
+  content: "●";
+  color: #2F562A !important;
+}
