@@ -876,7 +876,24 @@ rs-layer#slider-1-slide-1-layer-9 *,
   transform: scale(1.4);
 }
 
+/* Responsive design for More charity button */
+/* Hide More charity button on larger screens (1030px and above) */
+@media (min-width: 1030px) {
+  .elementor-element-2008b97 .more-link-wrap .more-charity {
+    display: none !important;
+  }
+}
 
+/* Show More charity button on mobile screens (below 768px) */
+@media (max-width: 767px) {
+  .elementor-element-2008b97 .more-link-wrap {
+    flex-direction: column;
+  }
+
+  .elementor-element-2008b97 .more-link-wrap .more-charity {
+    display: inline-block !important;
+  }
+}
 
 /* Let's find the perfect food for your pet section styling */
 .elementor-element-cb322a8 .elementor-heading-title {
