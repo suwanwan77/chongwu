@@ -8368,8 +8368,3 @@ button.btn-primary::after,
 .woocommerce-breadcrumb span.icon {
   color: #2F562A !important;
 }
-
-.woocommerce-breadcrumb span.icon::before {
-  content: "●";
-  color: #2F562A !important;
-}
