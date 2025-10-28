@@ -876,6 +876,53 @@ rs-layer#slider-1-slide-1-layer-9 *,
   transform: scale(1.4);
 }
 
+/* Responsive design for blog post buttons */
+/* Tablet: 768px - 1024px */
+@media (max-width: 1024px) {
+  .elementor-element-2008b97 .more-link-wrap {
+    padding: 0 15px;
+    gap: 15px;
+  }
+
+  .elementor-element-2008b97 .more-link-wrap .more-link,
+  .elementor-element-2008b97 .more-link-wrap .more-charity {
+    padding: 1.2em 1.8em 1.1em !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Mobile: 480px - 767px */
+@media (max-width: 767px) {
+  .elementor-element-2008b97 .more-link-wrap {
+    flex-direction: column;
+    padding: 0 15px;
+    gap: 12px;
+  }
+
+  .elementor-element-2008b97 .more-link-wrap .more-link,
+  .elementor-element-2008b97 .more-link-wrap .more-charity {
+    width: 100%;
+    padding: 1em 1.5em 0.9em !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Small mobile: below 480px */
+@media (max-width: 480px) {
+  .elementor-element-2008b97 .more-link-wrap {
+    flex-direction: column;
+    padding: 0 10px;
+    gap: 10px;
+  }
+
+  .elementor-element-2008b97 .more-link-wrap .more-link,
+  .elementor-element-2008b97 .more-link-wrap .more-charity {
+    width: 100%;
+    padding: 0.9em 1.2em 0.8em !important;
+    font-size: 10px !important;
+  }
+}
+
 /* Let's find the perfect food for your pet section styling */
 .elementor-element-cb322a8 .elementor-heading-title {
   color: #2F562A !important;
