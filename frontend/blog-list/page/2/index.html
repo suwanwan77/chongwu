@@ -157,8 +157,198 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 						background-image: none !important;
 					}
 				}
-			</style>
-			<meta name="generator" content="Powered by Slider Revolution 6.7.35 - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface.">
+			.search-box {
+			  display: flex;
+			  align-items: center;
+			  background-color: #ffffff;
+			  border-radius: 25px;
+			  padding: 6px 12px;
+			  width: 240px;
+			  height: 32px;
+			  border: 1px solid #e0e0e0;
+			  flex-shrink: 0;
+			}
+
+			.search-box input {
+			  flex: 1;
+			  border: none;
+			  background: transparent;
+			  color: #5C7524;
+			  font-size: 13px;
+			  outline: none;
+			  padding: 0 6px;
+			}
+
+			.search-box input::placeholder {
+			  color: #999999;
+			}
+
+			.search-box button {
+			  background: none;
+			  border: none;
+			  cursor: pointer;
+			  padding: 0;
+			  margin: 0;
+			  display: flex;
+			  align-items: center;
+			  justify-content: center;
+			  flex-shrink: 0;
+			}
+
+			.search-box svg {
+			  width: 16px;
+			  height: 16px;
+			  fill: #5C7524;
+			}
+
+			/* 隐藏 icon-list 的默认元素 */
+			.elementor-element-cb1b8ff .elementor-icon-list-items {
+			  display: none !important;
+			}
+
+			.elementor-element-cb1b8ff .elementor-widget-container > *:not(.search-box) {
+			  display: none !important;
+			}
+
+			/* 隐藏所有伪元素和其他元素 */
+			.elementor-element-cb1b8ff ul,
+			.elementor-element-cb1b8ff li,
+			.elementor-element-cb1b8ff i,
+			.elementor-element-cb1b8ff a,
+			.elementor-element-cb1b8ff button:not(.search-box button),
+			.elementor-element-cb1b8ff svg:not(.search-box svg),
+			.elementor-element-cb1b8ff::before,
+			.elementor-element-cb1b8ff::after,
+			.elementor-element-cb1b8ff *::before,
+			.elementor-element-cb1b8ff *::after {
+			  display: none !important;
+			}
+
+			/* 确保搜索框显示 */
+			.elementor-element-cb1b8ff .search-box,
+			.elementor-element-cb1b8ff .search-box * {
+			  display: flex !important;
+			}
+
+			.elementor-element-cb1b8ff .search-box input {
+			  display: block !important;
+			}
+
+			.elementor-element-cb1b8ff .search-box button {
+			  display: flex !important;
+			}
+
+			.elementor-element-cb1b8ff .search-box button::before,
+			.elementor-element-cb1b8ff .search-box button::after {
+			  display: none !important;
+			}
+
+			/* 确保右侧列表、购物车、账户一行对齐 */
+			.elementor-column-c275075 .elementor-widget-wrap {
+			  display: flex !important;
+			  flex-wrap: nowrap !important;
+			  align-items: center !important;
+			  justify-content: flex-end !important;
+			  gap: 10px !important;
+			  height: 100% !important;
+			}
+
+			.elementor-column-c275075 .elementor-widget {
+			  flex-shrink: 0 !important;
+			  display: flex !important;
+			  align-items: center !important;
+			}
+
+			/* 购物车计数徽章样式 */
+			.site-header-cart .cart-contents .count {
+			  display: inline-flex !important;
+			  align-items: center !important;
+			  justify-content: center !important;
+			  height: 18px !important;
+			  line-height: 18px !important;
+			  min-width: 18px;
+			  padding: 0 6px;
+			  margin-left: 6px;
+			  border-radius: 9999px;
+			  background-color: #5C7524 !important;
+			  color: #153619 !important;
+			  font-size: 12px;
+			  font-weight: 700;
+			}
+
+			/* Search box visuals with correct background color */
+			.elementor-element-cb1b8ff .search-box {
+			  display: flex !important;
+			  align-items: center !important;
+			  background: #FFF9E9 !important;
+			  color: #5C7524 !important;
+			  border: 1px solid #e0e0e0 !important;
+			  border-radius: 25px !important;
+			  padding: 6px 12px !important;
+			  width: 240px !important;
+			  height: 28px !important;
+			}
+
+			.elementor-element-cb1b8ff .search-box input {
+			  background: transparent !important;
+			  border: none !important;
+			  outline: none !important;
+			  color: #5C7524 !important;
+			  font-size: 13px !important;
+			  line-height: 28px !important;
+			  width: 100% !important;
+			}
+
+			.elementor-element-cb1b8ff .search-box button {
+			  display: inline-flex !important;
+			  align-items: center !important;
+			  justify-content: center !important;
+			  background: none !important;
+			  cursor: pointer !important;
+			  border: 0 !important;
+			  padding: 0 !important;
+			}
+
+			.elementor-element-cb1b8ff .search-box button svg,
+			.elementor-element-cb1b8ff .search-box button svg path {
+			  width: 16px !important;
+			  height: 16px !important;
+			  fill: #5C7524 !important;
+			  stroke: none !important;
+			}
+
+			/* Breakpoints: do not shrink search; hide login first, then search */
+			@media (max-width: 1710px) {
+			  .elementor-element-84fb1c3 { display: none !important; } /* hide login */
+			}
+
+			@media (max-width: 1310px) {
+			  .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
+			}
+
+			/* Mobile responsive */
+			@media (max-width: 767px) {
+			  .site-header-cart .cart-contents { position: relative !important; }
+			  .site-header-cart .cart-contents .cart-title { display: none !important; }
+			  .site-header-cart .cart-contents .count {
+				position: absolute !important;
+				right: -12px !important;
+				top: -4px !important;
+				width: 20px !important;
+				height: 20px !important;
+				min-width: 20px !important;
+				line-height: 20px !important;
+				border-radius: 50% !important;
+				padding: 0 !important;
+				display: inline-flex !important;
+				align-items: center !important;
+				justify-content: center !important;
+				border: 2px solid #fff !important;
+				font-size: 10px !important;
+			  }
+			}
+		</style>
+		<meta name="generator" content="Powered by Slider Revolution 6.7.35 - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface.">
 <script>function setREVStartSize(e){
 			//window.requestAnimationFrame(function() {
 				window.RSIW = window.RSIW===undefined ? window.innerWidth : window.RSIW;
@@ -274,41 +464,18 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 				<div class="elementor-widget-container">
 					        <div class="elementor-nav-menu-wrapper">
             <nav class="main-navigation" role="navigation" aria-label="Primary Navigation">
-                <div class="primary-navigation"><ul id="menu-1-77537b0" class="menu"><li id="menu-item-2098" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-has-children menu-item-2098"><a href="../../../index.html"><span class="menu-title">Home</span></a>
-<ul class="sub-menu">
-	<li id="menu-item-2097" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-2097"><a href="../../../index.html"><span class="menu-title">Home &#8211; version 01</span></a></li>
-	<li id="menu-item-2101" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2101"><a href="../../../home-2/index.html"><span class="menu-title">Home &#8211; version 02</span></a></li>
-	<li id="menu-item-2102" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2102"><a href="../../../home-3/index.html"><span class="menu-title">Home &#8211; version 03</span></a></li>
-	<li id="menu-item-2100" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2100"><a href="../../../home-4/index.html"><span class="menu-title">Home &#8211; version 04 [shop]</span></a></li>
-	<li id="menu-item-2099" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2099"><a href="../../../home-5/index.html"><span class="menu-title">Home &#8211; version 05 [shop]</span></a></li>
-</ul>
-</li>
-<li id="menu-item-2106" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-2106"><a href="../../../shop/index.html"><span class="menu-title">Shop</span></a>
-<ul class="sub-menu">
-	<li id="menu-item-6543" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6543"><a href="../../../shop/index.html"><span class="menu-title">Shop &#8211; Sidebar</span></a></li>
-	<li id="menu-item-6544" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6544"><a href="../../../shop/-canvas_4.html#038;woocommerce_catalog_columns=4"><span class="menu-title">Shop &#8211; Fullwidth</span></a></li>
-	<li id="menu-item-6546" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6546"><a href="../../../product-category/uncategorized/-canvas_4.html#038;woocommerce_catalog_columns=4"><span class="menu-title">Shop &#8211; Categories</span></a></li>
-	<li id="menu-item-7176" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7176"><a href="../../../shop/enormous-silk-lamp/index.html"><span class="menu-title">Product Detail</span></a></li>
-</ul>
-</li>
+                <div class="primary-navigation"><ul id="menu-1-77537b0" class="menu"><li id="menu-item-2098" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-2098"><a href="../../../index.html"><span class="menu-title">Home</span></a></li>
+<li id="menu-item-2106" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2106"><a href="../../../shop/index.html"><span class="menu-title">Shop</span></a></li>
 <li id="menu-item-2107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2107"><a href="../../../about-us/index.html"><span class="menu-title">About</span></a></li>
-<li id="menu-item-2108" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-60 current_page_item current_page_parent menu-item-has-children menu-item-2108"><a href="../../index.html"><span class="menu-title">Blog</span></a>
-<ul class="sub-menu">
-	<li id="menu-item-6548" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6548"><a href="../../index.html"><span class="menu-title">Blog &#8211; Classic</span></a></li>
-	<li id="menu-item-6547" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6547"><a href="../../index-style-1_0_3.html#038;sidebar-blog=0&#038;blog_columns=3"><span class="menu-title">Blog &#8211; Gridview</span></a></li>
-	<li id="menu-item-6549" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6549"><a href="../../../understanding-pet-food-labels/index.html"><span class="menu-title">Single Post</span></a></li>
-</ul>
-</li>
+
 <li id="menu-item-2114" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2114"><a href="#"><span class="menu-title">Pages</span></a>
 <ul class="sub-menu">
 	<li id="menu-item-2414" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2414"><a href="../../../pricing/index.html"><span class="menu-title">Pricing</span></a></li>
 	<li id="menu-item-2415" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2415"><a href="../../../faq/index.html"><span class="menu-title">FAQ</span></a></li>
-	<li id="menu-item-6371" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6371"><a href="javascript:;"><span class="menu-title">404</span></a></li>
-	<li id="menu-item-3393" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3393"><a href="../../../commingsoon/index.html"><span class="menu-title">CommingSoon</span></a></li>
-	<li id="menu-item-3394" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3394"><a href="../../../icons/index.html"><span class="menu-title">Icons</span></a></li>
+	<li id="menu-item-2112" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../../../contact-us/index.html"><span class="menu-title">Contact</span></a></li>
+	<li id="menu-item-charity" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../../index.html"><span class="menu-title">Charity</span></a></li>
 </ul>
 </li>
-<li id="menu-item-2112" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../../../contact-us/index.html"><span class="menu-title">Contact</span></a></li>
 </ul></div>            </nav>
         </div>
         				</div>
@@ -332,16 +499,14 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 			<div class="elementor-widget-wrap elementor-element-populated">
 						<div class="elementor-element elementor-element-cb1b8ff elementor-widget__width-auto elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="cb1b8ff" data-element_type="widget" data-widget_type="icon-list.default">
 				<div class="elementor-widget-container">
-							<ul class="elementor-icon-list-items">
-							<li class="elementor-icon-list-item">
-											<a href="#">
-
-												<span class="elementor-icon-list-icon">
-							<i aria-hidden="true" class="gopet-icon- gopet-icon-locaiton"></i>						</span>
-										<span class="elementor-icon-list-text">Store Locator</span>
-											</a>
-									</li>
-						</ul>
+					<div class="search-box">
+						<input type="text" placeholder="Type your text">
+						<button type="button">
+							<svg viewBox="0 0 24 24">
+								<path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"/>
+							</svg>
+						</button>
+					</div>
 						</div>
 				</div>
 				<div class="elementor-element elementor-element-84fb1c3 elementor-widget__width-auto elementor-hidden-tablet elementor-hidden-mobile_extra elementor-hidden-mobile elementor-widget elementor-widget-gopet-account" data-id="84fb1c3" data-element_type="widget" data-widget_type="gopet-account.default">
@@ -800,201 +965,12 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 				<div class="elementor-widget-container">
 															<img width="1290" height="2" src="../../../wp-content/uploads/2021/11/footer_divide.png" class="attachment-full size-full wp-image-236" alt="" srcset="../../../wp-content/uploads/2021/11/footer_divide.png 1290w, ../../../wp-content/uploads/2021/11/footer_divide-300x1.png 300w, ../../../wp-content/uploads/2021/11/footer_divide-1024x2.png 1024w, ../../../wp-content/uploads/2021/11/footer_divide-150x2.png 150w, ../../../wp-content/uploads/2021/11/footer_divide-768x1.png 768w, ../../../wp-content/uploads/2021/11/footer_divide-1000x2.png 1000w, ../../../wp-content/uploads/2021/11/footer_divide-200x2.png 200w, ../../../wp-content/uploads/2021/11/footer_divide-820x2.png 820w, ../../../wp-content/uploads/2021/11/footer_divide-450x2.png 450w, ../../../wp-content/uploads/2021/11/footer_divide-800x1.png 800w, ../../../wp-content/uploads/2021/11/footer_divide-100x2.png 100w, ../../../wp-content/uploads/2021/11/footer_divide-50x2.png 50w, ../../../wp-content/uploads/2021/11/footer_divide-600x2.png 600w, ../../../wp-content/uploads/2021/11/footer_divide-96x2.png 96w, ../../../wp-content/uploads/2021/11/footer_divide-460x2.png 460w" sizes="(max-width: 1290px) 100vw, 1290px">															</div>
 				</div>
-				<section class="elementor-section elementor-inner-section elementor-element elementor-element-66cfea8 elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="66cfea8" data-element_type="section">
-						<div class="elementor-container elementor-column-gap-no">
-					<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-e8bcf0d" data-id="e8bcf0d" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-f5c0aef elementor-widget__width-initial elementor-widget-tablet_extra__width-initial elementor-widget-tablet__width-initial elementor-widget-mobile_extra__width-initial elementor-widget-mobile__width-initial elementor-widget elementor-widget-heading" data-id="f5c0aef" data-element_type="widget" data-widget_type="heading.default">
-				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default">Join our community &amp; save $3.00 on wellness!</h2>				</div>
-				</div>
-				<div class="elementor-element elementor-element-cc2a45a elementor-widget__width-initial elementor-widget-tablet_extra__width-initial elementor-widget-tablet__width-initial elementor-widget-mobile__width-initial elementor-widget elementor-widget-text-editor" data-id="cc2a45a" data-element_type="widget" data-widget_type="text-editor.default">
-				<div class="elementor-widget-container">
-									We&#8217;ll help you find the food that is right for your pet even if it isn&#8217;t our own.								</div>
-				</div>
-				<div class="elementor-element elementor-element-89253d6 elementor-mobile-align-center button-style-xocora-yes elementor-widget elementor-widget-button" data-id="89253d6" data-element_type="widget" data-widget_type="button.default">
-				<div class="elementor-widget-container">
-									<div class="elementor-button-wrapper">
-					<a class="elementor-button elementor-button-link elementor-size-sm" href="#">
-						<span class="elementor-button-content-wrapper">
-						<span class="elementor-button-icon">
-				<i aria-hidden="true" class="gopet-icon- gopet-icon-button-icon"></i>			</span>
-									<span class="elementor-button-text">sign up</span>
-					</span>
-					</a>
-				</div>
-								</div>
-				</div>
-					</div>
-		</div>
-				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-82bd7b8" data-id="82bd7b8" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-f13ec7f elementor-widget elementor-widget-heading" data-id="f13ec7f" data-element_type="widget" data-widget_type="heading.default">
-				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default">Our Products</h2>				</div>
-				</div>
-				<div class="elementor-element elementor-element-b4c7998 elementor-mobile-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="b4c7998" data-element_type="widget" data-widget_type="icon-list.default">
-				<div class="elementor-widget-container">
-							<ul class="elementor-icon-list-items">
-							<li class="elementor-icon-list-item">
-											<a href="../../../shop/index.html">
-
-											<span class="elementor-icon-list-text">For Cats</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="../../../shop/index.html">
-
-											<span class="elementor-icon-list-text"> For Dogs</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text"> Challenger</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="../../../shop/index.html">
-
-											<span class="elementor-icon-list-text"> FreeStyle for Cats</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="../../../shop/index.html">
-
-											<span class="elementor-icon-list-text"> FreeStyle for Dogs</span>
-											</a>
-									</li>
-						</ul>
-						</div>
-				</div>
-					</div>
-		</div>
-				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-be6efdf" data-id="be6efdf" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-af39e34 elementor-widget elementor-widget-heading" data-id="af39e34" data-element_type="widget" data-widget_type="heading.default">
-				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default">Community</h2>				</div>
-				</div>
-				<div class="elementor-element elementor-element-38c8e65 elementor-mobile-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="38c8e65" data-element_type="widget" data-widget_type="icon-list.default">
-				<div class="elementor-widget-container">
-							<ul class="elementor-icon-list-items">
-							<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text">News & Stories</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text"> Mix-It Recipes</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="../../../about-us/index.html">
-
-											<span class="elementor-icon-list-text"> Our Story</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text"> Retailer Asset Portal</span>
-											</a>
-									</li>
-						</ul>
-						</div>
-				</div>
-					</div>
-		</div>
-				<div class="elementor-column elementor-col-25 elementor-inner-column elementor-element elementor-element-479edba" data-id="479edba" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-5183ee5 elementor-widget elementor-widget-heading" data-id="5183ee5" data-element_type="widget" data-widget_type="heading.default">
-				<div class="elementor-widget-container">
-					<h2 class="elementor-heading-title elementor-size-default">Get In Touch</h2>				</div>
-				</div>
-				<div class="elementor-element elementor-element-dc11c39 elementor-mobile-align-center elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list" data-id="dc11c39" data-element_type="widget" data-widget_type="icon-list.default">
-				<div class="elementor-widget-container">
-							<ul class="elementor-icon-list-items">
-							<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text">Careers</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="../../../contact-us/index.html">
-
-											<span class="elementor-icon-list-text"> Contact Us</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="../../../faq/index.html">
-
-											<span class="elementor-icon-list-text"> FAQ</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text"> Find a Retailer</span>
-											</a>
-									</li>
-								<li class="elementor-icon-list-item">
-											<a href="#">
-
-											<span class="elementor-icon-list-text">Policies</span>
-											</a>
-									</li>
-						</ul>
-						</div>
-				</div>
-					</div>
-		</div>
-					</div>
-		</section>
+				<!-- REMOVED SECTION -->
+		<!-- END REMOVED SECTION -->
 				<section class="elementor-section elementor-inner-section elementor-element elementor-element-6cf48fc elementor-section-full_width elementor-section-height-default elementor-section-height-default" data-id="6cf48fc" data-element_type="section">
 						<div class="elementor-container elementor-column-gap-no">
-					<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-7c77d39" data-id="7c77d39" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-29cc8c7 elementor-widget elementor-widget-text-editor" data-id="29cc8c7" data-element_type="widget" data-widget_type="text-editor.default">
-				<div class="elementor-widget-container">
-									Copyright © 2021 <a style="color: #ffffff;" href="../../../index1.html">Gopet</a>. All rights reserved								</div>
-				</div>
-					</div>
-		</div>
-				<div class="elementor-column elementor-col-50 elementor-inner-column elementor-element elementor-element-6a18747" data-id="6a18747" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-c6a9f10 elementor-shape-circle e-grid-align-right e-grid-align-mobile-center elementor-grid-0 elementor-widget elementor-widget-social-icons" data-id="c6a9f10" data-element_type="widget" data-widget_type="social-icons.default">
-				<div class="elementor-widget-container">
-							<div class="elementor-social-icons-wrapper elementor-grid" role="list">
-							<span class="elementor-grid-item" role="listitem">
-					<a class="elementor-icon elementor-social-icon elementor-social-icon-facebook-f elementor-repeater-item-469b272" href="https://www.facebook.com/" target="_blank">
-						<span class="elementor-screen-only">Facebook-f</span>
-						<i class="fab fa-facebook-f"></i>					</a>
-				</span>
-							<span class="elementor-grid-item" role="listitem">
-					<a class="elementor-icon elementor-social-icon elementor-social-icon-twitter elementor-repeater-item-93e60af" href="https://twitter.com/" target="_blank">
-						<span class="elementor-screen-only">Twitter</span>
-						<i class="fab fa-twitter"></i>					</a>
-				</span>
-							<span class="elementor-grid-item" role="listitem">
-					<a class="elementor-icon elementor-social-icon elementor-social-icon-instagram elementor-repeater-item-2724f76" href="https://www.instagram.com/" target="_blank">
-						<span class="elementor-screen-only">Instagram</span>
-						<i class="fab fa-instagram"></i>					</a>
-				</span>
-							<span class="elementor-grid-item" role="listitem">
-					<a class="elementor-icon elementor-social-icon elementor-social-icon-pinterest elementor-repeater-item-21e3868" href="https://www.pinterest.com/" target="_blank">
-						<span class="elementor-screen-only">Pinterest</span>
-						<i class="fab fa-pinterest"></i>					</a>
-				</span>
-					</div>
-						</div>
-				</div>
-					</div>
-		</div>
+
+
 					</div>
 		</section>
 					</div>
@@ -1042,41 +1018,18 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
                             </ul>
         </div>
         <nav class="mobile-menu-tab mobile-navigation mobile-pages-menu active" aria-label="Mobile Navigation">
-            <div class="handheld-navigation"><ul id="menu-main-menu" class="menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-has-children menu-item-2098"><a href="../../../index.html">Home</a>
-<ul class="sub-menu">
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-2097"><a href="../../../index.html">Home &#8211; version 01</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2101"><a href="../../../home-2/index.html">Home &#8211; version 02</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2102"><a href="../../../home-3/index.html">Home &#8211; version 03</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2100"><a href="../../../home-4/index.html">Home &#8211; version 04 [shop]</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2099"><a href="../../../home-5/index.html">Home &#8211; version 05 [shop]</a></li>
-</ul>
-</li>
-<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-2106"><a href="../../../shop/index.html">Shop</a>
-<ul class="sub-menu">
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6543"><a href="../../../shop/index.html">Shop &#8211; Sidebar</a></li>
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6544"><a href="../../../shop/-canvas_4.html#038;woocommerce_catalog_columns=4">Shop &#8211; Fullwidth</a></li>
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6546"><a href="../../../product-category/uncategorized/-canvas_4.html#038;woocommerce_catalog_columns=4">Shop &#8211; Categories</a></li>
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7176"><a href="../../../shop/enormous-silk-lamp/index.html">Product Detail</a></li>
-</ul>
-</li>
+            <div class="handheld-navigation"><ul id="menu-main-menu" class="menu">
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-2098"><a href="../../../index.html">Home</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2106"><a href="../../../shop/index.html">Shop</a></li>
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2107"><a href="../../../about-us/index.html">About</a></li>
-<li class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-60 current_page_item current_page_parent menu-item-has-children menu-item-2108"><a href="../../index.html" aria-current="page">Blog</a>
-<ul class="sub-menu">
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6548"><a href="../../index.html">Blog &#8211; Classic</a></li>
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6547"><a href="../../index-style-1_0_3.html#038;sidebar-blog=0&#038;blog_columns=3">Blog &#8211; Gridview</a></li>
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6549"><a href="../../../understanding-pet-food-labels/index.html">Single Post</a></li>
-</ul>
-</li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2114"><a href="#">Pages</a>
 <ul class="sub-menu">
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2414"><a href="../../../pricing/index.html">Pricing</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2415"><a href="../../../faq/index.html">FAQ</a></li>
-	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6371"><a href="javascript:;">404</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3393"><a href="../../../commingsoon/index.html">CommingSoon</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3394"><a href="../../../icons/index.html">Icons</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../../../contact-us/index.html">Contact</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../../index.html">Charity</a></li>
 </ul>
 </li>
-<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../../../contact-us/index.html">Contact</a></li>
 </ul></div>        </nav>
                         </div>
             </div>
