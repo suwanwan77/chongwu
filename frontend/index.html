@@ -877,8 +877,8 @@ rs-layer#slider-1-slide-1-layer-9 *,
 }
 
 /* Responsive design for More charity button */
-/* Hide More charity button on larger screens (1030px and above) */
-@media (min-width: 1030px) {
+/* Hide More charity button on medium screens (768px - 1024px) where it doesn't scale properly */
+@media (min-width: 768px) and (max-width: 1024px) {
   .elementor-element-2008b97 .more-link-wrap .more-charity {
     display: none !important;
   }
