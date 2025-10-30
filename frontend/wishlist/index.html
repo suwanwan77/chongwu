@@ -1420,12 +1420,6 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
                 // Use background-image instead of img tag to completely avoid Elementor lightbox
                 card.innerHTML = `
-                    <button class="remove-wishlist-item" data-product-id="${item.id}"
-                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; line-height: 1; padding: 5px; transition: color 0.3s; z-index: 10;"
-                            onmouseover="this.style.color='#e74c3c'"
-                            onmouseout="this.style.color='#999'">
-                        ×
-                    </button>
                     <div class="wishlist-product-image"
                          style="width: 100%; height: 200px; background-image: url('${item.image}'); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 4px; margin-bottom: 15px;">
                     </div>
@@ -1449,14 +1443,6 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 `;
 
                 container.appendChild(card);
-            });
-
-            // Add event listeners to remove buttons
-            document.querySelectorAll('.remove-wishlist-item').forEach(button => {
-                button.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-product-id');
-                    removeFromWishlist(productId);
-                });
             });
         }
     }
