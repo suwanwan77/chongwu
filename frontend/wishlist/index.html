@@ -1421,7 +1421,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 // Use background-image instead of img tag to completely avoid Elementor lightbox
                 card.innerHTML = `
                     <button class="remove-wishlist-item" data-product-id="${item.id}"
-                            style="position: absolute; top: 10px; right: 10px; background-color: #5C7524; color: #2F562A; border: none; border-radius: 4px; padding: 6px 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; z-index: 10;"
+                            style="position: absolute; top: 5px; right: 5px; background-color: #5C7524; color: #2F562A; border: none; border-radius: 3px; padding: 3px 6px; font-size: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s; z-index: 1000;"
                             onmouseover="this.style.backgroundColor='#2F562A'; this.style.color='white';"
                             onmouseout="this.style.backgroundColor='#5C7524'; this.style.color='#2F562A';">
                         Delete
@@ -1545,22 +1545,40 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 .wishlist-card [class*="eicon"],
 .wishlist-card .elementor-icon,
 .wishlist-card .elementor-lightbox,
-.wishlist-card button:not(.remove-wishlist-item) {
+.wishlist-card button:not(.remove-wishlist-item),
+.wishlist-card a[data-elementor-open-lightbox],
+.wishlist-card .elementor-clickable,
+#wishlist-items button:not(.remove-wishlist-item),
+#wishlist-items .eicon,
+#wishlist-items [class*="eicon"] {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
 }
 
 /* Ensure only our delete button is visible */
 .wishlist-card .remove-wishlist-item {
-    display: flex !important;
+    display: inline-block !important;
     visibility: visible !important;
     opacity: 1 !important;
+    pointer-events: auto !important;
 }
 
 /* Hide any absolute positioned elements except our delete button */
 .wishlist-card > *:not(.remove-wishlist-item):not(.wishlist-product-image):not(h3):not(p):not(div) {
     display: none !important;
+}
+
+/* Force hide any overlay on product images */
+.wishlist-product-image::before,
+.wishlist-product-image::after,
+.wishlist-product-image > * {
+    display: none !important;
+    content: none !important;
 }
 </style>
 
