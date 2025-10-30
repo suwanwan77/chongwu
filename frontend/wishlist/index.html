@@ -1477,12 +1477,15 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        // Add sample products if wishlist is empty (for demo purposes)
+        // Check if this is first time loading (for testing purposes)
+        // Add two sample products only once
         let wishlist = getWishlist();
+
+        // Only add sample products if wishlist is completely empty
         if (wishlist.length === 0) {
             const sampleProducts = [
                 {
-                    id: '58',
+                    id: 'intelligent-marble-knife-1',
                     name: 'Intelligent Marble Knife',
                     description: 'Ipsam rerum modi eius impedit inventore doloribus non et. Sit consequuntur et dolore iure ducimus beatae quis.',
                     price: '$132.93',
@@ -1490,7 +1493,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     image: '../wp-content/uploads/2021/11/16.jpg'
                 },
                 {
-                    id: '58-2',
+                    id: 'intelligent-marble-knife-2',
                     name: 'Intelligent Marble Knife',
                     description: 'Ipsam rerum modi eius impedit inventore doloribus non et. Sit consequuntur et dolore iure ducimus beatae quis.',
                     price: '$132.93',
@@ -1500,6 +1503,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
             ];
             saveWishlist(sampleProducts);
         }
+
         renderWishlist();
     });
 
