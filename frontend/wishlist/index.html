@@ -1458,7 +1458,50 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     removeFromWishlist(productId);
                 });
             });
+
+            // Aggressively remove any play button icons
+            setTimeout(() => {
+                removePlayButtons();
+            }, 100);
+            setTimeout(() => {
+                removePlayButtons();
+            }, 500);
+            setTimeout(() => {
+                removePlayButtons();
+            }, 1000);
         }
+    }
+
+    // Function to remove play buttons
+    function removePlayButtons() {
+        const container = document.querySelector('#wishlist-container');
+        if (!container) return;
+
+        // Remove all buttons except our delete button
+        const allButtons = container.querySelectorAll('button');
+        allButtons.forEach(btn => {
+            if (!btn.classList.contains('remove-wishlist-item')) {
+                btn.remove();
+            }
+        });
+
+        // Remove all eicon elements
+        const icons = container.querySelectorAll('[class*="eicon"], .elementor-icon, .elementor-lightbox');
+        icons.forEach(icon => icon.remove());
+
+        // Remove any absolute positioned elements that are not our delete button
+        const cards = container.querySelectorAll('.wishlist-card');
+        cards.forEach(card => {
+            const children = Array.from(card.children);
+            children.forEach(child => {
+                if (child.classList.contains('remove-wishlist-item')) return;
+
+                const style = window.getComputedStyle(child);
+                if (style.position === 'absolute') {
+                    child.remove();
+                }
+            });
+        });
     }
 
     // Initialize on page load
@@ -1550,7 +1593,12 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 .wishlist-card .elementor-clickable,
 #wishlist-items button:not(.remove-wishlist-item),
 #wishlist-items .eicon,
-#wishlist-items [class*="eicon"] {
+#wishlist-items [class*="eicon"],
+#wishlist-container button:not(.remove-wishlist-item),
+#wishlist-container .eicon,
+#wishlist-container [class*="eicon"],
+.wishlist-product-image + button:not(.remove-wishlist-item),
+.wishlist-card > button:not(.remove-wishlist-item):not(:first-child) {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;
@@ -1558,14 +1606,19 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     width: 0 !important;
     height: 0 !important;
     overflow: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
 }
 
 /* Ensure only our delete button is visible */
 .wishlist-card .remove-wishlist-item {
-    display: inline-block !important;
+    display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
     pointer-events: auto !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
 }
 
 /* Hide any absolute positioned elements except our delete button */
@@ -1576,7 +1629,8 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 /* Force hide any overlay on product images */
 .wishlist-product-image::before,
 .wishlist-product-image::after,
-.wishlist-product-image > * {
+.wishlist-product-image > *,
+.wishlist-product-image ~ button:not(.remove-wishlist-item) {
     display: none !important;
     content: none !important;
 }
@@ -1610,7 +1664,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
             const wishlistContainer = document.querySelector('#wishlist-container');
             if (wishlistContainer) {
                 // Remove all eicon elements (Elementor icons including play button)
-                const icons = wishlistContainer.querySelectorAll('[class*="eicon"]');
+                const icons = wishlistContainer.querySelectorAll('[class*="eicon"], .elementor-icon, .elementor-lightbox');
                 icons.forEach(icon => icon.remove());
 
                 // Remove any lightbox overlays
@@ -1626,11 +1680,27 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 cards.forEach(card => {
                     const children = Array.from(card.children);
                     children.forEach(child => {
+                        if (child.classList.contains('remove-wishlist-item')) return;
+
                         const style = window.getComputedStyle(child);
-                        if (style.position === 'absolute' && !child.classList.contains('remove-wishlist-item')) {
+                        if (style.position === 'absolute') {
                             child.remove();
                         }
                     });
+                });
+
+                // Extra: Remove any elements with play icon appearance
+                const allElements = wishlistContainer.querySelectorAll('*');
+                allElements.forEach(el => {
+                    if (el.classList.contains('remove-wishlist-item')) return;
+
+                    const computedStyle = window.getComputedStyle(el);
+                    // Check if element looks like a play button (circular, positioned)
+                    if (computedStyle.borderRadius === '50%' &&
+                        computedStyle.position === 'absolute' &&
+                        !el.classList.contains('remove-wishlist-item')) {
+                        el.remove();
+                    }
                 });
             }
         }
@@ -1639,10 +1709,13 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         removeWishlistLightbox();
 
         // Run again after delays to catch dynamically added elements
+        setTimeout(removeWishlistLightbox, 50);
         setTimeout(removeWishlistLightbox, 100);
+        setTimeout(removeWishlistLightbox, 200);
         setTimeout(removeWishlistLightbox, 500);
         setTimeout(removeWishlistLightbox, 1000);
         setTimeout(removeWishlistLightbox, 2000);
+        setTimeout(removeWishlistLightbox, 3000);
 
         // Watch for changes in wishlist container
         const wishlistContainer = document.querySelector('#wishlist-container');
@@ -1650,8 +1723,14 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
             const observer = new MutationObserver(function(mutations) {
                 removeWishlistLightbox();
             });
-            observer.observe(wishlistContainer, { childList: true, subtree: true });
+            observer.observe(wishlistContainer, { childList: true, subtree: true, attributes: true });
         }
+
+        // Also watch for changes in the entire document
+        const bodyObserver = new MutationObserver(function(mutations) {
+            removeWishlistLightbox();
+        });
+        bodyObserver.observe(document.body, { childList: true, subtree: true });
     });
 })();
 </script>
