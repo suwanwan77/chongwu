@@ -1530,7 +1530,73 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     cursor: default !important;
     pointer-events: none !important;
 }
+
+/* Hide any Elementor lightbox overlays on wishlist container */
+#wishlist-container .eicon,
+#wishlist-container [class*="eicon"],
+#wishlist-items .eicon,
+#wishlist-items [class*="eicon"] {
+    display: none !important;
+    visibility: hidden !important;
+}
 </style>
+
+<script>
+// Disable Elementor lightbox for wishlist container BEFORE Elementor initializes
+(function() {
+    // Override Elementor config to disable lightbox for wishlist
+    if (typeof elementorFrontendConfig !== 'undefined') {
+        // Store original config
+        const originalLightbox = elementorFrontendConfig.kit.global_image_lightbox;
+
+        // Temporarily disable global lightbox
+        elementorFrontendConfig.kit.global_image_lightbox = 'no';
+
+        // Re-enable after page load (so it doesn't affect other pages)
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                if (typeof elementorFrontendConfig !== 'undefined') {
+                    elementorFrontendConfig.kit.global_image_lightbox = originalLightbox;
+                }
+            }, 100);
+        });
+    }
+
+    // Prevent Elementor from adding lightbox to wishlist images
+    document.addEventListener('DOMContentLoaded', function() {
+        // Remove any lightbox icons/overlays from wishlist
+        function removeWishlistLightbox() {
+            const wishlistContainer = document.querySelector('#wishlist-container');
+            if (wishlistContainer) {
+                // Remove all eicon elements (Elementor icons including play button)
+                const icons = wishlistContainer.querySelectorAll('[class*="eicon"]');
+                icons.forEach(icon => icon.remove());
+
+                // Remove any lightbox overlays
+                const overlays = wishlistContainer.querySelectorAll('.elementor-lightbox, [class*="lightbox"]');
+                overlays.forEach(overlay => overlay.remove());
+            }
+        }
+
+        // Run immediately
+        removeWishlistLightbox();
+
+        // Run again after delays to catch dynamically added elements
+        setTimeout(removeWishlistLightbox, 100);
+        setTimeout(removeWishlistLightbox, 500);
+        setTimeout(removeWishlistLightbox, 1000);
+
+        // Watch for changes in wishlist container
+        const wishlistContainer = document.querySelector('#wishlist-container');
+        if (wishlistContainer && typeof MutationObserver !== 'undefined') {
+            const observer = new MutationObserver(function(mutations) {
+                removeWishlistLightbox();
+            });
+            observer.observe(wishlistContainer, { childList: true, subtree: true });
+        }
+    });
+})();
+</script>
 
 </body>
 </html>
