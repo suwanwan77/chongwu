@@ -1426,7 +1426,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                         ×
                     </button>
                     <div style="text-align: center; margin-bottom: 15px;">
-                        <img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;">
+                        <img src="${item.image}" alt="${item.name}" data-elementor-open-lightbox="no" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto; pointer-events: none;">
                     </div>
                     <h3 style="font-size: 18px; margin: 10px 0; color: #2F562A; font-weight: 600;">
                         ${item.name}
@@ -1516,6 +1516,26 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 /* Wishlist card hover effect */
 .wishlist-card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Disable lightbox on wishlist images */
+.wishlist-card img {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+/* Hide any lightbox overlay on wishlist images */
+.wishlist-card .elementor-lightbox,
+.wishlist-card .e-gallery-item {
+    display: none !important;
+}
+
+/* Ensure images display properly */
+.wishlist-card img[src*=".jpg"],
+.wishlist-card img[src*=".png"] {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 </style>
 
