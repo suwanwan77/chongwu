@@ -19,14 +19,14 @@
   display: block;
   font-weight: 500;
   font-size: 14px;
-  color: var(--accent);
+  color: #5C7524 !important;
 }
 .elementor-header-account .header-group-action .site-header-account .content-admin {
   display: block;
   font-weight: 500;
   font-size: 14px;
   line-height: 1;
-  color: var(--accent);
+  color: #5C7524 !important;
 }
 .elementor-header-account .header-group-action .site-header-account .icon {
   margin-right: 10px;

@@ -8318,30 +8318,7 @@ button.btn-primary::after,
 
 /*# sourceMappingURL=style.css.map */
 
-/* ========================================
-   自定义修改：隐藏移动端底部导航栏的 Wishlist
-   ======================================== */
 
-/* 隐藏 Wishlist 按钮 */
-.gopet-handheld-footer-bar ul li.wishlist {
-  display: none !important;
-}
-
-/* 将剩余3个按钮调整为等宽布局 (Shop, My Account, Search) */
-.gopet-handheld-footer-bar ul.columns-4 li {
-  width: 33.33333% !important;
-}
-
-/* 确保在所有移动端尺寸下生效 */
-@media (max-width: 1024px) {
-  .gopet-handheld-footer-bar ul li.wishlist {
-    display: none !important;
-  }
-
-  .gopet-handheld-footer-bar ul li {
-    width: 33.33333% !important;
-  }
-}
 
 /* ========================================
    FAQ页面折叠面板图标颜色修改
@@ -8367,4 +8344,20 @@ button.btn-primary::after,
 /* 修改面包屑导航中的分隔符点颜色为#2F562A */
 .woocommerce-breadcrumb span.icon {
   color: #2F562A !important;
+}
+
+/* ========================================
+   底部导航栏自定义修改
+   ======================================== */
+
+/* 覆盖 columns-4 的默认宽度设置，让4个按钮均匀分布 */
+.gopet-handheld-footer-bar ul.columns-4 li {
+  width: 25% !important;
+}
+
+/* 确保在所有移动端尺寸下生效 */
+@media (max-width: 1024px) {
+  .gopet-handheld-footer-bar ul.columns-4 li {
+    width: 25% !important;
+  }
 }

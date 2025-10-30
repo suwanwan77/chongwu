@@ -26,3 +26,214 @@ ul.products .wc-block-grid__product img,
 .home-free .hfe-site-logo-container{
     position: relative;
 }
+
+/* Featured products section styling */
+.elementor-element-7658824 .elementor-heading-title {
+    color: #153619 !important;
+}
+
+/* Product description text styling */
+.elementor-element-8ac8f59 .elementor-widget-container {
+    color: #5C7524 !important;
+}
+
+/* Add to cart button hover color */
+ul.products li.product a[class*=product_type_]:hover,
+ul.products .wc-block-grid__product a[class*=product_type_]:hover,
+.wc-block-grid__products li.product a[class*=product_type_]:hover,
+.wc-block-grid__products .wc-block-grid__product a[class*=product_type_]:hover {
+    background-color: #5C7524 !important;
+}
+
+/* Product price color */
+ul.products li.product .price ins,
+ul.products .wc-block-grid__product .price ins,
+.wc-block-grid__products li.product .price ins,
+.wc-block-grid__products .wc-block-grid__product .price ins {
+    color: #153619 !important;
+}
+
+/* Footer icon-box styling - using generic selectors for all pages */
+/* Footer section with icon boxes */
+#colophon .elementor-icon-box-wrapper .elementor-icon {
+    color: #5C7524 !important;
+}
+
+#colophon .elementor-icon-box-title,
+#colophon .elementor-icon-box-description {
+    color: #5C7524 !important;
+}
+
+#colophon .elementor-icon-box-description a {
+    color: #5C7524 !important;
+}
+
+/* Phone heading in footer */
+#colophon .elementor-widget-heading .elementor-heading-title {
+    color: #5C7524 !important;
+}
+
+/* Featured products section background color */
+.elementor-element-19d4822 {
+    background-color: #FFF9E9 !important;
+}
+
+/* Product cards background color */
+ul.products li.product .product-block,
+ul.products .wc-block-grid__product .product-block,
+.wc-block-grid__products li.product .product-block,
+.wc-block-grid__products .wc-block-grid__product .product-block {
+    background-color: #AFB25B !important;
+}
+
+/* Product image background color */
+ul.products li.product .product-transition,
+ul.products .wc-block-grid__product .product-transition,
+.wc-block-grid__products li.product .product-transition,
+.wc-block-grid__products .wc-block-grid__product .product-transition {
+    background-color: #AFB25B !important;
+}
+
+/* Shop page breadcrumb title color */
+.elementor-widget-woocommerce-breadcrumb .gopet-woocommerce-title {
+    color: #5C7524 !important;
+}
+
+/* Shop page breadcrumb navigation color */
+.elementor-widget-woocommerce-breadcrumb .woocommerce-breadcrumb {
+    color: #AFB25B !important;
+}
+
+.elementor-widget-woocommerce-breadcrumb .woocommerce-breadcrumb a {
+    color: #AFB25B !important;
+}
+
+/* Filter By button and icon color */
+.gopet-sorting .filter-toggle,
+.gopet-sorting .filter-toggle-dropdown {
+    color: #153619 !important;
+}
+
+.gopet-sorting .filter-toggle i,
+.gopet-sorting .filter-toggle-dropdown i {
+    color: #153619 !important;
+}
+
+/* Grid/List toggle icons color */
+.gridlist-toggle a i {
+    color: #153619 !important;
+}
+
+/* Breadcrumb area background color */
+.breadcrumb-wrap {
+    background-color: #FFF9E9 !important;
+}
+
+/* Site content background color */
+.site-content {
+    background-color: #FFF9E9 !important;
+}
+
+/* Single product page background color */
+.single-product div.product .content-single-wrapper {
+    background-color: #FFF9E9 !important;
+}
+
+/* Related and upsells products background color */
+.single-product .related.products,
+.single-product .upsells.products {
+    background-color: #FFF9E9 !important;
+}
+
+/* Related and upsells products list items background */
+.single-product .related.products ul.products li.product .product-block,
+.single-product .upsells.products ul.products li.product .product-block {
+    background-color: #AFB25B !important;
+}
+
+/* Product page header layout fix - apply same layout as home page */
+.elementor-column-719d371 .elementor-widget-wrap {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  height: 100% !important;
+}
+
+.elementor-column-719d371 .elementor-widget {
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 0 auto !important;
+  height: 28px !important;
+}
+
+/* Product page - search box, login, cart flex display */
+.elementor-element-cb1b8ff,
+.elementor-element-bbe2feb,
+.elementor-element-1886de6 {
+  display: flex !important;
+  align-items: center !important;
+  height: 28px !important;
+  flex-shrink: 0 !important;
+}
+
+.elementor-element-cb1b8ff .elementor-widget-container,
+.elementor-element-bbe2feb .elementor-widget-container,
+.elementor-element-1886de6 .elementor-widget-container {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+/* Product page - header account and cart styling */
+.elementor-element-bbe2feb .elementor-header-account,
+.elementor-element-1886de6 .site-header-cart {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.elementor-element-bbe2feb .header-group-action,
+.elementor-element-1886de6 .header-group-action,
+.elementor-element-1886de6 .cart-contents {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+/* Product page - login and cart links */
+.elementor-element-bbe2feb .elementor-header-account a,
+.elementor-element-1886de6 .site-header-cart .cart-contents {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Product page - icon and text styling */
+.elementor-element-bbe2feb .site-header-account a .icon,
+.elementor-element-bbe2feb .site-header-account a .account-content,
+.elementor-element-1886de6 .site-header-cart .cart-contents .cart-title,
+.elementor-element-1886de6 .site-header-cart .cart-contents .count {
+  display: inline-flex !important;
+  align-items: center !important;
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+/* Single product page price color - #2F562A */
+.single-product div.product .price ins,
+.single-product div.product .price ins .woocommerce-Price-amount,
+.single-product div.product .price ins .woocommerce-Price-amount bdi {
+  color: #2F562A !important;
+}
+
+/* "See cat food" button - prevent text color change on hover */
+.elementor-element-43fde91 .elementor-button-text,
+.elementor-element-43fde91 .elementor-button:hover .elementor-button-text {
+  color: #153619 !important;
+}
