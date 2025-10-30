@@ -706,7 +706,7 @@ body {
 			<div class="elementor-widget-wrap elementor-element-populated">
 						<div class="elementor-element elementor-element-848e4b3 elementor-widget elementor-widget-woocommerce-breadcrumb" data-id="848e4b3" data-element_type="widget" data-widget_type="woocommerce-breadcrumb.default">
 				<div class="elementor-widget-container">
-					<div class="gopet-woocommerce-title">Cart</div><nav class="woocommerce-breadcrumb"><a href="../index1.html">Home Page</a><span class="icon"></span>Cart</nav>				</div>
+					<div class="gopet-woocommerce-title">Wishlist</div><nav class="woocommerce-breadcrumb"><a href="../index1.html">Home Page</a><span class="icon"></span>Wishlist</nav>				</div>
 				</div>
 					</div>
 		</div>
@@ -1454,6 +1454,27 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
+        // Add sample products if wishlist is empty (for demo purposes)
+        let wishlist = getWishlist();
+        if (wishlist.length === 0) {
+            const sampleProducts = [
+                {
+                    id: 'sample-product-1',
+                    name: 'Pawganic Natural Cat Litter - 10kg',
+                    description: 'Eco-friendly, biodegradable cat litter made from natural materials. Excellent odor control and clumping ability.',
+                    price: '$29.99',
+                    image: '../wp-content/uploads/2021/11/product-1.jpg'
+                },
+                {
+                    id: 'sample-product-2',
+                    name: 'Pawganic Premium Cat Food - Organic',
+                    description: 'Premium organic cat food with real chicken and vegetables. No artificial preservatives or colors.',
+                    price: '$45.99',
+                    image: '../wp-content/uploads/2021/11/product-2.jpg'
+                }
+            ];
+            saveWishlist(sampleProducts);
+        }
         renderWishlist();
     });
 
