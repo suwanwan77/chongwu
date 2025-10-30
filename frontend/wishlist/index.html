@@ -1420,13 +1420,13 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
                 card.innerHTML = `
                     <button class="remove-wishlist-item" data-product-id="${item.id}"
-                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; line-height: 1; padding: 5px; transition: color 0.3s;"
+                            style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; line-height: 1; padding: 5px; transition: color 0.3s; z-index: 10;"
                             onmouseover="this.style.color='#e74c3c'"
                             onmouseout="this.style.color='#999'">
                         ×
                     </button>
                     <div style="text-align: center; margin-bottom: 15px;">
-                        <img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px;">
+                        <img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;">
                     </div>
                     <h3 style="font-size: 18px; margin: 10px 0; color: #2F562A; font-weight: 600;">
                         ${item.name}
@@ -1434,8 +1434,16 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     <p style="font-size: 14px; color: #666; margin: 10px 0; line-height: 1.5;">
                         ${item.description || ''}
                     </p>
-                    <div style="font-size: 20px; color: #5C7524; font-weight: 700; margin-top: 15px;">
-                        ${item.price}
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <div style="font-size: 20px; color: #5C7524; font-weight: 700;">
+                            ${item.price}
+                        </div>
+                        <a href="../order-received/index.html"
+                           style="background-color: #5C7524; color: white; padding: 10px 30px; border-radius: 25px; text-decoration: none; font-weight: 600; transition: background-color 0.3s; display: inline-block;"
+                           onmouseover="this.style.backgroundColor='#2F562A'"
+                           onmouseout="this.style.backgroundColor='#5C7524'">
+                            Buy
+                        </a>
                     </div>
                 `;
 
@@ -1463,14 +1471,14 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     name: 'Pawganic Natural Cat Litter - 10kg',
                     description: 'Eco-friendly, biodegradable cat litter made from natural materials. Excellent odor control and clumping ability.',
                     price: '$29.99',
-                    image: '../wp-content/uploads/2021/11/product-1.jpg'
+                    image: '../wp-content/uploads/2021/11/1.jpg'
                 },
                 {
                     id: 'sample-product-2',
                     name: 'Pawganic Premium Cat Food - Organic',
                     description: 'Premium organic cat food with real chicken and vegetables. No artificial preservatives or colors.',
                     price: '$45.99',
-                    image: '../wp-content/uploads/2021/11/product-2.jpg'
+                    image: '../wp-content/uploads/2021/11/2.jpg'
                 }
             ];
             saveWishlist(sampleProducts);
