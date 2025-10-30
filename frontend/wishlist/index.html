@@ -1418,6 +1418,19 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 card.className = 'wishlist-card';
                 card.style.cssText = 'position: relative; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px; transition: box-shadow 0.3s;';
 
+                // Create image element separately to avoid lightbox
+                const imgDiv = document.createElement('div');
+                imgDiv.style.cssText = 'text-align: center; margin-bottom: 15px;';
+
+                const img = document.createElement('img');
+                img.src = item.image;
+                img.alt = item.name;
+                img.className = 'wishlist-product-image';
+                img.style.cssText = 'max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;';
+                img.setAttribute('data-no-lightbox', 'true');
+
+                imgDiv.appendChild(img);
+
                 card.innerHTML = `
                     <button class="remove-wishlist-item" data-product-id="${item.id}"
                             style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; line-height: 1; padding: 5px; transition: color 0.3s; z-index: 10;"
@@ -1425,9 +1438,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                             onmouseout="this.style.color='#999'">
                         ×
                     </button>
-                    <div style="text-align: center; margin-bottom: 15px;">
-                        <img src="${item.image}" alt="${item.name}" data-elementor-open-lightbox="no" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto; pointer-events: none;">
-                    </div>
+                    <div class="wishlist-image-container"></div>
                     <h3 style="font-size: 18px; margin: 10px 0; color: #2F562A; font-weight: 600;">
                         ${item.name}
                     </h3>
@@ -1446,6 +1457,10 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                         </a>
                     </div>
                 `;
+
+                // Insert image after setting innerHTML
+                const imageContainer = card.querySelector('.wishlist-image-container');
+                imageContainer.replaceWith(imgDiv);
 
                 container.appendChild(card);
             });
@@ -1467,18 +1482,20 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         if (wishlist.length === 0) {
             const sampleProducts = [
                 {
-                    id: 'sample-product-1',
-                    name: 'Pawganic Natural Cat Litter - 10kg',
-                    description: 'Eco-friendly, biodegradable cat litter made from natural materials. Excellent odor control and clumping ability.',
-                    price: '$29.99',
-                    image: '../wp-content/uploads/2021/11/1.jpg'
+                    id: '58',
+                    name: 'Intelligent Marble Knife',
+                    description: 'Ipsam rerum modi eius impedit inventore doloribus non et. Sit consequuntur et dolore iure ducimus beatae quis.',
+                    price: '$132.93',
+                    originalPrice: '$134.27',
+                    image: '../wp-content/uploads/2021/11/16.jpg'
                 },
                 {
-                    id: 'sample-product-2',
-                    name: 'Pawganic Premium Cat Food - Organic',
-                    description: 'Premium organic cat food with real chicken and vegetables. No artificial preservatives or colors.',
-                    price: '$45.99',
-                    image: '../wp-content/uploads/2021/11/2.jpg'
+                    id: '58-2',
+                    name: 'Intelligent Marble Knife',
+                    description: 'Ipsam rerum modi eius impedit inventore doloribus non et. Sit consequuntur et dolore iure ducimus beatae quis.',
+                    price: '$132.93',
+                    originalPrice: '$134.27',
+                    image: '../wp-content/uploads/2021/11/16.jpg'
                 }
             ];
             saveWishlist(sampleProducts);
@@ -1518,26 +1535,62 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Disable lightbox on wishlist images */
+/* Completely disable lightbox on wishlist images */
+.wishlist-product-image,
 .wishlist-card img {
     pointer-events: none !important;
     cursor: default !important;
 }
 
-/* Hide any lightbox overlay on wishlist images */
+/* Prevent Elementor from adding lightbox to wishlist images */
+.wishlist-card img[data-no-lightbox],
+.wishlist-product-image {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Hide any lightbox overlay/icon on wishlist images */
 .wishlist-card .elementor-lightbox,
-.wishlist-card .e-gallery-item {
+.wishlist-card .e-gallery-item,
+.wishlist-card .eicon-zoom-in-bold,
+.wishlist-card .elementor-lightbox-prevent-close {
     display: none !important;
+    visibility: hidden !important;
 }
 
 /* Ensure images display properly */
 .wishlist-card img[src*=".jpg"],
-.wishlist-card img[src*=".png"] {
+.wishlist-card img[src*=".png"],
+.wishlist-product-image {
     display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
+
+/* Disable any click events on image containers */
+.wishlist-card .wishlist-image-container,
+.wishlist-card .wishlist-image-container * {
+    pointer-events: none !important;
+}
 </style>
+
+<script>
+// Disable Elementor lightbox on wishlist images after page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Prevent Elementor from initializing lightbox on wishlist images
+    const wishlistImages = document.querySelectorAll('.wishlist-product-image, .wishlist-card img');
+    wishlistImages.forEach(img => {
+        img.removeAttribute('data-elementor-open-lightbox');
+        img.setAttribute('data-elementor-open-lightbox', 'no');
+        img.style.pointerEvents = 'none';
+
+        // Remove any click event listeners
+        const newImg = img.cloneNode(true);
+        img.parentNode.replaceChild(newImg, img);
+    });
+});
+</script>
 
 </body>
 </html>
