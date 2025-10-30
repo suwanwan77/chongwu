@@ -538,6 +538,12 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 .gopet-overlay {
   display: none !important;
 }
+
+/* Footer logo size - match home page */
+footer .hfe-site-logo-img {
+  max-width: 105px !important;
+  width: 105px !important;
+}
 </style>
 
 </head>
@@ -572,7 +578,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 													<a data-elementor-open-lightbox="" class='elementor-clickable' href="../index1.html">
 							<div class="hfe-site-logo-set">
 				<div class="hfe-site-logo-container">
-									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.svg" alt="default-logo">
+									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.png" alt="default-logo">
 				</div>
 			</div>
 							</a>
@@ -613,10 +619,10 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 <li id="menu-item-2107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2107"><a href="../about-us/index.html"><span class="menu-title">About</span></a></li>
 <li id="menu-item-2114" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2114"><a href="#"><span class="menu-title">Pages</span></a>
 <ul class="sub-menu">
+	<li id="menu-item-charity" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html"><span class="menu-title">Charity</span></a></li>
 	<li id="menu-item-2414" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2414"><a href="../pricing/index.html"><span class="menu-title">Pricing</span></a></li>
 	<li id="menu-item-2415" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2415"><a href="../faq/index.html"><span class="menu-title">FAQ</span></a></li>
 	<li id="menu-item-2112" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../contact-us/index.html"><span class="menu-title">Contact</span></a></li>
-	<li id="menu-item-charity" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html"><span class="menu-title">Charity</span></a></li>
 </ul>
 </li>
 </ul></div>            </nav>
@@ -629,7 +635,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 													<a data-elementor-open-lightbox="" class='elementor-clickable' href="../index1.html">
 							<div class="hfe-site-logo-set">
 				<div class="hfe-site-logo-container">
-									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.svg" alt="default-logo">
+									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.png" alt="default-logo">
 				</div>
 			</div>
 							</a>
@@ -1150,15 +1156,15 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 							<div class="elementor-icon-box-wrapper">
 
 						<div class="elementor-icon-box-icon">
-				<a href="../wishlist/index.html" class="elementor-icon" tabindex="-1" aria-label="Wishlist">
-				<i aria-hidden="true" class="far fa-heart"></i>				</a>
+				<a href="../my-account/index.html" class="elementor-icon" tabindex="-1" aria-label="My Account">
+				<i aria-hidden="true" class="gopet-icon- gopet-icon-account"></i>				</a>
 			</div>
 
 						<div class="elementor-icon-box-content">
 
 									<h3 class="elementor-icon-box-title">
-						<a href="../wishlist/index.html">
-							Wishlist						</a>
+						<a href="../my-account/index.html">
+							My Account						</a>
 					</h3>
 
 
@@ -1357,10 +1363,10 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2107"><a href="../about-us/index.html">About</a></li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2114"><a href="#">Pages</a>
 <ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html">Charity</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2414"><a href="../pricing/index.html">Pricing</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2415"><a href="../faq/index.html">FAQ</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../contact-us/index.html">Contact</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html">Charity</a></li>
 </ul>
 </li>
 </ul></div>        </nav>
@@ -1704,6 +1710,25 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 <link rel='stylesheet' id='rs-plugin-settings-css' href='../wp-content/plugins/revslider/sr6/assets/css/rs6.css' media='all'>
 <style id='rs-plugin-settings-inline-css'>
 #rs-demo-id {}
+
+/* Fix mobile menu colors and hamburger icon hover */
+.mobile-nav-tabs .mobile-tab-title span {
+    color: #2F562A !important;
+}
+
+.menu-mobile-nav-button:hover .gopet-icon span,
+.menu-mobile-nav-button:focus .gopet-icon span {
+    background-color: #2F562A !important;
+}
+
+.mobile-navigation .menu a {
+    color: #2F562A !important;
+}
+
+.mobile-navigation .sub-menu a {
+    color: #2F562A !important;
+}
+
 </style>
 <script src="../wp-includes/js/dist/hooks.min.js" id="wp-hooks-js"></script>
 <script src="../wp-includes/js/dist/i18n.min.js" id="wp-i18n-js"></script>
