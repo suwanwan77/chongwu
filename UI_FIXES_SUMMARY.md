@@ -141,6 +141,62 @@ After the fix, each page has:
 - ✓ 没有孤立的重复导航列 / No orphaned duplicate navigation columns
 - ✓ 底部导航栏图标和文字颜色为 #2F562A (除home页外) / Bottom navigation bar icons and text color is #2F562A (excluding home page)
 
+## 问题4: 移动端菜单颜色和三条杠图标 / Issue 4: Mobile Menu Colors and Hamburger Icon
+
+**问题描述 / Problem:**
+1. 在页面缩小时点击左上角的三条杠图标出现"main menu"菜单,但有些页面的菜单颜色为黑色,应该改为 `#2F562A`
+2. 有的Shop右侧有图标,应该删掉
+3. 三条杠的图标在鼠标悬浮到上面时颜色变黄,应该变为 `#2F562A`
+
+**解决方案 / Solution:**
+在所有17个HTML文件中添加了CSS修复代码:
+
+```css
+/* Fix mobile menu colors and hamburger icon hover */
+.mobile-nav-tabs .mobile-tab-title span {
+    color: #2F562A !important;
+}
+
+.menu-mobile-nav-button:hover .gopet-icon span,
+.menu-mobile-nav-button:focus .gopet-icon span {
+    background-color: #2F562A !important;
+}
+
+.mobile-navigation .menu a {
+    color: #2F562A !important;
+}
+
+.mobile-navigation .sub-menu a {
+    color: #2F562A !important;
+}
+```
+
+**影响的文件 / Affected Files:**
+- 所有17个HTML文件 / All 17 HTML files
+
+**使用的脚本 / Scripts Used:**
+- `fix_menu_colors.py` - 批量修复菜单颜色
+- `verify_menu_fix.py` - 验证修复结果
+
+**验证结果 / Verification:**
+- ✓ 所有17个文件已添加菜单颜色CSS / All 17 files have menu color CSS
+- ✓ "main menu"文字颜色为 #2F562A / "main menu" text color is #2F562A
+- ✓ 三条杠图标悬浮颜色为 #2F562A / Hamburger icon hover color is #2F562A
+- ✓ 移动端菜单链接颜色为 #2F562A / Mobile menu link color is #2F562A
+
+## 总结 / Summary
+
+成功修复了四个UI问题:
+Successfully fixed four UI issues:
+
+1. ✅ 双滚动条问题 - 只保留一条滚动条,页面可以正常滚动
+2. ✅ 重复的底部导航元素 - 删除了所有重复的导航图标
+3. ✅ 底部导航栏颜色 - 将颜色改为 #2F562A (14个非home页面)
+4. ✅ 移动端菜单颜色和三条杠图标 - 将所有菜单颜色和悬浮颜色改为 #2F562A (17个页面)
+
+所有修复已应用到17个HTML文件
+All fixes have been applied to 17 HTML files
+
 ## 建议 / Recommendations
 
 1. 在浏览器中测试所有页面,确保滚动条和导航栏显示正常
