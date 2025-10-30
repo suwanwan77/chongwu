@@ -562,6 +562,27 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
     border: 2px solid #fff !important; font-size: 10px !important;
   }
 }
+
+/* Footer logo size - match home page */
+footer .hfe-site-logo-img {
+  max-width: 105px !important;
+  width: 105px !important;
+}
+
+/* Fix double scrollbar issue */
+body {
+    overflow-x: hidden !important;
+}
+
+/* Change bottom navigation bar color */
+.elementor-element-97aed3a .elementor-icon-box-icon a,
+.elementor-element-97aed3a .elementor-icon-box-icon i,
+.elementor-element-97aed3a .elementor-icon-box-title a,
+.elementor-element-97aed3a .site-header-search a,
+.elementor-element-97aed3a .site-header-search i,
+.elementor-element-97aed3a .site-header-search .content {
+    color: #2F562A !important;
+}
 </style>
 
 </head>
@@ -596,7 +617,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 													<a data-elementor-open-lightbox="" class='elementor-clickable' href="../index1.html">
 							<div class="hfe-site-logo-set">
 				<div class="hfe-site-logo-container">
-									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.svg" alt="default-logo">
+									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.png" alt="default-logo">
 				</div>
 			</div>
 							</a>
@@ -637,10 +658,10 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 <li id="menu-item-2107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2107"><a href="../about-us/index.html"><span class="menu-title">About</span></a></li>
 <li id="menu-item-2114" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-has-children menu-item-2114"><a href="#"><span class="menu-title">Pages</span></a>
 <ul class="sub-menu">
+	<li id="menu-item-charity" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html"><span class="menu-title">Charity</span></a></li>
 	<li id="menu-item-2414" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2414"><a href="../pricing/index.html"><span class="menu-title">Pricing</span></a></li>
 	<li id="menu-item-2415" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-144 current_page_item menu-item-2415"><a href=""><span class="menu-title">FAQ</span></a></li>
 	<li id="menu-item-2112" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../contact-us/index.html"><span class="menu-title">Contact</span></a></li>
-	<li id="menu-item-charity" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html"><span class="menu-title">Charity</span></a></li>
 </ul>
 </li>
 </ul></div>            </nav>
@@ -653,7 +674,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 													<a data-elementor-open-lightbox="" class='elementor-clickable' href="../index1.html">
 							<div class="hfe-site-logo-set">
 				<div class="hfe-site-logo-container">
-									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.svg" alt="default-logo">
+									<img class="hfe-site-logo-img elementor-animation-" src="../wp-content/uploads/2021/11/logo.png" alt="default-logo">
 				</div>
 			</div>
 							</a>
@@ -1027,7 +1048,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 	</div><!-- #content -->
 
 	<div class='footer-width-fixer'>		<div data-elementor-type="wp-post" data-elementor-id="727" class="elementor elementor-727">
-						<div class="elementor-section elementor-top-section elementor-element elementor-element-97aed3a elementor-section-content-middle elementor-section-stretched elementor-hidden-desktop elementor-hidden-laptop elementor-hidden-tablet_extra elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="97aed3a" data-element_type="section" data-settings="{&quot;stretch_section&quot;:&quot;section-stretched&quot;,&quot;background_background&quot;:&quot;classic&quot;}">
+																								<div class="elementor-section elementor-top-section elementor-element elementor-element-97aed3a elementor-section-content-middle elementor-section-stretched elementor-hidden-desktop elementor-hidden-laptop elementor-hidden-tablet_extra elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="97aed3a" data-element_type="section" data-settings="{\"stretch_section\":\"section-stretched\",\"background_background\":\"classic\"}">
 						<div class="elementor-container elementor-column-gap-no">
 					<div class="elementor-column elementor-col-25 elementor-top-column elementor-element elementor-element-af0d546" data-id="af0d546" data-element_type="column">
 			<div class="elementor-widget-wrap elementor-element-populated">
@@ -1036,7 +1057,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 							<div class="elementor-icon-box-wrapper">
 
 						<div class="elementor-icon-box-icon">
-				<a href="../index.html" class="elementor-icon" tabindex="-1" aria-label="Shop">
+				<a href="../index.html" class="elementor-icon" tabindex="-1" aria-label="Home">
 				<i aria-hidden="true" class="gopet-icon- gopet-icon-home"></i>				</a>
 			</div>
 
@@ -1044,6 +1065,32 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 
 									<h3 class="elementor-icon-box-title">
 						<a href="../index.html">
+							Home						</a>
+					</h3>
+
+
+			</div>
+
+		</div>
+						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-top-column elementor-element elementor-element-9984908" data-id="9984908" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-cf727eb elementor-view-default elementor-position-top elementor-mobile-position-top elementor-widget elementor-widget-icon-box" data-id="cf727eb" data-element_type="widget" data-widget_type="icon-box.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-icon-box-wrapper">
+
+						<div class="elementor-icon-box-icon">
+				<a href="../shop/index.html" class="elementor-icon" tabindex="-1" aria-label="Shop">
+				<i aria-hidden="true" class="fas fa-shopping-cart"></i>				</a>
+			</div>
+
+						<div class="elementor-icon-box-content">
+
+									<h3 class="elementor-icon-box-title">
+						<a href="../shop/index.html">
 							Shop						</a>
 					</h3>
 
@@ -1052,6 +1099,20 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 
 		</div>
 						</div>
+				</div>
+					</div>
+		</div>
+				<div class="elementor-column elementor-col-25 elementor-top-column elementor-element elementor-element-d726d5a" data-id="d726d5a" data-element_type="column">
+			<div class="elementor-widget-wrap elementor-element-populated">
+						<div class="elementor-element elementor-element-4f55441 elementor-widget elementor-widget-gopet-search" data-id="4f55441" data-element_type="widget" data-widget_type="gopet-search.default">
+				<div class="elementor-widget-container">
+					            <div class="site-header-search">
+                <a href="#" class="button-search-popup">
+                    <i class="gopet-icon-search"></i>
+                    <span class="content">Search</span>
+                </a>
+            </div>
+            				</div>
 				</div>
 					</div>
 		</div>
@@ -1081,50 +1142,13 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 				</div>
 					</div>
 		</div>
-				<div class="elementor-column elementor-col-25 elementor-top-column elementor-element elementor-element-d726d5a" data-id="d726d5a" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-4f55441 elementor-widget elementor-widget-gopet-search" data-id="4f55441" data-element_type="widget" data-widget_type="gopet-search.default">
-				<div class="elementor-widget-container">
-					            <div class="site-header-search">
-                <a href="#" class="button-search-popup">
-                    <i class="gopet-icon-search"></i>
-                    <span class="content">Search</span>
-                </a>
-            </div>
-            				</div>
-				</div>
-					</div>
-		</div>
-				<div class="elementor-column elementor-col-25 elementor-top-column elementor-element elementor-element-9984908" data-id="9984908" data-element_type="column">
-			<div class="elementor-widget-wrap elementor-element-populated">
-						<div class="elementor-element elementor-element-cf727eb elementor-view-default elementor-position-top elementor-mobile-position-top elementor-widget elementor-widget-icon-box" data-id="cf727eb" data-element_type="widget" data-widget_type="icon-box.default">
-				<div class="elementor-widget-container">
-							<div class="elementor-icon-box-wrapper">
-
-						<div class="elementor-icon-box-icon">
-				<a href="../wishlist/index.html" class="elementor-icon" tabindex="-1" aria-label="Wishlist">
-				<i aria-hidden="true" class="far fa-heart"></i>				</a>
-			</div>
-
-						<div class="elementor-icon-box-content">
-
-									<h3 class="elementor-icon-box-title">
-						<a href="../wishlist/index.html">
-							Wishlist						</a>
-					</h3>
-
-
-			</div>
-
-		</div>
-						</div>
-				</div>
-					</div>
-		</div>
 					</div>
 		</div>
 				</div>
-		</div>		<footer itemtype="https://schema.org/WPFooter" itemscope="itemscope" id="colophon" role="contentinfo">
+				</div>
+					</div>
+		</div>
+<footer itemtype="https://schema.org/WPFooter" itemscope="itemscope" id="colophon" role="contentinfo">
 			<div class='footer-width-fixer'>		<div data-elementor-type="wp-post" data-elementor-id="7607" class="elementor elementor-7607">
 						<section class="elementor-section elementor-top-section elementor-element elementor-element-b2b7ec2 elementor-section-stretched elementor-section-boxed elementor-section-height-default elementor-section-height-default" data-id="b2b7ec2" data-element_type="section" data-settings="{&quot;stretch_section&quot;:&quot;section-stretched&quot;,&quot;background_background&quot;:&quot;classic&quot;,&quot;shape_divider_top&quot;:&quot;custom-shape-1&quot;}">
 							<div class="elementor-background-overlay"></div>
@@ -1309,10 +1333,10 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2107"><a href="../about-us/index.html">About</a></li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2114"><a href="#">Pages</a>
 <ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html">Charity</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2414"><a href="../pricing/index.html">Pricing</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2415"><a href="../faq/index.html">FAQ</a></li>
 	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2112"><a href="../contact-us/index.html">Contact</a></li>
-	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-charity"><a href="../blog-list/index.html">Charity</a></li>
 </ul>
 </li>
 </ul></div>        </nav>
