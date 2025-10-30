@@ -1418,31 +1418,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 card.className = 'wishlist-card';
                 card.style.cssText = 'position: relative; background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px; transition: box-shadow 0.3s;';
 
-                // Create image element separately to avoid lightbox
-                const imgDiv = document.createElement('div');
-                imgDiv.style.cssText = 'text-align: center; margin-bottom: 15px; position: relative;';
-                imgDiv.className = 'wishlist-image-wrapper';
-
-                const img = document.createElement('img');
-                img.src = item.image;
-                img.alt = item.name;
-                img.className = 'wishlist-product-image';
-                img.style.cssText = 'max-width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;';
-
-                // Multiple attributes to prevent lightbox
-                img.setAttribute('data-elementor-open-lightbox', 'no');
-                img.setAttribute('data-no-lightbox', 'true');
-                img.setAttribute('data-skip-lazy', 'true');
-
-                // Prevent any click events
-                img.onclick = function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    return false;
-                };
-
-                imgDiv.appendChild(img);
-
+                // Use background-image instead of img tag to completely avoid Elementor lightbox
                 card.innerHTML = `
                     <button class="remove-wishlist-item" data-product-id="${item.id}"
                             style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 24px; color: #999; cursor: pointer; line-height: 1; padding: 5px; transition: color 0.3s; z-index: 10;"
@@ -1450,7 +1426,9 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                             onmouseout="this.style.color='#999'">
                         ×
                     </button>
-                    <div class="wishlist-image-container"></div>
+                    <div class="wishlist-product-image"
+                         style="width: 100%; height: 200px; background-image: url('${item.image}'); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 4px; margin-bottom: 15px;">
+                    </div>
                     <h3 style="font-size: 18px; margin: 10px 0; color: #2F562A; font-weight: 600;">
                         ${item.name}
                     </h3>
@@ -1469,10 +1447,6 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                         </a>
                     </div>
                 `;
-
-                // Insert image after setting innerHTML
-                const imageContainer = card.querySelector('.wishlist-image-container');
-                imageContainer.replaceWith(imgDiv);
 
                 container.appendChild(card);
             });
@@ -1551,123 +1525,12 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* Completely disable lightbox on wishlist images */
-.wishlist-product-image,
-.wishlist-card img,
-.wishlist-image-wrapper img {
-    pointer-events: none !important;
+/* Wishlist product image using background-image (no lightbox possible) */
+.wishlist-product-image {
     cursor: default !important;
-}
-
-/* Prevent Elementor from adding lightbox to wishlist images */
-.wishlist-card img[data-no-lightbox],
-.wishlist-product-image {
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    user-select: none !important;
-}
-
-/* Hide any lightbox overlay/icon on wishlist images - CRITICAL */
-.wishlist-card .elementor-lightbox,
-.wishlist-card .e-gallery-item,
-.wishlist-card .eicon-zoom-in-bold,
-.wishlist-card .elementor-lightbox-prevent-close,
-.wishlist-card .eicon,
-.wishlist-card [class*="eicon"],
-.wishlist-image-wrapper::before,
-.wishlist-image-wrapper::after,
-.wishlist-card .wishlist-image-wrapper::before,
-.wishlist-card .wishlist-image-wrapper::after {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    content: none !important;
-}
-
-/* Force hide any overlay on wishlist images */
-.wishlist-card img::before,
-.wishlist-card img::after,
-.wishlist-product-image::before,
-.wishlist-product-image::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Ensure images display properly */
-.wishlist-card img[src*=".jpg"],
-.wishlist-card img[src*=".png"],
-.wishlist-product-image {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-
-/* Disable any click events on image containers */
-.wishlist-card .wishlist-image-container,
-.wishlist-card .wishlist-image-container *,
-.wishlist-card .wishlist-image-wrapper,
-.wishlist-card .wishlist-image-wrapper * {
     pointer-events: none !important;
-}
-
-/* Remove any position relative that might allow overlay */
-.wishlist-image-wrapper {
-    position: relative !important;
-    overflow: hidden !important;
-}
-
-/* Hide any absolute positioned elements inside image wrapper */
-.wishlist-image-wrapper > *:not(img) {
-    display: none !important;
 }
 </style>
-
-<script>
-// Aggressively disable Elementor lightbox on wishlist images
-function disableWishlistLightbox() {
-    // Remove all lightbox overlays and icons
-    const overlays = document.querySelectorAll('.wishlist-card .eicon, .wishlist-card [class*="eicon"], .wishlist-image-wrapper .eicon');
-    overlays.forEach(el => el.remove());
-
-    // Disable lightbox on all wishlist images
-    const wishlistImages = document.querySelectorAll('.wishlist-product-image, .wishlist-card img, .wishlist-image-wrapper img');
-    wishlistImages.forEach(img => {
-        img.removeAttribute('data-elementor-open-lightbox');
-        img.setAttribute('data-elementor-open-lightbox', 'no');
-        img.setAttribute('data-no-lightbox', 'true');
-        img.style.pointerEvents = 'none';
-        img.style.cursor = 'default';
-
-        // Remove parent link if exists
-        if (img.parentElement && img.parentElement.tagName === 'A') {
-            const parent = img.parentElement;
-            parent.replaceWith(img);
-        }
-    });
-
-    // Remove any lightbox containers
-    const lightboxContainers = document.querySelectorAll('.wishlist-card .elementor-lightbox, .wishlist-image-wrapper + .elementor-lightbox');
-    lightboxContainers.forEach(el => el.remove());
-}
-
-// Run on page load
-document.addEventListener('DOMContentLoaded', function() {
-    disableWishlistLightbox();
-
-    // Run again after a short delay to catch any dynamically added elements
-    setTimeout(disableWishlistLightbox, 500);
-    setTimeout(disableWishlistLightbox, 1000);
-});
-
-// Run whenever wishlist is updated
-const originalRenderWishlist = window.renderWishlist;
-if (typeof originalRenderWishlist === 'function') {
-    window.renderWishlist = function() {
-        originalRenderWishlist.apply(this, arguments);
-        setTimeout(disableWishlistLightbox, 100);
-    };
-}
-</script>
 
 </body>
 </html>
