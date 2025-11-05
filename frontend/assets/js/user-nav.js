@@ -57,146 +57,118 @@
    * @param {Object} userInfo - 用户信息
    */
   function updateLoggedInNav(userInfo) {
-    // 查找所有登录链接
-    const loginLinks = document.querySelectorAll('a[href*="my-account"]');
+    // 查找导航栏中的账户区域
+    const accountContainers = document.querySelectorAll('.site-header-account');
 
-    loginLinks.forEach(link => {
-      // 如果链接文本是"Sign In"或"Login"，替换为用户名
-      const linkText = link.textContent.trim();
-      if (linkText === 'Sign In' || linkText === 'Login' || linkText === '登录') {
-        // 创建下拉菜单
-        const dropdown = createUserDropdown(userInfo);
+    accountContainers.forEach(container => {
+      const link = container.querySelector('a[href*="my-account"]');
+      if (!link) return;
 
-        // 替换链接为下拉菜单
-        if (link.parentElement) {
-          link.parentElement.replaceChild(dropdown, link);
+      const contentSpan = link.querySelector('.content-content');
+      if (!contentSpan) return;
+
+      // 检查是否是"Sign In"文本
+      if (contentSpan.textContent.trim() === 'Sign In') {
+        // 使用 nickName 或 userName 或 email
+        const displayName = userInfo.nickName || userInfo.userName || userInfo.email || 'User';
+        contentSpan.textContent = displayName;
+
+        // 查找图标元素
+        const iconDiv = link.querySelector('.icon');
+        if (iconDiv) {
+          const iconElement = iconDiv.querySelector('i');
+          if (iconElement) {
+            // 替换图标为头像
+            const avatarUrl = userInfo.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
+
+            // 创建头像图片
+            const avatar = document.createElement('img');
+            avatar.src = avatarUrl;
+            avatar.alt = displayName;
+            avatar.style.cssText = `
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              object-fit: cover;
+              vertical-align: middle;
+            `;
+
+            // 替换图标
+            iconElement.replaceWith(avatar);
+          }
+        }
+
+        // 添加下拉菜单
+        const dropdown = container.querySelector('.account-dropdown');
+        if (dropdown && dropdown.children.length === 0) {
+          dropdown.innerHTML = `
+            <div style="
+              position: absolute;
+              top: 100%;
+              right: 0;
+              background: white;
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+              min-width: 150px;
+              z-index: 1000;
+              margin-top: 10px;
+              display: none;
+            " class="user-dropdown-menu">
+              <a href="/Personal-Center/" style="
+                display: block;
+                padding: 10px 15px;
+                color: #333;
+                text-decoration: none;
+                border-bottom: 1px solid #eee;
+              " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
+                Personal Center
+              </a>
+              <a href="/my-account/" style="
+                display: block;
+                padding: 10px 15px;
+                color: #333;
+                text-decoration: none;
+                border-bottom: 1px solid #eee;
+              " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
+                My Orders
+              </a>
+              <a href="#" class="logout-link" style="
+                display: block;
+                padding: 10px 15px;
+                color: #333;
+                text-decoration: none;
+              " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
+                Logout
+              </a>
+            </div>
+          `;
+
+          // 添加鼠标悬停事件
+          container.addEventListener('mouseenter', () => {
+            const menu = dropdown.querySelector('.user-dropdown-menu');
+            if (menu) menu.style.display = 'block';
+          });
+
+          container.addEventListener('mouseleave', () => {
+            const menu = dropdown.querySelector('.user-dropdown-menu');
+            if (menu) menu.style.display = 'none';
+          });
+
+          // 添加登出事件
+          const logoutLink = dropdown.querySelector('.logout-link');
+          if (logoutLink) {
+            logoutLink.addEventListener('click', (e) => {
+              e.preventDefault();
+              handleLogout();
+            });
+          }
         }
       }
     });
-
-    // 更新导航栏中的"Sign In"文本
-    const signInElements = document.querySelectorAll('.elementor-icon-list-text');
-    signInElements.forEach(element => {
-      if (element.textContent.trim() === 'Sign In') {
-        // 使用 userName 或 nickName 或 email
-        const displayName = userInfo.userName || userInfo.nickName || userInfo.email || 'User';
-        element.textContent = displayName;
-
-        // 添加点击事件跳转到个人中心
-        element.style.cursor = 'pointer';
-        element.addEventListener('click', (e) => {
-          e.preventDefault();
-          window.location.href = '/Personal-Center/';
-        });
-      }
-    });
   }
 
-  /**
-   * 创建用户下拉菜单
-   * @param {Object} userInfo - 用户信息
-   * @returns {HTMLElement} 下拉菜单元素
-   */
-  function createUserDropdown(userInfo) {
-    const container = document.createElement('div');
-    container.className = 'user-dropdown-container';
-    container.style.cssText = 'position: relative; display: inline-block;';
 
-    // 用户名按钮
-    const button = document.createElement('button');
-    button.className = 'user-dropdown-button';
-    // 使用 userName 或 nickName 或 email
-    const displayName = userInfo.userName || userInfo.nickName || userInfo.email || 'User';
-    button.textContent = displayName;
-    button.style.cssText = `
-      background: none;
-      border: none;
-      color: inherit;
-      font: inherit;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    `;
-
-    // 下拉图标
-    const icon = document.createElement('i');
-    icon.className = 'fas fa-chevron-down';
-    icon.style.fontSize = '0.8em';
-    button.appendChild(icon);
-
-    // 下拉菜单
-    const menu = document.createElement('div');
-    menu.className = 'user-dropdown-menu';
-    menu.style.cssText = `
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      min-width: 150px;
-      z-index: 1000;
-      margin-top: 5px;
-    `;
-
-    // 菜单项
-    const menuItems = [
-      { text: 'Personal Center', href: '/Personal-Center/' },
-      { text: 'My Orders', href: '/my-account/' },
-      { text: 'Logout', href: '#', onClick: handleLogout },
-    ];
-
-    menuItems.forEach(item => {
-      const menuItem = document.createElement('a');
-      menuItem.href = item.href;
-      menuItem.textContent = item.text;
-      menuItem.style.cssText = `
-        display: block;
-        padding: 10px 15px;
-        color: #333;
-        text-decoration: none;
-        transition: background 0.2s;
-      `;
-
-      menuItem.addEventListener('mouseenter', () => {
-        menuItem.style.background = '#f5f5f5';
-      });
-
-      menuItem.addEventListener('mouseleave', () => {
-        menuItem.style.background = 'white';
-      });
-
-      if (item.onClick) {
-        menuItem.addEventListener('click', (e) => {
-          e.preventDefault();
-          item.onClick();
-        });
-      }
-
-      menu.appendChild(menuItem);
-    });
-
-    // 切换下拉菜单
-    button.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const isVisible = menu.style.display === 'block';
-      menu.style.display = isVisible ? 'none' : 'block';
-    });
-
-    // 点击外部关闭菜单
-    document.addEventListener('click', () => {
-      menu.style.display = 'none';
-    });
-
-    container.appendChild(button);
-    container.appendChild(menu);
-
-    return container;
-  }
 
   /**
    * 更新未登录状态的导航栏
