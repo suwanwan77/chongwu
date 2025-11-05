@@ -21,6 +21,7 @@
     }
 
     updateUserNav();
+    setupLoginFormHandler();
   }
 
   /**
@@ -181,132 +182,6 @@
 
       // 清除更新标记
       container.dataset.userNavUpdated = 'false';
-
-      // 添加下拉菜单（包含登录表单）
-      const dropdown = container.querySelector('.account-dropdown');
-      if (dropdown) {
-        dropdown.innerHTML = `
-          <div class="account-dropdown-content" style="
-            display: none;
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            min-width: 280px;
-            z-index: 1000;
-            margin-top: 5px;
-            padding: 20px;
-          ">
-            <h3 style="margin: 0 0 15px 0; font-size: 18px; color: #2F562A; font-weight: 600;">Sign In</h3>
-            <form id="nav-login-form" style="margin-bottom: 15px;">
-              <div style="margin-bottom: 12px;">
-                <input
-                  type="text"
-                  id="nav-username"
-                  placeholder="Username or email"
-                  required
-                  style="
-                    width: 100%;
-                    padding: 10px 12px;
-                    border: 1px solid #e0e0e0;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    box-sizing: border-box;
-                  "
-                />
-              </div>
-              <div style="margin-bottom: 15px;">
-                <input
-                  type="password"
-                  id="nav-password"
-                  placeholder="Password"
-                  required
-                  style="
-                    width: 100%;
-                    padding: 10px 12px;
-                    border: 1px solid #e0e0e0;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    box-sizing: border-box;
-                  "
-                />
-              </div>
-              <button
-                type="submit"
-                style="
-                  width: 100%;
-                  padding: 10px;
-                  background: #2F562A;
-                  color: white;
-                  border: none;
-                  border-radius: 4px;
-                  font-size: 15px;
-                  font-weight: 600;
-                  cursor: pointer;
-                  transition: background 0.3s;
-                "
-                onmouseover="this.style.background='#1f3a1c'"
-                onmouseout="this.style.background='#2F562A'"
-              >
-                Login
-              </button>
-            </form>
-            <div style="text-align: center; padding-top: 12px; border-top: 1px solid #f0f0f0;">
-              <a href="/register/" style="color: #2F562A; text-decoration: none; font-size: 14px;">
-                Create an Account
-              </a>
-            </div>
-          </div>
-        `;
-
-        // 添加鼠标悬浮事件
-        container.addEventListener('mouseenter', function() {
-          const dropdownContent = dropdown.querySelector('.account-dropdown-content');
-          if (dropdownContent) {
-            dropdownContent.style.display = 'block';
-          }
-        });
-
-        container.addEventListener('mouseleave', function() {
-          const dropdownContent = dropdown.querySelector('.account-dropdown-content');
-          if (dropdownContent) {
-            dropdownContent.style.display = 'none';
-          }
-        });
-
-        // 处理登录表单提交
-        const loginForm = dropdown.querySelector('#nav-login-form');
-        if (loginForm) {
-          loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const username = document.getElementById('nav-username').value.trim();
-            const password = document.getElementById('nav-password').value;
-
-            if (!username || !password) {
-              alert('Please enter username and password');
-              return;
-            }
-
-            try {
-              const result = await AuthService.login(username, password);
-
-              if (result.code === 200) {
-                // 登录成功，跳转到个人中心
-                window.location.href = '/Personal-Center/';
-              } else {
-                alert(result.msg || 'Login failed');
-              }
-            } catch (error) {
-              console.error('Login error:', error);
-              alert(error.message || 'Login failed, please try again');
-            }
-          });
-        }
-      }
     });
   }
 
@@ -326,6 +201,72 @@
         alert('Logout failed, please try again');
       }
     }
+  }
+
+  /**
+   * 设置原始登录表单的处理器
+   */
+  function setupLoginFormHandler() {
+    // 查找所有的登录表单
+    const loginForms = document.querySelectorAll('.gopet-login-form-ajax');
+
+    loginForms.forEach(form => {
+      // 移除可能存在的旧事件监听器
+      const newForm = form.cloneNode(true);
+      form.parentNode.replaceChild(newForm, form);
+
+      // 添加新的提交事件监听器
+      newForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const usernameInput = this.querySelector('input[name="username"]');
+        const passwordInput = this.querySelector('input[name="password"]');
+        const submitButton = this.querySelector('button[type="submit"]');
+
+        if (!usernameInput || !passwordInput) {
+          console.error('Login form inputs not found');
+          return;
+        }
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value;
+
+        if (!username || !password) {
+          alert('Please enter username and password');
+          return;
+        }
+
+        // 禁用提交按钮，防止重复提交
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Logging in...';
+        }
+
+        try {
+          const result = await AuthService.login(username, password);
+
+          if (result.code === 200) {
+            // 登录成功，跳转到个人中心
+            window.location.href = '/Personal-Center/';
+          } else {
+            alert(result.msg || 'Login failed');
+            // 恢复按钮状态
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.textContent = 'Login';
+            }
+          }
+        } catch (error) {
+          console.error('Login error:', error);
+          alert(error.message || 'Login failed, please try again');
+          // 恢复按钮状态
+          if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Login';
+          }
+        }
+      });
+    });
   }
 
   // 导出到全局（如果需要）
