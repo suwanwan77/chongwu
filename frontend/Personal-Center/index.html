@@ -3228,6 +3228,208 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 })();
 </script>
 
+<!-- Toast Notification Container -->
+<div id="toast-container" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+"></div>
+
+<!-- Toast Notification Styles and Function -->
+<style>
+.toast-message {
+  min-width: 300px;
+  max-width: 500px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Farro', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  animation: slideInRight 0.3s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.toast-message::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.toast-message.success {
+  background: #f0f9f4;
+  border: 1px solid #2F562A;
+  color: #2F562A;
+}
+
+.toast-message.success::before {
+  background: #2F562A;
+}
+
+.toast-message.error {
+  background: #fef2f2;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+}
+
+.toast-message.error::before {
+  background: #dc2626;
+}
+
+.toast-message.warning {
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  color: #d97706;
+}
+
+.toast-message.warning::before {
+  background: #f59e0b;
+}
+
+.toast-message.info {
+  background: #eff6ff;
+  border: 1px solid #3b82f6;
+  color: #1d4ed8;
+}
+
+.toast-message.info::before {
+  background: #3b82f6;
+}
+
+.toast-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.toast-content {
+  flex: 1;
+  font-weight: 500;
+}
+
+.toast-close {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  font-size: 20px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.toast-message.hiding {
+  animation: slideOutRight 0.3s ease-in forwards;
+}
+</style>
+
+<script>
+/**
+ * 显示提示消息
+ * @param {string} message - 消息内容
+ * @param {string} type - 消息类型: 'success', 'error', 'warning', 'info'
+ * @param {number} duration - 显示时长（毫秒），默认3000ms
+ */
+function showMessage(message, type = 'info', duration = 3000) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+
+  // 创建toast元素
+  const toast = document.createElement('div');
+  toast.className = `toast-message ${type}`;
+
+  // 图标映射
+  const icons = {
+    success: '✓',
+    error: '✕',
+    warning: '⚠',
+    info: 'ℹ'
+  };
+
+  toast.innerHTML = `
+    <div class="toast-icon">${icons[type] || icons.info}</div>
+    <div class="toast-content">${message}</div>
+    <button class="toast-close" aria-label="Close">&times;</button>
+  `;
+
+  // 添加到容器
+  container.appendChild(toast);
+
+  // 关闭按钮事件
+  const closeBtn = toast.querySelector('.toast-close');
+  closeBtn.addEventListener('click', () => {
+    removeToast(toast);
+  });
+
+  // 自动关闭
+  if (duration > 0) {
+    setTimeout(() => {
+      removeToast(toast);
+    }, duration);
+  }
+}
+
+/**
+ * 移除toast
+ */
+function removeToast(toast) {
+  toast.classList.add('hiding');
+  setTimeout(() => {
+    if (toast.parentNode) {
+      toast.parentNode.removeChild(toast);
+    }
+  }, 300);
+}
+</script>
+
 </body>
 </html>
 
