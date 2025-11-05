@@ -57,7 +57,7 @@ export default {
    * 是否启用cors
    * 启用就是后端允许跨域
    */
-  cors: false,
+  cors: true,
 
   /**
    * 邮件服务配置
