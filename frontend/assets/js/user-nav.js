@@ -89,7 +89,7 @@
         newContentSpan.textContent = displayName;
         newContentSpan.title = displayName; // 鼠标悬浮显示完整昵称
         newContentSpan.style.cssText = `
-          max-width: 120px !important;
+          max-width: 80px !important;
           overflow: hidden !important;
           text-overflow: ellipsis !important;
           white-space: nowrap !important;
@@ -100,7 +100,7 @@
         // 确保父容器也有正确的样式
         if (accountContent) {
           accountContent.style.cssText = `
-            max-width: 120px !important;
+            max-width: 80px !important;
             overflow: hidden !important;
             display: inline-flex !important;
             align-items: center !important;
