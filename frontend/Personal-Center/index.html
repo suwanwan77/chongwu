@@ -1650,71 +1650,27 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         return true;
     }
 
-    // 加载用户信息
-    async function loadUserInfo(fromAPI = false) {
+    // 加载用户信息（直接从API获取，不使用localStorage缓存）
+    async function loadUserInfo() {
         console.log('=== loadUserInfo START ===');
 
         try {
             let userInfo;
 
-            // 先从 localStorage 读取（快速显示）
-            const storedInfo = localStorage.getItem('customer_info');
-            console.log('storedInfo:', storedInfo);
-            console.log('storedInfo type:', typeof storedInfo);
-
-            if (storedInfo && storedInfo !== 'undefined' && storedInfo !== 'null') {
-                try {
-                    userInfo = JSON.parse(storedInfo);
-                    console.log('User info from localStorage:', userInfo);
-
-                    // 验证解析后的数据是否有效
-                    if (!userInfo || typeof userInfo !== 'object') {
-                        console.error('Invalid user info in localStorage:', userInfo);
-                        userInfo = {};
-                        // 清除无效数据
-                        localStorage.removeItem('customer_info');
-                    }
-                } catch (e) {
-                    console.error('Failed to parse localStorage data:', e);
-                    console.error('Invalid JSON string:', storedInfo);
-                    userInfo = {};
-                    // 清除无效数据
-                    localStorage.removeItem('customer_info');
+            // 直接从API获取用户信息
+            console.log('Fetching user info from API...');
+            try {
+                const result = await AuthService.getProfile();
+                console.log('API result:', result);
+                if (result.code === 200 && result.data) {
+                    userInfo = result.data;
+                    console.log('User info from API:', userInfo);
+                } else {
+                    throw new Error('Failed to get user info from API');
                 }
-            } else {
-                console.log('No valid stored info found (storedInfo is:', storedInfo, ')');
-                userInfo = {};
-                // 如果是无效值，清除它
-                if (storedInfo === 'undefined' || storedInfo === 'null') {
-                    localStorage.removeItem('customer_info');
-                }
-            }
-
-            console.log('After localStorage read, userInfo:', userInfo);
-
-            // 如果需要从API获取，或者localStorage中没有有效数据
-            const shouldFetchFromAPI = fromAPI || !userInfo || Object.keys(userInfo).length === 0;
-
-            if (shouldFetchFromAPI) {
-                console.log('Fetching user info from API...');
-                try {
-                    const result = await AuthService.getProfile();
-                    console.log('API result:', result);
-                    if (result.code === 200 && result.data) {
-                        userInfo = result.data;
-                        console.log('User info updated from API:', userInfo);
-
-                        // 保存到localStorage
-                        localStorage.setItem('customer_info', JSON.stringify(userInfo));
-                        console.log('User info saved to localStorage');
-                    }
-                } catch (error) {
-                    console.error('Failed to load user info from API:', error);
-                    // 如果API调用失败且localStorage中也没有数据，显示错误
-                    if (!userInfo || Object.keys(userInfo).length === 0) {
-                        throw new Error('无法加载用户信息，请重新登录');
-                    }
-                }
+            } catch (error) {
+                console.error('Failed to load user info from API:', error);
+                throw new Error('无法加载用户信息，请重新登录');
             }
 
             console.log('Before filling, userInfo:', userInfo);
@@ -1799,8 +1755,21 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
     // 加载订单列表
     async function loadOrders() {
-        const token = localStorage.getItem('customer_token');
-        const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
+        const token = AuthService.getToken();
+
+        // 从API获取用户信息
+        let userInfo;
+        try {
+            const result = await AuthService.getProfile();
+            if (result.code === 200 && result.data) {
+                userInfo = result.data;
+            } else {
+                throw new Error('Failed to get user info');
+            }
+        } catch (error) {
+            console.error('Failed to get user info for orders:', error);
+            return;
+        }
 
         try {
             const response = await fetch(`${API_BASE_URL}/business/orders/public/user/${userInfo.userId}`, {
@@ -3151,7 +3120,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
           showMessage('Profile updated successfully!', 'success');
           editProfileModal.classList.remove('show');
           // 重新加载用户信息（从 API 获取最新数据）
-          await loadUserInfo(true);
+          await loadUserInfo();
           // 更新导航栏显示
           if (window.updateUserNav) {
             window.updateUserNav();

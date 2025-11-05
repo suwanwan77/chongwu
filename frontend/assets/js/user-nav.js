@@ -24,17 +24,28 @@
   }
 
   /**
-   * 更新用户导航栏
+   * 更新用户导航栏（异步）
    */
-  function updateUserNav() {
+  async function updateUserNav() {
     const isLoggedIn = AuthService.isLoggedIn();
-    const userInfo = AuthService.getUserInfo();
 
-    console.log('Updating user nav - isLoggedIn:', isLoggedIn, 'userInfo:', userInfo);
+    console.log('Updating user nav - isLoggedIn:', isLoggedIn);
 
-    if (isLoggedIn && userInfo) {
-      // 已登录状态
-      updateLoggedInNav(userInfo);
+    if (isLoggedIn) {
+      // 已登录状态 - 从API获取用户信息
+      try {
+        const userInfo = await AuthService.getUserInfo();
+        console.log('User info for nav:', userInfo);
+
+        if (userInfo) {
+          updateLoggedInNav(userInfo);
+        } else {
+          updateLoggedOutNav();
+        }
+      } catch (error) {
+        console.error('Failed to get user info for nav:', error);
+        updateLoggedOutNav();
+      }
     } else {
       // 未登录状态
       updateLoggedOutNav();
@@ -48,14 +59,14 @@
   function updateLoggedInNav(userInfo) {
     // 查找所有登录链接
     const loginLinks = document.querySelectorAll('a[href*="my-account"]');
-    
+
     loginLinks.forEach(link => {
       // 如果链接文本是"Sign In"或"Login"，替换为用户名
       const linkText = link.textContent.trim();
       if (linkText === 'Sign In' || linkText === 'Login' || linkText === '登录') {
         // 创建下拉菜单
         const dropdown = createUserDropdown(userInfo);
-        
+
         // 替换链接为下拉菜单
         if (link.parentElement) {
           link.parentElement.replaceChild(dropdown, link);
@@ -67,8 +78,10 @@
     const signInElements = document.querySelectorAll('.elementor-icon-list-text');
     signInElements.forEach(element => {
       if (element.textContent.trim() === 'Sign In') {
-        element.textContent = userInfo.username || userInfo.email;
-        
+        // 使用 userName 或 nickName 或 email
+        const displayName = userInfo.userName || userInfo.nickName || userInfo.email || 'User';
+        element.textContent = displayName;
+
         // 添加点击事件跳转到个人中心
         element.style.cursor = 'pointer';
         element.addEventListener('click', (e) => {
@@ -92,7 +105,9 @@
     // 用户名按钮
     const button = document.createElement('button');
     button.className = 'user-dropdown-button';
-    button.textContent = userInfo.username || userInfo.email;
+    // 使用 userName 或 nickName 或 email
+    const displayName = userInfo.userName || userInfo.nickName || userInfo.email || 'User';
+    button.textContent = displayName;
     button.style.cssText = `
       background: none;
       border: none;

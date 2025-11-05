@@ -74,18 +74,13 @@ const AuthService = {
           throw new Error('登录响应数据不完整：缺少token');
         }
 
-        if (!data.data.user) {
-          throw new Error('登录响应数据不完整：缺少用户信息');
-        }
-
-        // 保存token和用户信息
+        // 只保存token，不保存用户信息（用户信息通过API实时获取）
         const storage = rememberMe ? localStorage : sessionStorage;
         storage.setItem('customer_token', data.data.token);
-        storage.setItem('customer_info', JSON.stringify(data.data.user));
 
         console.log('=== STORAGE SAVED ===');
         console.log('Token saved:', storage.getItem('customer_token'));
-        console.log('User info saved:', storage.getItem('customer_info'));
+        console.log('User info will be fetched from API when needed');
         console.log('=====================');
 
         console.log('Login successful:', data);
@@ -118,11 +113,9 @@ const AuthService = {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      // 清除本地存储
+      // 清除本地存储（只清除token）
       localStorage.removeItem('customer_token');
-      localStorage.removeItem('customer_info');
       sessionStorage.removeItem('customer_token');
-      sessionStorage.removeItem('customer_info');
     }
   },
 
@@ -259,13 +252,7 @@ const AuthService = {
       const data = await response.json();
 
       if (response.ok && data.code === 200) {
-        // 更新本地存储的用户信息
-        const storage = localStorage.getItem('customer_token') ? localStorage : sessionStorage;
-        const userInfo = this.getUserInfo();
-        if (userInfo) {
-          userInfo.avatar = data.data.avatar;
-          storage.setItem('customer_info', JSON.stringify(userInfo));
-        }
+        // 不需要更新本地存储，用户信息会从API实时获取
         return data;
       } else {
         throw new Error(data.msg || 'Failed to upload avatar');
@@ -344,20 +331,20 @@ const AuthService = {
   },
 
   /**
-   * 获取用户信息
-   * @returns {Object|null} 用户信息
+   * 获取用户信息（直接从API获取，不使用缓存）
+   * @returns {Promise<Object|null>} 用户信息
    */
-  getUserInfo() {
-    const userInfoStr = localStorage.getItem('customer_info') || sessionStorage.getItem('customer_info');
-    if (userInfoStr) {
-      try {
-        return JSON.parse(userInfoStr);
-      } catch (error) {
-        console.error('Failed to parse user info:', error);
-        return null;
+  async getUserInfo() {
+    try {
+      const result = await this.getProfile();
+      if (result.code === 200 && result.data) {
+        return result.data;
       }
+      return null;
+    } catch (error) {
+      console.error('Failed to get user info:', error);
+      return null;
     }
-    return null;
   },
 
   /**
