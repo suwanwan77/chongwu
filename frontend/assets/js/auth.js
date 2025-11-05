@@ -60,11 +60,33 @@ const AuthService = {
 
       const data = await response.json();
 
+      console.log('=== AUTH.JS LOGIN DEBUG ===');
+      console.log('Response status:', response.status);
+      console.log('Response data:', data);
+      console.log('data.data:', data.data);
+      console.log('data.data.token:', data.data?.token);
+      console.log('data.data.user:', data.data?.user);
+      console.log('==========================');
+
       if (response.ok && data.code === 200) {
+        // 检查返回的数据是否完整
+        if (!data.data || !data.data.token) {
+          throw new Error('登录响应数据不完整：缺少token');
+        }
+
+        if (!data.data.user) {
+          throw new Error('登录响应数据不完整：缺少用户信息');
+        }
+
         // 保存token和用户信息
         const storage = rememberMe ? localStorage : sessionStorage;
         storage.setItem('customer_token', data.data.token);
         storage.setItem('customer_info', JSON.stringify(data.data.user));
+
+        console.log('=== STORAGE SAVED ===');
+        console.log('Token saved:', storage.getItem('customer_token'));
+        console.log('User info saved:', storage.getItem('customer_info'));
+        console.log('=====================');
 
         console.log('Login successful:', data);
         return data;

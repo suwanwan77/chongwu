@@ -1660,34 +1660,60 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
             // 先从 localStorage 读取（快速显示）
             const storedInfo = localStorage.getItem('customer_info');
             console.log('storedInfo:', storedInfo);
+            console.log('storedInfo type:', typeof storedInfo);
 
-            if (storedInfo) {
+            if (storedInfo && storedInfo !== 'undefined' && storedInfo !== 'null') {
                 try {
                     userInfo = JSON.parse(storedInfo);
                     console.log('User info from localStorage:', userInfo);
+
+                    // 验证解析后的数据是否有效
+                    if (!userInfo || typeof userInfo !== 'object') {
+                        console.error('Invalid user info in localStorage:', userInfo);
+                        userInfo = {};
+                        // 清除无效数据
+                        localStorage.removeItem('customer_info');
+                    }
                 } catch (e) {
                     console.error('Failed to parse localStorage data:', e);
+                    console.error('Invalid JSON string:', storedInfo);
                     userInfo = {};
+                    // 清除无效数据
+                    localStorage.removeItem('customer_info');
                 }
             } else {
-                console.log('No stored info found');
+                console.log('No valid stored info found (storedInfo is:', storedInfo, ')');
                 userInfo = {};
+                // 如果是无效值，清除它
+                if (storedInfo === 'undefined' || storedInfo === 'null') {
+                    localStorage.removeItem('customer_info');
+                }
             }
 
             console.log('After localStorage read, userInfo:', userInfo);
 
-            // 如果需要，从 API 获取最新数据
-            if (fromAPI) {
+            // 如果需要从API获取，或者localStorage中没有有效数据
+            const shouldFetchFromAPI = fromAPI || !userInfo || Object.keys(userInfo).length === 0;
+
+            if (shouldFetchFromAPI) {
+                console.log('Fetching user info from API...');
                 try {
                     const result = await AuthService.getProfile();
                     console.log('API result:', result);
                     if (result.code === 200 && result.data) {
                         userInfo = result.data;
                         console.log('User info updated from API:', userInfo);
+
+                        // 保存到localStorage
+                        localStorage.setItem('customer_info', JSON.stringify(userInfo));
+                        console.log('User info saved to localStorage');
                     }
                 } catch (error) {
                     console.error('Failed to load user info from API:', error);
-                    // 继续使用 localStorage 中的数据
+                    // 如果API调用失败且localStorage中也没有数据，显示错误
+                    if (!userInfo || Object.keys(userInfo).length === 0) {
+                        throw new Error('无法加载用户信息，请重新登录');
+                    }
                 }
             }
 
