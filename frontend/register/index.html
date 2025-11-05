@@ -450,13 +450,14 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 12px !important;
+  gap: 10px !important;
+  height: 100% !important;
 }
 
 .elementor-column-c275075 .elementor-widget {
+  flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
-  flex: 0 0 auto !important;
 }
 
 /* Search box visuals (keep the same appearance) */
@@ -467,7 +468,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   color: #5C7524 !important;
   border: 1px solid #e0e0e0 !important;
   border-radius: 25px !important;
-  padding: 4px 12px !important;
+  padding: 6px 12px !important;
   width: 240px !important;
   height: 28px !important;
 }
@@ -475,8 +476,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  color: #153619 !important;
-  height: 100% !important;
+  color: #5C7524 !important;
+  font-size: 13px !important;
   line-height: 28px !important;
   width: 100% !important;
 }
@@ -484,10 +485,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 8px !important;
-  background: transparent !important;
+  background: none !important;
+  cursor: pointer !important;
   border: 0 !important;
   padding: 0 !important;
 }
@@ -570,6 +569,10 @@ body {
 }
 </style>
 
+<!-- 引入认证服务 -->
+<script src="../assets/js/auth.js"></script>
+
+<link rel='stylesheet' href='../assets/css/custom-nav.css' media='all'>
 </head>
 <body class="wp-singular page-template-default page page-id-7 wp-custom-logo wp-embed-responsive wp-theme-gopet wp-child-theme-demo-child theme-gopet woocommerce-cart woocommerce-page woocommerce-no-js ehf-header ehf-footer ehf-template-gopet ehf-stylesheet-demo-child woo-variation-swatches wvs-behavior-blur wvs-theme-demo-child wvs-show-label wvs-tooltip chrome woocommerce-active product-style-1 elementor-default elementor-kit-4">
 
@@ -770,11 +773,17 @@ body {
                     <label for="reg_username">Username                        &nbsp;<span class="required">*</span></label>
                     <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="" placeholder="Enter your username...">                </p>
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                    <label for="reg_nickname">Nickname                        &nbsp;<span class="required">*</span></label>
+                    <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="nickname" id="reg_nickname" value="" placeholder="Enter your nickname...">                </p>
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label for="reg_email">Email address                        &nbsp;<span class="required">*</span></label>
                     <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="" placeholder="Enter your email address...">                </p>
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                    <label for="reg_phone">Phone number</label>
+                    <input type="tel" class="woocommerce-Input woocommerce-Input--text input-text" name="phone" id="reg_phone" value="" placeholder="Enter your phone number (optional)...">                </p>
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label for="reg_password">Password                        &nbsp;<span class="required">*</span></label>
-                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="reg_password" autocomplete="new-password" placeholder="Enter your password...">                </p>
+                    <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="reg_password" autocomplete="new-password" placeholder="Enter your password (at least 6 characters)...">                </p>
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label for="reg_password2">Confirm Password                        &nbsp;<span class="required">*</span></label>
                     <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password2" id="reg_password2" autocomplete="new-password" placeholder="Confirm your password...">                </p>
@@ -1424,6 +1433,189 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 <script src="../wp-content/themes/gopet/assets/js/elementor-frontend.js" id="gopet-elementor-frontend-js"></script>
 <script src="../wp-content/themes/gopet/assets/js/vendor/jquery.sticky.js" id="elementor-sticky-js"></script>
 <script src="../wp-content/themes/gopet/assets/js/vendor/sticky.min.js" id="gopet-elementor-sticky-js"></script>
+
+<!-- 注册功能脚本 -->
+<script>
+(function() {
+  // 检查是否已登录，如果已登录则跳转到个人中心
+  if (AuthService.isLoggedIn()) {
+    window.location.href = '../Personal-Center/';
+    return;
+  }
+
+  // 显示错误信息
+  function showError(message) {
+    let errorDiv = document.getElementById('register-error-message');
+    if (!errorDiv) {
+      errorDiv = document.createElement('div');
+      errorDiv.id = 'register-error-message';
+      errorDiv.style.cssText = 'color: #e74c3c; background: #ffe6e6; padding: 10px; margin: 10px 0; border-radius: 4px; display: none;';
+
+      const registerForm = document.querySelector('.woocommerce-form-login');
+      if (registerForm) {
+        const formWrap = registerForm.querySelector('.woocommerce-form-login-wrap');
+        if (formWrap) {
+          formWrap.insertBefore(errorDiv, formWrap.firstChild);
+        }
+      }
+    }
+
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+
+    // 滚动到错误信息位置
+    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    setTimeout(() => {
+      errorDiv.style.display = 'none';
+    }, 5000);
+  }
+
+  // 显示成功信息
+  function showSuccess(message) {
+    let successDiv = document.getElementById('register-success-message');
+    if (!successDiv) {
+      successDiv = document.createElement('div');
+      successDiv.id = 'register-success-message';
+      successDiv.style.cssText = 'color: #27ae60; background: #e6ffe6; padding: 10px; margin: 10px 0; border-radius: 4px; display: none;';
+
+      const registerForm = document.querySelector('.woocommerce-form-login');
+      if (registerForm) {
+        const formWrap = registerForm.querySelector('.woocommerce-form-login-wrap');
+        if (formWrap) {
+          formWrap.insertBefore(successDiv, formWrap.firstChild);
+        }
+      }
+    }
+
+    successDiv.textContent = message;
+    successDiv.style.display = 'block';
+
+    // 滚动到成功信息位置
+    successDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // 显示加载状态
+  function setLoading(isLoading) {
+    const submitButton = document.querySelector('.woocommerce-form-login button[type="submit"]');
+    if (submitButton) {
+      if (isLoading) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Registering...';
+      } else {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Sign Up';
+      }
+    }
+  }
+
+  // 注册表单提交
+  const registerForm = document.querySelector('.woocommerce-form-login');
+  if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // 获取表单数据
+      const username = document.getElementById('reg_username').value.trim();
+      const nickname = document.getElementById('reg_nickname').value.trim();
+      const email = document.getElementById('reg_email').value.trim();
+      const phone = document.getElementById('reg_phone').value.trim();
+      const password = document.getElementById('reg_password').value;
+      const password2 = document.getElementById('reg_password2').value;
+      const termsAccepted = document.getElementById('terms').checked;
+
+      // 表单验证
+      if (!username) {
+        showError('Please enter a username');
+        return;
+      }
+
+      if (username.length < 3) {
+        showError('Username must be at least 3 characters');
+        return;
+      }
+
+      // 验证用户名格式：只能包含字母、数字和下划线
+      const usernameRegex = /^[a-zA-Z0-9_]+$/;
+      if (!usernameRegex.test(username)) {
+        showError('Username can only contain letters, numbers and underscores (no spaces or special characters)');
+        return;
+      }
+
+      if (!nickname) {
+        showError('Please enter a nickname');
+        return;
+      }
+
+      if (!email) {
+        showError('Please enter an email address');
+        return;
+      }
+
+      // 简单的邮箱格式验证
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showError('Please enter a valid email address');
+        return;
+      }
+
+      if (!password) {
+        showError('Please enter a password');
+        return;
+      }
+
+      if (password.length < 6) {
+        showError('Password must be at least 6 characters');
+        return;
+      }
+
+      if (password !== password2) {
+        showError('Passwords do not match');
+        return;
+      }
+
+      if (!termsAccepted) {
+        showError('Please agree to the Terms and Conditions');
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        // 构建注册数据对象
+        const registerData = {
+          userName: username,
+          nickName: nickname,
+          email: email,
+          password: password,
+          confirmPassword: password2
+        };
+
+        // 如果有手机号，添加到数据中
+        if (phone) {
+          registerData.phonenumber = phone;
+        }
+
+        const result = await AuthService.register(registerData);
+
+        if (result.code === 200) {
+          showSuccess('Registration successful! Redirecting to login page...');
+
+          // 注册成功后，延迟跳转到登录页面
+          setTimeout(() => {
+            window.location.href = '../my-account/';
+          }, 2000);
+        }
+      } catch (error) {
+        showError(error.message || 'Registration failed, please try again');
+        setLoading(false);
+      }
+    });
+  }
+})();
+</script>
+
+<script src='../assets/js/user-nav.js'></script>
 </body>
 </html>
 

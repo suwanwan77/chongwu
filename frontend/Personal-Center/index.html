@@ -414,13 +414,14 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 12px !important;
+  gap: 10px !important;
+  height: 100% !important;
 }
 
 .elementor-column-c275075 .elementor-widget {
+  flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
-  flex: 0 0 auto !important;
 }
 
 /* Search box visuals (keep the same appearance) */
@@ -431,7 +432,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   color: #5C7524 !important;
   border: 1px solid #e0e0e0 !important;
   border-radius: 25px !important;
-  padding: 4px 12px !important;
+  padding: 6px 12px !important;
   width: 240px !important;
   height: 28px !important;
 }
@@ -439,8 +440,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  color: #153619 !important;
-  height: 100% !important;
+  color: #5C7524 !important;
+  font-size: 13px !important;
   line-height: 28px !important;
   width: 100% !important;
 }
@@ -448,10 +449,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 8px !important;
-  background: transparent !important;
+  background: none !important;
+  cursor: pointer !important;
   border: 0 !important;
   padding: 0 !important;
 }
@@ -533,6 +532,10 @@ body {
     color: #2F562A !important;
 }
 </style>
+
+<!-- 引入认证服务 -->
+<script src="../assets/js/auth.js"></script>
+<link rel='stylesheet' href='../assets/css/custom-nav.css' media='all'>
 
 </head>
 <body class="wp-singular page-template-default page page-id-7 wp-custom-logo wp-embed-responsive wp-theme-gopet wp-child-theme-demo-child theme-gopet woocommerce-cart woocommerce-page woocommerce-no-js ehf-header ehf-footer ehf-template-gopet ehf-stylesheet-demo-child woo-variation-swatches wvs-behavior-blur wvs-theme-demo-child wvs-show-label wvs-tooltip chrome woocommerce-active product-style-1 elementor-default elementor-kit-4">
@@ -813,6 +816,11 @@ body {
 										</div>
 
 										<div class="info-row" style="display: flex; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
+											<div class="info-label" style="flex: 0 0 150px; font-weight: 600; color: #333;">Gender:</div>
+											<div class="info-value" id="user-gender" style="flex: 1; color: #666;">Not set</div>
+										</div>
+
+										<div class="info-row" style="display: flex; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
 											<div class="info-label" style="flex: 0 0 150px; font-weight: 600; color: #333;">Member:</div>
 											<div class="info-value" id="user-member" style="flex: 1; color: #666;">
 												<span id="member-status" style="padding: 4px 12px; border-radius: 15px; font-size: 12px; font-weight: 600;">No</span>
@@ -830,7 +838,10 @@ body {
 										</div>
 									</div>
 
-									<div style="margin-top: 30px; text-align: right;">
+									<div style="margin-top: 30px; text-align: right; display: flex; gap: 15px; justify-content: flex-end;">
+										<button class="btn-change-password" style="padding: 12px 30px; background: #6c757d; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: background 0.3s;">
+											Change Password
+										</button>
 										<button class="btn-edit-profile" style="padding: 12px 30px; background: #2F562A; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: background 0.3s;">
 											Edit Profile
 										</button>
@@ -1598,13 +1609,15 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
     // 检查登录状态
     function checkLogin() {
-        const token = localStorage.getItem('token');
-        const userInfo = localStorage.getItem('userInfo');
+        const token = localStorage.getItem('customer_token');
+        const userInfo = localStorage.getItem('customer_info');
 
         if (!token || !userInfo) {
             // 未登录，跳转到登录页面
-            alert('Please login first');
-            window.location.href = '../my-account/index.html';
+            showMessage('Please login first to access your personal center', 'warning');
+            setTimeout(() => {
+                window.location.href = '../my-account/';
+            }, 1500);
             return false;
         }
 
@@ -1612,14 +1625,85 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     }
 
     // 加载用户信息
-    function loadUserInfo() {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    async function loadUserInfo(fromAPI = false) {
+        console.log('=== loadUserInfo START ===');
 
-        // 填充用户信息
-        document.getElementById('user-username').textContent = userInfo.username || 'N/A';
-        document.getElementById('user-nickname').textContent = userInfo.nickname || userInfo.username || 'N/A';
-        document.getElementById('user-email').textContent = userInfo.email || 'N/A';
-        document.getElementById('user-phone').textContent = userInfo.phone || 'Not set';
+        try {
+            let userInfo;
+
+            // 先从 localStorage 读取（快速显示）
+            const storedInfo = localStorage.getItem('customer_info');
+            console.log('storedInfo:', storedInfo);
+
+            if (storedInfo) {
+                try {
+                    userInfo = JSON.parse(storedInfo);
+                    console.log('User info from localStorage:', userInfo);
+                } catch (e) {
+                    console.error('Failed to parse localStorage data:', e);
+                    userInfo = {};
+                }
+            } else {
+                console.log('No stored info found');
+                userInfo = {};
+            }
+
+            console.log('After localStorage read, userInfo:', userInfo);
+
+            // 如果需要，从 API 获取最新数据
+            if (fromAPI) {
+                try {
+                    const result = await AuthService.getProfile();
+                    console.log('API result:', result);
+                    if (result.code === 200 && result.data) {
+                        userInfo = result.data;
+                        console.log('User info updated from API:', userInfo);
+                    }
+                } catch (error) {
+                    console.error('Failed to load user info from API:', error);
+                    // 继续使用 localStorage 中的数据
+                }
+            }
+
+            console.log('Before filling, userInfo:', userInfo);
+
+            // 调试：打印 userInfo 对象
+            console.log('Filling user info with:', userInfo);
+        console.log('userName:', userInfo.userName);
+        console.log('nickName:', userInfo.nickName);
+        console.log('email:', userInfo.email);
+
+        // 填充用户信息（兼容两种数据格式）
+        const username = userInfo.userName || userInfo.username || 'N/A';
+        const nickname = userInfo.nickName || userInfo.nickname || userInfo.userName || userInfo.username || 'N/A';
+        const email = userInfo.email || 'N/A';
+        const phone = userInfo.phonenumber || userInfo.phone || 'Not set';
+
+        console.log('Setting username to:', username);
+        console.log('Setting nickname to:', nickname);
+
+        // 检查元素是否存在
+        const usernameEl = document.getElementById('user-username');
+        const nicknameEl = document.getElementById('user-nickname');
+        const emailEl = document.getElementById('user-email');
+        const phoneEl = document.getElementById('user-phone');
+
+        console.log('Elements found:', {
+            username: !!usernameEl,
+            nickname: !!nicknameEl,
+            email: !!emailEl,
+            phone: !!phoneEl
+        });
+
+        if (usernameEl) usernameEl.textContent = username;
+        if (nicknameEl) nicknameEl.textContent = nickname;
+        if (emailEl) emailEl.textContent = email;
+        if (phoneEl) phoneEl.textContent = phone;
+
+        // 显示性别（与后台数据库字典一致：0=男，1=女，2=未知）
+        const genderMap = {'0': 'Male', '1': 'Female', '2': 'Not set'};
+        document.getElementById('user-gender').textContent = genderMap[userInfo.sex || '2'] || 'Not set';
+
         document.getElementById('user-points').textContent = userInfo.points || '0';
         document.getElementById('user-balance').textContent = '$' + (userInfo.balance || '0.00');
 
@@ -1652,12 +1736,19 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 avatarPlaceholder.style.display = 'block';
             }
         }
+
+        console.log('=== loadUserInfo END ===');
+
+        } catch (error) {
+            console.error('=== loadUserInfo ERROR ===', error);
+            console.error('Error stack:', error.stack);
+        }
     }
 
     // 加载订单列表
     async function loadOrders() {
-        const token = localStorage.getItem('token');
-        const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+        const token = localStorage.getItem('customer_token');
+        const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
 
         try {
             const response = await fetch(`${API_BASE_URL}/business/orders/public/user/${userInfo.userId}`, {
@@ -1784,40 +1875,62 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     // 退出登录
     function setupLogout() {
         const logoutBtn = document.getElementById('logout-btn');
+        console.log('setupLogout called, button found:', !!logoutBtn);
+
         if (logoutBtn) {
             logoutBtn.addEventListener('click', function(e) {
                 e.preventDefault();
 
+                console.log('Logout button clicked!');
+
                 // 显示退出提示
-                const originalText = logoutBtn.innerHTML;
                 logoutBtn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right: 8px;"></i> Logging out...';
                 logoutBtn.style.pointerEvents = 'none';
 
-                // 0.8秒后执行退出
+                // 清除 localStorage
+                localStorage.removeItem('customer_token');
+                localStorage.removeItem('customer_info');
+                console.log('Cleared localStorage');
+
+                // 延迟一下让用户看到 "Logging out..." 提示，然后跳转
                 setTimeout(function() {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('userInfo');
-                    window.location.href = '../index.html';
+                    console.log('Redirecting to login page...');
+                    // 跳转到登录页面（使用绝对路径）
+                    window.location.href = '/my-account/index.html';
                 }, 800);
             });
+        } else {
+            console.error('Logout button not found!');
         }
     }
 
     // 页面加载完成后执行
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('=== Personal Center Page Loaded ===');
+
         // 检查登录状态
         if (!checkLogin()) {
+            console.log('Not logged in, redirecting...');
             return;
         }
 
+        console.log('User is logged in');
+
         // 加载用户信息
+        console.log('Loading user info...');
         loadUserInfo();
 
         // 设置标签页切换
+        console.log('Setting up tabs...');
         setupTabs();
 
         // 设置退出登录
+        console.log('Setting up logout button...');
         setupLogout();
+
+        // 验证按钮是否存在
+        const logoutBtn = document.getElementById('logout-btn');
+        console.log('Logout button element:', logoutBtn);
 
         // 初始化地址管理
         initAddressManagement();
@@ -1825,8 +1938,9 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         // 设置头像上传
         setupAvatarUpload();
 
-        // 设置编辑个人信息
-        setupEditProfile();
+        // 注意：编辑个人信息和修改密码的按钮事件监听在下面的脚本中设置
+        // setupEditProfile();
+        // setupChangePassword();
 
         // 检查 URL 参数，如果有 tab 参数，切换到对应标签页
         const urlParams = new URLSearchParams(window.location.search);
@@ -1877,13 +1991,13 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 if (file) {
                     // 验证文件类型
                     if (!file.type.startsWith('image/')) {
-                        alert('Please select an image file.');
+                        showMessage('Please select an image file.', 'warning');
                         return;
                     }
 
                     // 验证文件大小（最大 5MB）
                     if (file.size > 5 * 1024 * 1024) {
-                        alert('Image size should not exceed 5MB.');
+                        showMessage('Image size should not exceed 5MB.', 'warning');
                         return;
                     }
 
@@ -1927,13 +2041,14 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 console.log('Edit Profile button clicked!');
 
                 // 获取当前用户信息
-                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
                 console.log('User info:', userInfo);
 
                 // 填充表单
                 document.getElementById('edit-nickname').value = userInfo.nickname || '';
                 document.getElementById('edit-email').value = userInfo.email || '';
                 document.getElementById('edit-phone').value = userInfo.phone || '';
+                document.getElementById('edit-gender').value = userInfo.sex || '0';
 
                 // 打开modal
                 console.log('Opening modal: edit-profile-modal');
@@ -1959,18 +2074,19 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 const nickname = document.getElementById('edit-nickname').value.trim();
                 const email = document.getElementById('edit-email').value.trim();
                 const phone = document.getElementById('edit-phone').value.trim();
+                const gender = document.getElementById('edit-gender').value;
 
                 if (!nickname || !email) {
-                    alert('Please fill in all required fields.');
+                    showMessage('Please fill in all required fields.', 'warning');
                     return;
                 }
 
                 // 获取当前用户信息
-                const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+                const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
                 const userId = userInfo.userId;
 
                 if (!userId) {
-                    alert('User not logged in. Please login first.');
+                    showMessage('User not logged in. Please login first.', 'warning');
                     return;
                 }
 
@@ -1995,6 +2111,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                             nickname: nickname,
                             email: email,
                             phone: phone || null,
+                            sex: gender,
                         }),
                     });
 
@@ -2008,12 +2125,16 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     userInfo.nickname = nickname;
                     userInfo.email = email;
                     userInfo.phone = phone;
+                    userInfo.sex = gender;
                     localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
                     // 更新页面显示
                     document.getElementById('user-nickname').textContent = nickname;
                     document.getElementById('user-email').textContent = email;
                     document.getElementById('user-phone').textContent = phone || 'Not set';
+                    // 性别映射（与后台数据库字典一致：0=男，1=女，2=未知）
+                    const genderMap = {'0': 'Male', '1': 'Female', '2': 'Not set'};
+                    document.getElementById('user-gender').textContent = genderMap[gender] || 'Not set';
 
                     // 显示成功状态
                     submitBtn.innerHTML = '<i class="fa fa-check"></i> Saved!';
@@ -2055,6 +2176,128 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         }
     }
 
+    // 修改密码功能
+    function setupChangePassword() {
+        const changePasswordBtn = document.querySelector('.btn-change-password');
+        const changePasswordModal = document.getElementById('change-password-modal');
+        const changePasswordForm = document.getElementById('change-password-form');
+        const cancelBtn = document.getElementById('cancel-change-password');
+
+        console.log('setupChangePassword called');
+        console.log('Change Password button found:', changePasswordBtn);
+        console.log('Change Password modal found:', changePasswordModal);
+
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', function() {
+                console.log('Change Password button clicked!');
+
+                // 清空表单
+                changePasswordForm.reset();
+
+                // 打开modal
+                console.log('Opening modal: change-password-modal');
+                openModal('change-password-modal');
+            });
+        } else {
+            console.error('Change Password button not found!');
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+                closeModal('change-password-modal');
+            });
+        }
+
+        if (changePasswordForm) {
+            changePasswordForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const oldPassword = document.getElementById('old-password').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                if (!oldPassword || !newPassword || !confirmPassword) {
+                    showMessage('Please fill in all fields.', 'warning');
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    showMessage('New password and confirm password do not match.', 'warning');
+                    return;
+                }
+
+                if (newPassword.length < 6) {
+                    showMessage('Password must be at least 6 characters long.', 'warning');
+                    return;
+                }
+
+                // 获取当前用户信息
+                const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
+                const userId = userInfo.userId;
+
+                if (!userId) {
+                    showMessage('User not logged in. Please login first.', 'warning');
+                    return;
+                }
+
+                // 获取提交按钮
+                const submitBtn = changePasswordForm.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+
+                try {
+                    // 显示保存中状态
+                    submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Changing...';
+                    submitBtn.disabled = true;
+                    submitBtn.style.pointerEvents = 'none';
+
+                    // 调用后端 API 修改密码
+                    const response = await fetch('http://localhost:3000/business/users/change-password', {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId: userId,
+                            oldPassword: oldPassword,
+                            newPassword: newPassword,
+                            confirmPassword: confirmPassword,
+                        }),
+                    });
+
+                    const result = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Failed to change password');
+                    }
+
+                    // 显示成功状态
+                    submitBtn.innerHTML = '<i class="fa fa-check"></i> Changed!';
+                    submitBtn.style.background = '#28a745';
+
+                    // 0.8秒后关闭modal并恢复按钮
+                    setTimeout(function() {
+                        closeModal('change-password-modal');
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                        submitBtn.style.pointerEvents = 'auto';
+                        submitBtn.style.background = '';
+                        changePasswordForm.reset();
+                    }, 800);
+
+                } catch (error) {
+                    console.error('Error changing password:', error);
+
+                    // 显示错误状态
+                    showMessage(error.message || 'Failed to change password. Please check your old password.', 'error');
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    submitBtn.style.pointerEvents = 'auto';
+                    submitBtn.style.background = '';
+                }
+            });
+        }
+    }
+
     // 地址管理功能
     let addresses = [];
     let nextAddressId = 1;
@@ -2085,11 +2328,12 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         });
 
         // 关闭模态框
-        document.querySelectorAll('.modal-close, #pc-cancel-new-address, #cancel-edit-profile').forEach(el => {
+        document.querySelectorAll('.modal-close, #pc-cancel-new-address, #cancel-edit-profile, #cancel-change-password').forEach(el => {
             el.addEventListener('click', function() {
                 closeModal('pc-new-address-modal');
                 closeModal('pc-manage-address-modal');
                 closeModal('edit-profile-modal');
+                closeModal('change-password-modal');
             });
         });
 
@@ -2100,6 +2344,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     closeModal('pc-new-address-modal');
                     closeModal('pc-manage-address-modal');
                     closeModal('edit-profile-modal');
+                    closeModal('change-password-modal');
                 }
             });
         });
@@ -2114,7 +2359,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
             const setDefault = document.getElementById('pc-set-default').checked;
 
             if (!name || !phone || !address) {
-                alert('Please fill in all required fields.');
+                showMessage('Please fill in all required fields.', 'warning');
                 return;
             }
 
@@ -2258,7 +2503,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 const addr = addresses.find(a => a.id === id);
 
                 if (addr && addr.isDefault && addresses.length > 1) {
-                    alert('Cannot delete default address. Please set another address as default first.');
+                    showMessage('Cannot delete default address. Please set another address as default first.', 'warning');
                     return;
                 }
 
@@ -2299,7 +2544,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     const setDefault = document.getElementById('pc-set-default').checked;
 
                     if (!name || !phone || !address) {
-                        alert('Please fill in all required fields.');
+                        showMessage('Please fill in all required fields.', 'warning');
                         return;
                     }
 
@@ -2330,11 +2575,42 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         });
     }
 
+    // 将 loadUserInfo 暴露到全局作用域，以便其他脚本可以调用
+    window.loadUserInfo = loadUserInfo;
+
 })();
 </script>
 
 <!-- 修复底部位置的样式 -->
 <style>
+    /* 隐藏消息提示右侧的所有按钮和图标（包括 WordPress 插件生成的） */
+    #auth-message-container .auth-message button,
+    #auth-message-container .auth-message a,
+    #auth-message-container .auth-message .button,
+    #auth-message-container div[class*="auth-message"] button,
+    #auth-message-container div[class*="auth-message"] a,
+    #auth-message-container div[class*="auth-message"] .button {
+        display: none !important;
+    }
+
+    /* 隐藏 WooCommerce 通知中的按钮 */
+    .woocommerce-message .button,
+    .woocommerce-info .button,
+    .woocommerce-error .button,
+    .woocommerce-notice .button,
+    .woocommerce-message a:not(.restore-item),
+    .woocommerce-info a:not(.restore-item),
+    .woocommerce-error a:not(.restore-item) {
+        display: none !important;
+    }
+
+    /* 隐藏所有通知消息中的圆形图标 */
+    div[style*="position: fixed"][style*="top: 20px"] button,
+    div[style*="position: fixed"][style*="top: 20px"] a.button,
+    div[style*="position: fixed"][style*="top: 20px"] .close-button {
+        display: none !important;
+    }
+
     /* 确保页面内容至少占满整个视口高度 */
     html, body {
         height: auto;
@@ -2369,6 +2645,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
     /* 按钮字体样式 - 参考首页 */
     .btn-edit-profile,
+    .btn-change-password,
     .btn-add-address,
     button[type="submit"],
     .btn-view-order,
@@ -2385,6 +2662,10 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     .btn-add-address:hover,
     button[type="submit"]:hover {
         background: #234419 !important;
+    }
+
+    .btn-change-password:hover {
+        background: #5a6268 !important;
     }
 
     .btn-view-order:hover {
@@ -2661,28 +2942,9 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     }
 </style>
 
-<!-- 用户导航栏状态脚本 -->
-<script src="../js/user-nav.js"></script>
-
-</body>
-</html>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Edit Profile Modal - 移到页面最后，避免被父容器样式影响 -->
+<!-- Edit Profile Modal -->
 <div id="edit-profile-modal" class="address-modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -2703,6 +2965,14 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     <label for="edit-phone">Phone</label>
                     <input type="tel" id="edit-phone" name="phone" pattern="[0-9+\-\s()]+" title="Please enter a valid phone number">
                 </div>
+                <div class="form-group">
+                    <label for="edit-gender">Gender</label>
+                    <select id="edit-gender" name="gender" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <option value="2">Not set</option>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
+                    </select>
+                </div>
                 <div class="modal-actions">
                     <button type="submit" class="button alt">Save Changes</button>
                     <button type="button" class="button" id="cancel-edit-profile">Cancel</button>
@@ -2711,3 +2981,237 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         </div>
     </div>
 </div>
+
+<!-- Change Password Modal -->
+<div id="change-password-modal" class="address-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Change Password</h3>
+            <span class="modal-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="old-password">Old Password *</label>
+                    <input type="password" id="old-password" name="oldPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">New Password *</label>
+                    <input type="password" id="new-password" name="newPassword" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password *</label>
+                    <input type="password" id="confirm-password" name="confirmPassword" required minlength="6">
+                </div>
+                <div style="margin-top: 10px; margin-bottom: 15px;">
+                    <a href="../my-account/lost-password/index.html" style="color: #5C7524; font-size: 14px;">Lost your password?</a>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="button alt">Change Password</button>
+                    <button type="button" class="button" id="cancel-change-password">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 用户导航栏状态脚本 -->
+<script src="../assets/js/user-nav.js"></script>
+
+<!-- 按钮事件监听脚本 - 必须在 modal 元素之后 -->
+<script>
+(function() {
+  'use strict';
+
+  // 显示/隐藏Edit Profile Modal
+  const editProfileBtn = document.querySelector('.btn-edit-profile');
+  const editProfileModal = document.getElementById('edit-profile-modal');
+  const cancelEditBtn = document.getElementById('cancel-edit-profile');
+
+  console.log('Edit Profile Button:', editProfileBtn);
+  console.log('Edit Profile Modal:', editProfileModal);
+
+  if (editProfileBtn && editProfileModal) {
+    editProfileBtn.addEventListener('click', () => {
+      console.log('Edit Profile button clicked!');
+
+      // 填充表单数据
+      const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
+      document.getElementById('edit-nickname').value = userInfo.nickName || '';
+      document.getElementById('edit-email').value = userInfo.email || '';
+      document.getElementById('edit-phone').value = userInfo.phonenumber || '';
+      document.getElementById('edit-gender').value = userInfo.sex || '0';
+
+      // 显示 modal
+      editProfileModal.classList.add('show');
+      console.log('Modal should be visible now');
+    });
+  }
+
+  if (cancelEditBtn && editProfileModal) {
+    cancelEditBtn.addEventListener('click', () => {
+      editProfileModal.classList.remove('show');
+    });
+  }
+
+  // 为 Edit Profile modal 的 × 按钮添加事件监听
+  const editProfileCloseBtn = editProfileModal ? editProfileModal.querySelector('.modal-close') : null;
+  if (editProfileCloseBtn && editProfileModal) {
+    editProfileCloseBtn.addEventListener('click', () => {
+      editProfileModal.classList.remove('show');
+    });
+  }
+
+  // 点击modal外部关闭
+  if (editProfileModal) {
+    editProfileModal.addEventListener('click', (e) => {
+      if (e.target === editProfileModal) {
+        editProfileModal.classList.remove('show');
+      }
+    });
+  }
+
+  // 提交Edit Profile表单
+  const editProfileForm = document.getElementById('edit-profile-form');
+  if (editProfileForm) {
+    editProfileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const nickname = document.getElementById('edit-nickname').value.trim();
+      const email = document.getElementById('edit-email').value.trim();
+      const phone = document.getElementById('edit-phone').value.trim();
+      const gender = document.getElementById('edit-gender').value;
+
+      if (!nickname || !email) {
+        showMessage('Nickname and email are required', 'warning');
+        return;
+      }
+
+      try {
+        const result = await AuthService.updateProfile({
+          nickName: nickname,
+          email: email,
+          phonenumber: phone,
+          sex: gender
+        });
+
+        if (result.code === 200) {
+          showMessage('Profile updated successfully!', 'success');
+          editProfileModal.classList.remove('show');
+          // 重新加载用户信息（从 API 获取最新数据）
+          await loadUserInfo(true);
+          // 更新导航栏显示
+          if (window.updateUserNav) {
+            window.updateUserNav();
+          }
+        }
+      } catch (error) {
+        showMessage(error.message || 'Failed to update profile', 'error');
+      }
+    });
+  }
+
+  // 显示/隐藏Change Password Modal
+  const changePasswordBtn = document.querySelector('.btn-change-password');
+  const changePasswordModal = document.getElementById('change-password-modal');
+  const cancelChangePasswordBtn = document.getElementById('cancel-change-password');
+
+  console.log('Change Password Button:', changePasswordBtn);
+  console.log('Change Password Modal:', changePasswordModal);
+
+  if (changePasswordBtn && changePasswordModal) {
+    changePasswordBtn.addEventListener('click', () => {
+      console.log('Change Password button clicked!');
+
+      // 清空表单
+      document.getElementById('old-password').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+
+      // 显示 modal
+      changePasswordModal.classList.add('show');
+      console.log('Modal should be visible now');
+    });
+  }
+
+  if (cancelChangePasswordBtn && changePasswordModal) {
+    cancelChangePasswordBtn.addEventListener('click', () => {
+      changePasswordModal.classList.remove('show');
+    });
+  }
+
+  // 为 Change Password modal 的 × 按钮添加事件监听
+  const changePasswordCloseBtn = changePasswordModal ? changePasswordModal.querySelector('.modal-close') : null;
+  if (changePasswordCloseBtn && changePasswordModal) {
+    changePasswordCloseBtn.addEventListener('click', () => {
+      changePasswordModal.classList.remove('show');
+    });
+  }
+
+  // 点击modal外部关闭
+  if (changePasswordModal) {
+    changePasswordModal.addEventListener('click', (e) => {
+      if (e.target === changePasswordModal) {
+        changePasswordModal.classList.remove('show');
+      }
+    });
+  }
+
+  // 提交Change Password表单
+  const changePasswordForm = document.getElementById('change-password-form');
+  if (changePasswordForm) {
+    changePasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const oldPassword = document.getElementById('old-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      if (!oldPassword || !newPassword || !confirmPassword) {
+        showMessage('All fields are required', 'warning');
+        return;
+      }
+
+      if (newPassword.length < 6) {
+        showMessage('New password must be at least 6 characters', 'warning');
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        showMessage('New passwords do not match', 'warning');
+        return;
+      }
+
+      try {
+        const result = await AuthService.changePassword(oldPassword, newPassword, confirmPassword);
+
+        if (result.code === 200) {
+          showMessage('Password changed successfully! Please login again.', 'success');
+          setTimeout(() => {
+            AuthService.logout();
+            window.location.href = '../my-account/';
+          }, 1500);
+        }
+      } catch (error) {
+        showMessage(error.message || 'Failed to change password', 'error');
+      }
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

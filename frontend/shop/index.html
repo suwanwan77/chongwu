@@ -394,13 +394,14 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 12px !important;
+  gap: 10px !important;
+  height: 100% !important;
 }
 
 .elementor-column-c275075 .elementor-widget {
+  flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
-  flex: 0 0 auto !important;
 }
 
 /* Search box visuals (keep the same appearance) */
@@ -411,7 +412,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   color: #5C7524 !important;
   border: 1px solid #e0e0e0 !important;
   border-radius: 25px !important;
-  padding: 4px 12px !important;
+  padding: 6px 12px !important;
   width: 240px !important;
   height: 28px !important;
 }
@@ -419,8 +420,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  color: #153619 !important;
-  height: 100% !important;
+  color: #5C7524 !important;
+  font-size: 13px !important;
   line-height: 28px !important;
   width: 100% !important;
 }
@@ -428,10 +429,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 8px !important;
-  background: transparent !important;
+  background: none !important;
+  cursor: pointer !important;
   border: 0 !important;
   padding: 0 !important;
 }
@@ -512,6 +511,7 @@ body {
 }
 </style>
 
+<link rel='stylesheet' href='../assets/css/custom-nav.css' media='all'>
 </head>
 <body class="archive post-type-archive post-type-archive-product wp-custom-logo wp-embed-responsive wp-theme-gopet wp-child-theme-demo-child theme-gopet woocommerce-shop woocommerce woocommerce-page woocommerce-no-js ehf-header ehf-footer ehf-template-gopet ehf-stylesheet-demo-child woo-variation-swatches wvs-behavior-blur wvs-theme-demo-child wvs-show-label wvs-tooltip chrome has-post-thumbnail woocommerce-active product-style-1 gopet-archive-product gopet-full-width-content shop_filter_canvas elementor-default elementor-kit-4">
 
@@ -1674,7 +1674,8 @@ var woocommerce_price_slider_params = {"currency_format_num_decimals":"0","curre
 var wc_cart_fragments_params = {"ajax_url":"\/gopet\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/gopet\/?wc-ajax=%%endpoint%%","cart_hash_key":"wc_cart_hash_809cea6d73304e46b80ca494fd244859","fragment_name":"wc_fragments_809cea6d73304e46b80ca494fd244859","request_timeout":"5000"};
 </script>
 <script src="../wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min.js" id="wc-cart-fragments-js" defer data-wp-strategy="defer"></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98390c17980ae2e0',t:'MTc1ODYyMDA3Ng=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98390c17980ae2e0',t:'MTc1ODYyMDA3Ng=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script src='../assets/js/user-nav.js'></script>
+</body>
 </html>
 
 

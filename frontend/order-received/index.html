@@ -414,13 +414,14 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 12px !important;
+  gap: 10px !important;
+  height: 100% !important;
 }
 
 .elementor-column-c275075 .elementor-widget {
+  flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
-  flex: 0 0 auto !important;
 }
 
 /* Search box visuals (keep the same appearance) */
@@ -431,7 +432,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   color: #5C7524 !important;
   border: 1px solid #e0e0e0 !important;
   border-radius: 25px !important;
-  padding: 4px 12px !important;
+  padding: 6px 12px !important;
   width: 240px !important;
   height: 28px !important;
 }
@@ -439,8 +440,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  color: #153619 !important;
-  height: 100% !important;
+  color: #5C7524 !important;
+  font-size: 13px !important;
   line-height: 28px !important;
   width: 100% !important;
 }
@@ -448,10 +449,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 8px !important;
-  background: transparent !important;
+  background: none !important;
+  cursor: pointer !important;
   border: 0 !important;
   padding: 0 !important;
 }
@@ -1028,6 +1027,7 @@ body {
 }
 </style>
 
+<link rel='stylesheet' href='../assets/css/custom-nav.css' media='all'>
 </head>
 <body class="wp-singular page-template-default page page-id-7 wp-custom-logo wp-embed-responsive wp-theme-gopet wp-child-theme-demo-child theme-gopet woocommerce-cart woocommerce-page woocommerce-no-js ehf-header ehf-footer ehf-template-gopet ehf-stylesheet-demo-child woo-variation-swatches wvs-behavior-blur wvs-theme-demo-child wvs-show-label wvs-tooltip chrome woocommerce-active product-style-1 elementor-default elementor-kit-4">
 

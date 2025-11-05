@@ -421,13 +421,14 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 12px !important;
+  gap: 10px !important;
+  height: 100% !important;
 }
 
 .elementor-column-c275075 .elementor-widget {
+  flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
-  flex: 0 0 auto !important;
 }
 
 /* Search box visuals (keep the same appearance) */
@@ -438,7 +439,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   color: #5C7524 !important;
   border: 1px solid #e0e0e0 !important;
   border-radius: 25px !important;
-  padding: 4px 12px !important;
+  padding: 6px 12px !important;
   width: 240px !important;
   height: 28px !important;
 }
@@ -446,8 +447,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   background: transparent !important;
   border: none !important;
   outline: none !important;
-  color: #153619 !important;
-  height: 100% !important;
+  color: #5C7524 !important;
+  font-size: 13px !important;
   line-height: 28px !important;
   width: 100% !important;
 }
@@ -455,10 +456,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 28px !important;
-  height: 28px !important;
-  margin-left: 8px !important;
-  background: transparent !important;
+  background: none !important;
+  cursor: pointer !important;
   border: 0 !important;
   padding: 0 !important;
 }
@@ -542,6 +541,9 @@ body {
     color: #2F562A !important;
 }
 </style>
+
+<!-- 引入认证服务 -->
+<script src="../../assets/js/auth.js"></script>
 
 </head>
 <body class="wp-singular page-template-default page page-id-9 wp-custom-logo wp-embed-responsive wp-theme-gopet wp-child-theme-demo-child theme-gopet woocommerce-account woocommerce-page woocommerce-lost-password woocommerce-no-js ehf-header ehf-footer ehf-template-gopet ehf-stylesheet-demo-child woo-variation-swatches wvs-behavior-blur wvs-theme-demo-child wvs-show-label wvs-tooltip chrome woocommerce-active product-style-1 elementor-default elementor-kit-4">
@@ -1382,6 +1384,172 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 var wc_cart_fragments_params = {"ajax_url":"\/gopet\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/gopet\/?wc-ajax=%%endpoint%%","cart_hash_key":"wc_cart_hash_809cea6d73304e46b80ca494fd244859","fragment_name":"wc_fragments_809cea6d73304e46b80ca494fd244859","request_timeout":"5000"};
 </script>
 <script src="../../wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min.js" id="wc-cart-fragments-js" defer data-wp-strategy="defer"></script>
+
+<!-- 找回密码功能脚本 -->
+<script>
+(function() {
+  // 检查URL参数，判断是"忘记密码"还是"重置密码"
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+  const email = urlParams.get('email');
+
+  // 显示错误信息
+  function showError(message) {
+    let errorDiv = document.getElementById('password-reset-error');
+    if (!errorDiv) {
+      errorDiv = document.createElement('div');
+      errorDiv.id = 'password-reset-error';
+      errorDiv.style.cssText = 'color: #e74c3c; background: #ffe6e6; padding: 15px; margin: 15px 0; border-radius: 4px; border-left: 4px solid #e74c3c;';
+
+      const form = document.querySelector('.woocommerce-ResetPassword');
+      if (form) {
+        form.insertBefore(errorDiv, form.firstChild);
+      }
+    }
+
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+
+    setTimeout(() => {
+      errorDiv.style.display = 'none';
+    }, 5000);
+  }
+
+  // 显示成功信息
+  function showSuccess(message) {
+    let successDiv = document.getElementById('password-reset-success');
+    if (!successDiv) {
+      successDiv = document.createElement('div');
+      successDiv.id = 'password-reset-success';
+      successDiv.style.cssText = 'color: #27ae60; background: #e6ffe6; padding: 15px; margin: 15px 0; border-radius: 4px; border-left: 4px solid #27ae60;';
+
+      const form = document.querySelector('.woocommerce-ResetPassword');
+      if (form) {
+        form.insertBefore(successDiv, form.firstChild);
+      }
+    }
+
+    successDiv.textContent = message;
+    successDiv.style.display = 'block';
+  }
+
+  // 显示加载状态
+  function setLoading(isLoading) {
+    const submitButton = document.querySelector('.woocommerce-ResetPassword button[type="submit"]');
+    if (submitButton) {
+      if (isLoading) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Processing...';
+      } else {
+        submitButton.disabled = false;
+        submitButton.textContent = token ? 'Reset Password' : 'Reset password';
+      }
+    }
+  }
+
+  // 如果URL中有token，说明是重置密码页面
+  if (token && email) {
+    // 修改页面为重置密码表单
+    const form = document.querySelector('.woocommerce-ResetPassword');
+    if (form) {
+      form.innerHTML = `
+        <p>Enter your new password below.</p>
+
+        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+          <label for="new_password">New Password&nbsp;<span class="required" aria-hidden="true">*</span></label>
+          <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="new_password" id="new_password" autocomplete="new-password" required aria-required="true" placeholder="Enter new password (at least 6 characters)">
+        </p>
+
+        <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+          <label for="confirm_password">Confirm Password&nbsp;<span class="required" aria-hidden="true">*</span></label>
+          <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="confirm_password" id="confirm_password" autocomplete="new-password" required aria-required="true" placeholder="Confirm new password">
+        </p>
+
+        <div class="clear"></div>
+
+        <p class="woocommerce-form-row form-row">
+          <button type="submit" class="woocommerce-Button button" style="background-color: #5C7524 !important; color: #2F562A !important;">Reset Password</button>
+        </p>
+      `;
+
+      // 重置密码表单提交
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const newPassword = document.getElementById('new_password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+
+        // 验证
+        if (!newPassword || !confirmPassword) {
+          showError('Please fill in all fields');
+          return;
+        }
+
+        if (newPassword.length < 6) {
+          showError('Password must be at least 6 characters');
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          showError('Passwords do not match');
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          const result = await AuthService.resetPassword(token, email, newPassword, confirmPassword);
+
+          if (result.code === 200) {
+            showSuccess('Password reset successfully! Redirecting to login...');
+
+            // 3秒后跳转到登录页面
+            setTimeout(() => {
+              window.location.href = '../index.html';
+            }, 3000);
+          }
+        } catch (error) {
+          showError(error.message || 'Failed to reset password. The link may have expired.');
+          setLoading(false);
+        }
+      });
+    }
+  } else {
+    // 忘记密码表单提交
+    const form = document.querySelector('.woocommerce-ResetPassword');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const userLogin = document.getElementById('user_login').value.trim();
+
+        if (!userLogin) {
+          showError('Please enter your username or email address');
+          return;
+        }
+
+        setLoading(true);
+
+        try {
+          const result = await AuthService.forgotPassword(userLogin);
+
+          if (result.code === 200) {
+            showSuccess('Password reset link has been sent to your email. Please check your inbox.');
+
+            // 清空输入框
+            document.getElementById('user_login').value = '';
+          }
+        } catch (error) {
+          showError(error.message || 'Failed to send reset link. Please check your username or email.');
+        } finally {
+          setLoading(false);
+        }
+      });
+    }
+  }
+})();
+</script>
+
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98390c50ff489a44',t:'MTc1ODYyMDA4NQ=='};var a=document.createElement('script');a.src='../../../cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
 
