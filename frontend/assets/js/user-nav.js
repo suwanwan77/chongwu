@@ -60,11 +60,11 @@
     // 查找导航栏中的账户区域
     const accountContainers = document.querySelectorAll('.site-header-account');
 
-    accountContainers.forEach(container => {
+    accountContainers.forEach(originalContainer => {
       // 检查是否已经更新过
-      if (container.dataset.userNavUpdated === 'true') return;
+      if (originalContainer.dataset.userNavUpdated === 'true') return;
 
-      const link = container.querySelector('a[href*="my-account"]');
+      const link = originalContainer.querySelector('a[href*="my-account"]');
       if (!link) return;
 
       const contentSpan = link.querySelector('.content-content');
@@ -76,10 +76,18 @@
         // 使用 nickName 或 userName 或 email
         const displayName = userInfo.nickName || userInfo.userName || userInfo.email || 'User';
 
+        // 克隆容器以移除所有事件监听器
+        const container = originalContainer.cloneNode(true);
+        originalContainer.parentNode.replaceChild(container, originalContainer);
+
+        // 重新获取元素引用
+        const newLink = container.querySelector('a[href*="my-account"]');
+        const newContentSpan = newLink.querySelector('.content-content');
+
         // 设置昵称，如果太长则截断
-        contentSpan.textContent = displayName;
-        contentSpan.title = displayName; // 鼠标悬浮显示完整昵称
-        contentSpan.style.cssText = `
+        newContentSpan.textContent = displayName;
+        newContentSpan.title = displayName; // 鼠标悬浮显示完整昵称
+        newContentSpan.style.cssText = `
           max-width: 120px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -89,7 +97,7 @@
         `;
 
         // 修改链接指向个人中心
-        link.href = '/Personal-Center/';
+        newLink.href = '/Personal-Center/';
 
         // 移除下拉菜单（如果存在）
         const dropdown = container.querySelector('.account-dropdown');
@@ -99,7 +107,7 @@
         }
 
         // 查找图标元素
-        const iconDiv = link.querySelector('.icon');
+        const iconDiv = newLink.querySelector('.icon');
         if (iconDiv) {
           const iconElement = iconDiv.querySelector('i, img');
           if (iconElement) {
