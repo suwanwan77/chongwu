@@ -58,4 +58,19 @@ export default {
    * 启用就是后端允许跨域
    */
   cors: false,
+
+  /**
+   * 邮件服务配置
+   * 用于发送密码重置邮件等
+   */
+  email: {
+    host: 'smtp.example.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: 'your-email@example.com',
+      pass: 'your-password',
+    },
+    from: 'your-email@example.com',
+  },
 };
