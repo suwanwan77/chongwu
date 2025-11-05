@@ -83,18 +83,29 @@
         // 重新获取元素引用
         const newLink = container.querySelector('a[href*="my-account"]');
         const newContentSpan = newLink.querySelector('.content-content');
+        const accountContent = newLink.querySelector('.account-content');
 
         // 设置昵称，如果太长则截断
         newContentSpan.textContent = displayName;
         newContentSpan.title = displayName; // 鼠标悬浮显示完整昵称
         newContentSpan.style.cssText = `
-          max-width: 120px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          display: inline-block;
-          vertical-align: middle;
+          max-width: 120px !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          white-space: nowrap !important;
+          display: inline-block !important;
+          vertical-align: middle !important;
         `;
+
+        // 确保父容器也有正确的样式
+        if (accountContent) {
+          accountContent.style.cssText = `
+            max-width: 120px !important;
+            overflow: hidden !important;
+            display: inline-flex !important;
+            align-items: center !important;
+          `;
+        }
 
         // 修改链接指向个人中心
         newLink.href = '/Personal-Center/';
