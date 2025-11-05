@@ -140,6 +140,301 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 <meta name="generator" content="WooCommerce 10.0.2">
 	<noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
 	<meta name="generator" content="Elementor 3.30.2; features: additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-swap">
+<style>
+/* 基础搜索框样式 */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 25px;
+  padding: 6px 12px;
+  width: 240px;
+  height: 32px;
+  border: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: #5C7524;
+  font-size: 13px;
+  outline: none;
+  padding: 0 6px;
+}
+
+.search-box input::placeholder {
+  color: #999999;
+}
+
+.search-box button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.search-box svg {
+  width: 16px;
+  height: 16px;
+  fill: #5C7524;
+}
+
+/* 隐藏 icon-list 的默认元素 */
+.elementor-element-cb1b8ff .elementor-icon-list-items {
+  display: none !important;
+}
+
+.elementor-element-cb1b8ff .elementor-widget-container > *:not(.search-box) {
+  display: none !important;
+}
+
+/* 隐藏其他伪元素和多余元素 */
+.elementor-element-cb1b8ff ul,
+.elementor-element-cb1b8ff li,
+.elementor-element-cb1b8ff i,
+.elementor-element-cb1b8ff a,
+.elementor-element-cb1b8ff button:not(.search-box button),
+.elementor-element-cb1b8ff svg:not(.search-box svg),
+.elementor-element-cb1b8ff::before,
+.elementor-element-cb1b8ff::after,
+.elementor-element-cb1b8ff *::before,
+.elementor-element-cb1b8ff *::after {
+  display: none !important;
+}
+
+/* 确保搜索框显示 */
+.elementor-element-cb1b8ff .search-box,
+.elementor-element-cb1b8ff .search-box * {
+  display: flex !important;
+}
+
+.elementor-element-cb1b8ff .search-box input {
+  display: block !important;
+}
+
+.elementor-element-cb1b8ff .search-box button {
+  display: flex !important;
+}
+
+.elementor-element-cb1b8ff .search-box button::before,
+.elementor-element-cb1b8ff .search-box button::after {
+  display: none !important;
+}
+
+/* 确保右侧栏搜索、登录和购物车在一行对齐 */
+.elementor-column-c275075 .elementor-widget-wrap {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  height: 100% !important;
+}
+
+.elementor-column-c275075 .elementor-widget {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 强制所有widget-container垂直居中对齐 */
+.elementor-column-c275075 .elementor-widget-container {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+/* 确保登录和购物车的wrapper也垂直居中 */
+.elementor-header-account,
+.elementor-header-group-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.header-group-action {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 登录链接垂直对齐 */
+.site-header-account a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.site-header-account .icon {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.site-header-account .account-content {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 购物车链接垂直对齐 */
+.site-header-cart .cart-contents {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+}
+
+.site-header-cart .cart-title {
+  display: inline-block !important;
+  line-height: 1 !important;
+}
+
+/* 购物车徽章数字样式 */
+.site-header-cart .cart-contents .count {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  min-width: 18px;
+  padding: 0 6px;
+  margin-left: 6px;
+  border-radius: 9999px;
+  background-color: #5C7524 !important;
+  color: #153619 !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Search box visuals with correct background color */
+.elementor-element-cb1b8ff .search-box {
+  display: flex !important;
+  align-items: center !important;
+  background: #FFF9E9 !important;
+  color: #5C7524 !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 25px !important;
+  padding: 6px 12px !important;
+  width: 240px !important;
+  height: 28px !important;
+  margin: 0 !important;
+}
+
+.elementor-element-cb1b8ff .search-box input {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #5C7524 !important;
+  font-size: 13px !important;
+  line-height: 28px !important;
+  width: 100% !important;
+}
+
+.elementor-element-cb1b8ff .search-box button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: none !important;
+  cursor: pointer !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+.elementor-element-cb1b8ff .search-box button svg,
+.elementor-element-cb1b8ff .search-box button svg path {
+  width: 16px !important;
+  height: 16px !important;
+  fill: #5C7524 !important;
+  stroke: none !important;
+}
+
+/* 移除所有widget的默认margin和padding */
+.elementor-column-c275075 .elementor-widget {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.elementor-column-c275075 .elementor-widget-container {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 确保icon和文字在同一行 */
+.site-header-account .icon i,
+.site-header-account .content-content {
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+/* 统一所有元素的高度为28px */
+.elementor-column-c275075 .elementor-widget-cb1b8ff,
+.elementor-column-c275075 .elementor-widget-84fb1c3,
+.elementor-column-c275075 .elementor-widget-fb16421 {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+}
+
+.elementor-column-c275075 .elementor-widget-cb1b8ff .elementor-widget-container,
+.elementor-column-c275075 .elementor-widget-84fb1c3 .elementor-widget-container,
+.elementor-column-c275075 .elementor-widget-fb16421 .elementor-widget-container {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+}
+
+/* 登录和购物车的内容高度 */
+.elementor-header-account,
+.elementor-header-group-wrapper,
+.site-header-account,
+.site-header-cart {
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+.site-header-account a,
+.site-header-cart a {
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+/* Breakpoints: do not shrink search; hide login first, then search */
+@media (max-width: 1710px) {
+  .elementor-element-84fb1c3 { display: none !important; } /* hide login */
+}
+
+@media (max-width: 1310px) {
+  .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
+}
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .site-header-cart .cart-contents { position: relative !important; }
+  .site-header-cart .cart-contents .cart-title { display: none !important; }
+  .site-header-cart .cart-contents .count {
+    position: absolute !important;
+    right: -12px !important;
+    top: -4px !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    line-height: 20px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid #fff !important;
+    font-size: 10px !important;
+  }
+}
+
+</style>
 			<style>
 				.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload),
 				.e-con.e-parent:nth-of-type(n+4):not(.e-lazyloaded):not(.e-no-lazyload) * {

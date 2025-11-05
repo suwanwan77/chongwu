@@ -217,6 +217,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 			//});
 		  };</script>
 <style>
+/* 基础搜索框样式 */
 .search-box {
   display: flex;
   align-items: center;
@@ -261,7 +262,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   fill: #5C7524;
 }
 
-/* ���� icon-list ��Ĭ��Ԫ�غͲ���ͼ�� */
+/* 隐藏 icon-list 的默认元素 */
 .elementor-element-cb1b8ff .elementor-icon-list-items {
   display: none !important;
 }
@@ -270,7 +271,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: none !important;
 }
 
-/* �������в����������Ԫ�� */
+/* 隐藏其他伪元素和多余元素 */
 .elementor-element-cb1b8ff ul,
 .elementor-element-cb1b8ff li,
 .elementor-element-cb1b8ff i,
@@ -284,7 +285,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: none !important;
 }
 
-/* ȷ����������ʾ */
+/* 确保搜索框显示 */
 .elementor-element-cb1b8ff .search-box,
 .elementor-element-cb1b8ff .search-box * {
   display: flex !important;
@@ -303,96 +304,6 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   display: none !important;
 }
 
-/* ȷ�������򡢵�¼�͹��ﳵ��һ�� */
-.elementor-column-c275075 .elementor-widget-wrap {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  justify-content: flex-end !important;
-  gap: 10px !important;
-  height: 100% !important;
-}
-
-.elementor-column-c275075 .elementor-widget {
-  flex-shrink: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-/* �����򡢵�¼�����ﳵ�ĸ߶����� */
-.elementor-column-c275075 .elementor-widget.elementor-element-cb1b8ff,
-.elementor-column-c275075 .elementor-widget.elementor-element-84fb1c3,
-.elementor-column-c275075 .elementor-widget.elementor-element-fb16421 {
-  height: 28px !important;
-}
-
-/* �����򡢵�¼�����ﳵ��ʹ�� flex ȷ����ֱ���� */
-.elementor-element-cb1b8ff,
-.elementor-element-84fb1c3,
-.elementor-element-fb16421 {
-  display: flex !important;
-  align-items: center !important;
-  height: 28px !important;
-}
-
-.elementor-element-cb1b8ff .elementor-widget-container,
-.elementor-element-84fb1c3 .elementor-widget-container,
-.elementor-element-fb16421 .elementor-widget-container {
-  display: flex !important;
-  align-items: center !important;
-  height: 100% !important;
-}
-
-/* ��¼�͹��ﳵ���ڲ�Ԫ�ض��� */
-.elementor-header-account,
-.site-header-cart {
-  display: flex !important;
-  align-items: center !important;
-  height: 100% !important;
-}
-
-.header-group-action,
-.cart-contents {
-  display: flex !important;
-  align-items: center !important;
-  height: 100% !important;
-}
-
-/* �߾��ȶ����޸���ͳһ�и����ڱ߾࣬ȷ������������Ķ��� */
-.elementor-header-account a,
-.site-header-cart .cart-contents {
-  display: inline-flex !important;
-  align-items: center !important;
-  height: 28px !important;
-  line-height: 28px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-.elementor-header-account .icon,
-.site-header-cart .cart-contents .cart-title,
-.site-header-cart .cart-contents .count,
-.elementor-header-account i,
-.site-header-cart i,
-.search-box button svg {
-  vertical-align: middle !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  height: 28px !important;
-  line-height: 28px !important;
-}
-
-/* ���ﳵ������ʽ�޸�������������ͬһ�в��ָ�С�ձ���� */
-.site-header-cart .cart-contents { white-space: nowrap !important; }
-.site-header-cart .cart-contents .cart-title { display: inline-block !important; }
-.site-header-cart .cart-contents .count {
-  display: inline-flex !important; align-items: center !important; justify-content: center !important;
-  height: 18px !important; line-height: 18px !important; min-width: 18px; padding: 0 6px; margin-left: 6px;
-  border-radius: 9999px; background-color: #5C7524 !important; color: #153619 !important; font-size: 12px; font-weight: 700;
-}
-
-.elementor-header-account a { white-space: nowrap !important; }
-
 /* 确保右侧栏搜索、登录和购物车在一行对齐 */
 .elementor-column-c275075 .elementor-widget-wrap {
   display: flex !important;
@@ -407,6 +318,56 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
+}
+
+/* 强制所有widget-container垂直居中对齐 */
+.elementor-column-c275075 .elementor-widget-container {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+/* 确保登录和购物车的wrapper也垂直居中 */
+.elementor-header-account,
+.elementor-header-group-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.header-group-action {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 登录链接垂直对齐 */
+.site-header-account a {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.site-header-account .icon {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.site-header-account .account-content {
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* 购物车链接垂直对齐 */
+.site-header-cart .cart-contents {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+}
+
+.site-header-cart .cart-title {
+  display: inline-block !important;
+  line-height: 1 !important;
 }
 
 /* 购物车徽章数字样式 */
@@ -437,6 +398,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   padding: 6px 12px !important;
   width: 240px !important;
   height: 28px !important;
+  margin: 0 !important;
 }
 
 .elementor-element-cb1b8ff .search-box input {
@@ -465,6 +427,56 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   height: 16px !important;
   fill: #5C7524 !important;
   stroke: none !important;
+}
+
+/* 移除所有widget的默认margin和padding */
+.elementor-column-c275075 .elementor-widget {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.elementor-column-c275075 .elementor-widget-container {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 确保icon和文字在同一行 */
+.site-header-account .icon i,
+.site-header-account .content-content {
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+
+/* 统一所有元素的高度为28px */
+.elementor-column-c275075 .elementor-widget-cb1b8ff,
+.elementor-column-c275075 .elementor-widget-84fb1c3,
+.elementor-column-c275075 .elementor-widget-fb16421 {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+}
+
+.elementor-column-c275075 .elementor-widget-cb1b8ff .elementor-widget-container,
+.elementor-column-c275075 .elementor-widget-84fb1c3 .elementor-widget-container,
+.elementor-column-c275075 .elementor-widget-fb16421 .elementor-widget-container {
+  height: 28px !important;
+  min-height: 28px !important;
+  max-height: 28px !important;
+}
+
+/* 登录和购物车的内容高度 */
+.elementor-header-account,
+.elementor-header-group-wrapper,
+.site-header-account,
+.site-header-cart {
+  height: 28px !important;
+  line-height: 28px !important;
+}
+
+.site-header-account a,
+.site-header-cart a {
+  height: 28px !important;
+  line-height: 28px !important;
 }
 
 /* Breakpoints: do not shrink search; hide login first, then search */
@@ -497,19 +509,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
     font-size: 10px !important;
   }
 }
-</style>
 
-<style>
-@media (max-width: 767px) {
-  .site-header-cart .cart-contents { position: relative !important; }
-  .site-header-cart .cart-contents .cart-title { display: none !important; }
-  .site-header-cart .cart-contents .count {
-    position: absolute !important; right: -12px !important; top: -4px !important;
-    width: 20px !important; height: 20px !important; min-width: 20px !important; line-height: 20px !important;
-    border-radius: 50% !important; padding: 0 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important;
-    border: 2px solid #fff !important; font-size: 10px !important;
-  }
-}
 </style>
 
 <style>
