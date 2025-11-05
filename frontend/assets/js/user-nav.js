@@ -89,7 +89,7 @@
         newContentSpan.textContent = displayName;
         newContentSpan.title = displayName; // 鼠标悬浮显示完整昵称
         newContentSpan.style.cssText = `
-          max-width: 80px !important;
+          max-width: 60px !important;
           overflow: hidden !important;
           text-overflow: ellipsis !important;
           white-space: nowrap !important;
@@ -100,7 +100,7 @@
         // 确保父容器也有正确的样式
         if (accountContent) {
           accountContent.style.cssText = `
-            max-width: 80px !important;
+            max-width: 60px !important;
             overflow: hidden !important;
             display: inline-flex !important;
             align-items: center !important;
@@ -182,7 +182,7 @@
       // 清除更新标记
       container.dataset.userNavUpdated = 'false';
 
-      // 添加下拉菜单
+      // 添加下拉菜单（包含登录表单）
       const dropdown = container.querySelector('.account-dropdown');
       if (dropdown) {
         dropdown.innerHTML = `
@@ -193,25 +193,72 @@
             right: 0;
             background: white;
             border: 1px solid #e0e0e0;
-            border-radius: 4px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            min-width: 150px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 280px;
             z-index: 1000;
             margin-top: 5px;
+            padding: 20px;
           ">
-            <a href="/my-account/" style="
-              display: block;
-              padding: 10px 15px;
-              color: #333;
-              text-decoration: none;
-              border-bottom: 1px solid #f0f0f0;
-            ">Sign In</a>
-            <a href="/register/" style="
-              display: block;
-              padding: 10px 15px;
-              color: #333;
-              text-decoration: none;
-            ">Register</a>
+            <h3 style="margin: 0 0 15px 0; font-size: 18px; color: #2F562A; font-weight: 600;">Sign In</h3>
+            <form id="nav-login-form" style="margin-bottom: 15px;">
+              <div style="margin-bottom: 12px;">
+                <input
+                  type="text"
+                  id="nav-username"
+                  placeholder="Username or email"
+                  required
+                  style="
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    box-sizing: border-box;
+                  "
+                />
+              </div>
+              <div style="margin-bottom: 15px;">
+                <input
+                  type="password"
+                  id="nav-password"
+                  placeholder="Password"
+                  required
+                  style="
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 1px solid #e0e0e0;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    box-sizing: border-box;
+                  "
+                />
+              </div>
+              <button
+                type="submit"
+                style="
+                  width: 100%;
+                  padding: 10px;
+                  background: #2F562A;
+                  color: white;
+                  border: none;
+                  border-radius: 4px;
+                  font-size: 15px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  transition: background 0.3s;
+                "
+                onmouseover="this.style.background='#1f3a1c'"
+                onmouseout="this.style.background='#2F562A'"
+              >
+                Login
+              </button>
+            </form>
+            <div style="text-align: center; padding-top: 12px; border-top: 1px solid #f0f0f0;">
+              <a href="/register/" style="color: #2F562A; text-decoration: none; font-size: 14px;">
+                Create an Account
+              </a>
+            </div>
           </div>
         `;
 
@@ -230,16 +277,35 @@
           }
         });
 
-        // 添加链接悬浮效果
-        const dropdownLinks = dropdown.querySelectorAll('a');
-        dropdownLinks.forEach(link => {
-          link.addEventListener('mouseenter', function() {
-            this.style.backgroundColor = '#f5f5f5';
+        // 处理登录表单提交
+        const loginForm = dropdown.querySelector('#nav-login-form');
+        if (loginForm) {
+          loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('nav-username').value.trim();
+            const password = document.getElementById('nav-password').value;
+
+            if (!username || !password) {
+              alert('Please enter username and password');
+              return;
+            }
+
+            try {
+              const result = await AuthService.login(username, password);
+
+              if (result.code === 200) {
+                // 登录成功，跳转到个人中心
+                window.location.href = '/Personal-Center/';
+              } else {
+                alert(result.msg || 'Login failed');
+              }
+            } catch (error) {
+              console.error('Login error:', error);
+              alert(error.message || 'Login failed, please try again');
+            }
           });
-          link.addEventListener('mouseleave', function() {
-            this.style.backgroundColor = '';
-          });
-        });
+        }
       }
     });
   }
