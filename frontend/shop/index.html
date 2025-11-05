@@ -387,8 +387,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 
 .elementor-header-account a { white-space: nowrap !important; }
 
-/* SearchBox V2 START - unified layout and breakpoints */
-/* Header right column: single row, no wrap */
+/* 确保右侧栏搜索、登录和购物车在一行对齐 */
 .elementor-column-c275075 .elementor-widget-wrap {
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -404,7 +403,24 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   align-items: center !important;
 }
 
-/* Search box visuals (keep the same appearance) */
+/* 购物车徽章数字样式 */
+.site-header-cart .cart-contents .count {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  min-width: 18px;
+  padding: 0 6px;
+  margin-left: 6px;
+  border-radius: 9999px;
+  background-color: #5C7524 !important;
+  color: #153619 !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Search box visuals with correct background color */
 .elementor-element-cb1b8ff .search-box {
   display: flex !important;
   align-items: center !important;
@@ -416,6 +432,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   width: 240px !important;
   height: 28px !important;
 }
+
 .elementor-element-cb1b8ff .search-box input {
   background: transparent !important;
   border: none !important;
@@ -425,6 +442,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   line-height: 28px !important;
   width: 100% !important;
 }
+
 .elementor-element-cb1b8ff .search-box button {
   display: inline-flex !important;
   align-items: center !important;
@@ -434,37 +452,45 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   border: 0 !important;
   padding: 0 !important;
 }
+
 .elementor-element-cb1b8ff .search-box button svg,
 .elementor-element-cb1b8ff .search-box button svg path {
-  width: 16px !important; height: 16px !important;
-  fill: #5C7524 !important; stroke: none !important;
-}
-
-/* Login & Cart inline, vertical center, single line */
-.elementor-header-account a,
-.site-header-cart .cart-contents {
-  display: inline-flex !important;
-  align-items: center !important;
-  height: 28px !important;
-  line-height: 28px !important;
-  white-space: nowrap !important;
-}
-
-/* Cart badge (restore small pill) */
-.site-header-cart .cart-contents .count {
-  display: inline-flex !important; align-items: center !important; justify-content: center !important;
-  height: 18px !important; line-height: 18px !important; min-width: 18px; padding: 0 6px; margin-left: 6px;
-  border-radius: 9999px; background: #5C7524 !important; color: #153619 !important; font: 700 12px/18px inherit;
+  width: 16px !important;
+  height: 16px !important;
+  fill: #5C7524 !important;
+  stroke: none !important;
 }
 
 /* Breakpoints: do not shrink search; hide login first, then search */
 @media (max-width: 1710px) {
   .elementor-element-84fb1c3 { display: none !important; } /* hide login */
 }
+
 @media (max-width: 1310px) {
   .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
 }
-/* SearchBox V2 END */
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .site-header-cart .cart-contents { position: relative !important; }
+  .site-header-cart .cart-contents .cart-title { display: none !important; }
+  .site-header-cart .cart-contents .count {
+    position: absolute !important;
+    right: -12px !important;
+    top: -4px !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    line-height: 20px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid #fff !important;
+    font-size: 10px !important;
+  }
+}
 </style>
 
 <style>

@@ -392,8 +392,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 
 .elementor-header-account a { white-space: nowrap !important; }
 
-/* SearchBox V2 START - unified layout and breakpoints */
-/* Header right column: single row, no wrap */
+/* 确保右侧栏搜索、登录和购物车在一行对齐 */
 .elementor-column-c275075 .elementor-widget-wrap {
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -409,7 +408,24 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   align-items: center !important;
 }
 
-/* Search box visuals (keep the same appearance) */
+/* 购物车徽章数字样式 */
+.site-header-cart .cart-contents .count {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  min-width: 18px;
+  padding: 0 6px;
+  margin-left: 6px;
+  border-radius: 9999px;
+  background-color: #5C7524 !important;
+  color: #153619 !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Search box visuals with correct background color */
 .elementor-element-cb1b8ff .search-box {
   display: flex !important;
   align-items: center !important;
@@ -421,6 +437,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   width: 240px !important;
   height: 28px !important;
 }
+
 .elementor-element-cb1b8ff .search-box input {
   background: transparent !important;
   border: none !important;
@@ -430,6 +447,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   line-height: 28px !important;
   width: 100% !important;
 }
+
 .elementor-element-cb1b8ff .search-box button {
   display: inline-flex !important;
   align-items: center !important;
@@ -439,6 +457,7 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   border: 0 !important;
   padding: 0 !important;
 }
+
 .elementor-element-cb1b8ff .search-box button svg,
 .elementor-element-cb1b8ff .search-box button svg path {
   width: 16px !important;
@@ -447,50 +466,28 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   stroke: none !important;
 }
 
-/* See Dog Food button background color */
-.elementor-element-b88a010 .elementor-button {
-  background-color: #5C7524 !important;
+/* Breakpoints: do not shrink search; hide login first, then search */
+@media (max-width: 1710px) {
+  .elementor-element-84fb1c3 { display: none !important; } /* hide login */
 }
 
-/* Login & Cart inline, vertical center, single line */
-.elementor-header-account a,
-.site-header-cart .cart-contents {
-  display: inline-flex !important;
-  align-items: center !important;
-  height: 28px !important;
-  line-height: 28px !important;
-  white-space: nowrap !important;
+@media (max-width: 1310px) {
+  .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
 }
 
-/* Cart badge (restore small pill) */
-.site-header-cart .cart-contents .count {
-  display: inline-flex !important; align-items: center !important; justify-content: center !important;
-  height: 18px !important; line-height: 18px !important; min-width: 18px; padding: 0 6px; margin-left: 6px;
-  border-radius: 9999px; background: #FFF9E9 !important; color: #153619 !important; font: 700 12px/18px inherit;
-}
-
-/* 锟斤拷锟斤车锟斤拷锟斤拷锟斤拷式锟睫革拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷同一锟叫诧拷锟街革拷小锟秸憋拷锟斤拷锟?*/
-.site-header-cart .cart-contents { white-space: nowrap !important; }
-.site-header-cart .cart-contents .cart-title { display: inline-block !important; }
-.site-header-cart .cart-contents .count {
-  display: inline-flex !important; align-items: center !important; justify-content: center !important;
-  height: 18px !important; line-height: 18px !important; min-width: 18px; padding: 0 6px; margin-left: 6px;
-  border-radius: 9999px; background-color: #FFF9E9 !important; color: #153619 !important; font-size: 12px; font-weight: 700;
-}
-
-/* 锟斤拷767px锟斤拷锟斤拷锟斤拷锟截癸拷锟斤车锟斤拷锟街ｏ拷只锟斤拷示图锟斤拷图锟斤拷锟斤拷锟斤拷锟?*/
+/* Mobile responsive */
 @media (max-width: 767px) {
   .site-header-cart .cart-contents { position: relative !important; }
   .site-header-cart .cart-contents .cart-title { display: none !important; }
   .site-header-cart .cart-contents .count {
     position: absolute !important;
     right: -12px !important;
-    top: -4px !important; /* move downward */
+    top: -4px !important;
     width: 20px !important;
     height: 20px !important;
     min-width: 20px !important;
     line-height: 20px !important;
-    border-radius: 50% !important; /* make circle */
+    border-radius: 50% !important;
     padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -499,15 +496,6 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
     font-size: 10px !important;
   }
 }
-
-/* Breakpoints: do not shrink search; hide login first, then search */
-@media (max-width: 1710px) {
-  .elementor-element-84fb1c3 { display: none !important; } /* hide login */
-}
-@media (max-width: 1310px) {
-  .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
-}
-/* SearchBox V2 END */
 
 /* Revolution Slider Text Colors - Force Override */
 rs-layer#slider-1-slide-1-layer-5,
@@ -708,8 +696,7 @@ rs-layer#slider-1-slide-1-layer-9 *,
 
 .elementor-header-account a { white-space: nowrap !important; }
 
-/* SearchBox V2 START - unified layout and breakpoints */
-/* Header right column: single row, no wrap */
+/* 确保右侧栏搜索、登录和购物车在一行对齐 */
 .elementor-column-c275075 .elementor-widget-wrap {
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -725,7 +712,24 @@ rs-layer#slider-1-slide-1-layer-9 *,
   align-items: center !important;
 }
 
-/* Search box visuals (keep the same appearance) */
+/* 购物车徽章数字样式 */
+.site-header-cart .cart-contents .count {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 18px !important;
+  line-height: 18px !important;
+  min-width: 18px;
+  padding: 0 6px;
+  margin-left: 6px;
+  border-radius: 9999px;
+  background-color: #5C7524 !important;
+  color: #153619 !important;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Search box visuals with correct background color */
 .elementor-element-cb1b8ff .search-box {
   display: flex !important;
   align-items: center !important;
@@ -737,6 +741,7 @@ rs-layer#slider-1-slide-1-layer-9 *,
   width: 240px !important;
   height: 28px !important;
 }
+
 .elementor-element-cb1b8ff .search-box input {
   background: transparent !important;
   border: none !important;
@@ -746,6 +751,7 @@ rs-layer#slider-1-slide-1-layer-9 *,
   line-height: 28px !important;
   width: 100% !important;
 }
+
 .elementor-element-cb1b8ff .search-box button {
   display: inline-flex !important;
   align-items: center !important;
@@ -755,6 +761,7 @@ rs-layer#slider-1-slide-1-layer-9 *,
   border: 0 !important;
   padding: 0 !important;
 }
+
 .elementor-element-cb1b8ff .search-box button svg,
 .elementor-element-cb1b8ff .search-box button svg path {
   width: 16px !important;
@@ -763,31 +770,36 @@ rs-layer#slider-1-slide-1-layer-9 *,
   stroke: none !important;
 }
 
-/* Login & Cart inline, vertical center, single line */
-.elementor-header-account a,
-.site-header-cart .cart-contents {
-  display: inline-flex !important;
-  align-items: center !important;
-  height: 28px !important;
-  line-height: 28px !important;
-  white-space: nowrap !important;
-}
-
-/* Cart badge (restore small pill) */
-.site-header-cart .cart-contents .count {
-  display: inline-flex !important; align-items: center !important; justify-content: center !important;
-  height: 18px !important; line-height: 18px !important; min-width: 18px; padding: 0 6px; margin-left: 6px;
-  border-radius: 9999px; background: #5C7524 !important; color: #153619 !important; font: 700 12px/18px inherit;
-}
-
 /* Breakpoints: do not shrink search; hide login first, then search */
 @media (max-width: 1710px) {
   .elementor-element-84fb1c3 { display: none !important; } /* hide login */
 }
+
 @media (max-width: 1310px) {
   .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
 }
-/* SearchBox V2 END */
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+  .site-header-cart .cart-contents { position: relative !important; }
+  .site-header-cart .cart-contents .cart-title { display: none !important; }
+  .site-header-cart .cart-contents .count {
+    position: absolute !important;
+    right: -12px !important;
+    top: -4px !important;
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    line-height: 20px !important;
+    border-radius: 50% !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 2px solid #fff !important;
+    font-size: 10px !important;
+  }
+}
 </style>
 
 <style>
