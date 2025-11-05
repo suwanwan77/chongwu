@@ -1894,12 +1894,12 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     }
 
     // 退出登录
-    function setupLogout() {
+    async function setupLogout() {
         const logoutBtn = document.getElementById('logout-btn');
         console.log('setupLogout called, button found:', !!logoutBtn);
 
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', function(e) {
+            logoutBtn.addEventListener('click', async function(e) {
                 e.preventDefault();
 
                 console.log('Logout button clicked!');
@@ -1908,17 +1908,24 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 logoutBtn.innerHTML = '<i class="fa fa-spinner fa-spin" style="margin-right: 8px;"></i> Logging out...';
                 logoutBtn.style.pointerEvents = 'none';
 
-                // 清除 localStorage
-                localStorage.removeItem('customer_token');
-                localStorage.removeItem('customer_info');
-                console.log('Cleared localStorage');
+                try {
+                    // 使用 AuthService 退出登录
+                    await AuthService.logout();
+                    console.log('Logout successful');
 
-                // 延迟一下让用户看到 "Logging out..." 提示，然后跳转
-                setTimeout(function() {
-                    console.log('Redirecting to login page...');
-                    // 跳转到登录页面（使用绝对路径）
-                    window.location.href = '/my-account/index.html';
-                }, 800);
+                    // 延迟一下让用户看到 "Logging out..." 提示，然后跳转
+                    setTimeout(function() {
+                        console.log('Redirecting to home page...');
+                        // 跳转到首页
+                        window.location.href = '/';
+                    }, 800);
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    // 即使出错也清除本地数据并跳转
+                    setTimeout(function() {
+                        window.location.href = '/';
+                    }, 800);
+                }
             });
         } else {
             console.error('Logout button not found!');

@@ -67,8 +67,9 @@
       const contentSpan = link.querySelector('.content-content');
       if (!contentSpan) return;
 
-      // 检查是否是"Sign In"文本
-      if (contentSpan.textContent.trim() === 'Sign In') {
+      // 检查是否是"Sign In"文本或已经是用户名（避免重复更新）
+      const currentText = contentSpan.textContent.trim();
+      if (currentText === 'Sign In' || container.dataset.userNavUpdated !== 'true') {
         // 使用 nickName 或 userName 或 email
         const displayName = userInfo.nickName || userInfo.userName || userInfo.email || 'User';
         contentSpan.textContent = displayName;
@@ -76,25 +77,46 @@
         // 修改链接指向个人中心
         link.href = '/Personal-Center/';
 
+        // 标记已更新，避免重复处理
+        container.dataset.userNavUpdated = 'true';
+
         // 查找图标元素
         const iconDiv = link.querySelector('.icon');
         if (iconDiv) {
-          const iconElement = iconDiv.querySelector('i');
+          const iconElement = iconDiv.querySelector('i, img');
           if (iconElement) {
-            // 替换图标为头像
-            const avatarUrl = userInfo.avatar || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
+            // 默认头像SVG - 使用与网站风格一致的颜色
+            const defaultAvatarSvg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2386B450"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
+
+            // 如果有上传头像则使用上传的，否则使用默认头像
+            const avatarUrl = userInfo.avatar || defaultAvatarSvg;
 
             // 创建头像图片
             const avatar = document.createElement('img');
             avatar.src = avatarUrl;
             avatar.alt = displayName;
-            avatar.style.cssText = `
-              width: 20px;
-              height: 20px;
-              border-radius: 50%;
-              object-fit: cover;
-              vertical-align: middle;
-            `;
+            avatar.className = 'user-avatar-nav';
+
+            // 根据是否是默认头像设置不同样式
+            if (userInfo.avatar) {
+              // 用户上传的头像 - 圆形显示
+              avatar.style.cssText = `
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                object-fit: cover;
+                vertical-align: middle;
+                display: inline-block;
+              `;
+            } else {
+              // 默认SVG头像 - 保持图标样式
+              avatar.style.cssText = `
+                width: 28px;
+                height: 28px;
+                vertical-align: middle;
+                display: inline-block;
+              `;
+            }
 
             // 替换图标
             iconElement.replaceWith(avatar);
