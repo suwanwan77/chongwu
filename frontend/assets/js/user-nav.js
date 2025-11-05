@@ -61,15 +61,18 @@
     const accountContainers = document.querySelectorAll('.site-header-account');
 
     accountContainers.forEach(container => {
+      // 检查是否已经更新过
+      if (container.dataset.userNavUpdated === 'true') return;
+
       const link = container.querySelector('a[href*="my-account"]');
       if (!link) return;
 
       const contentSpan = link.querySelector('.content-content');
       if (!contentSpan) return;
 
-      // 检查是否是"Sign In"文本或已经是用户名（避免重复更新）
+      // 检查是否是"Sign In"文本
       const currentText = contentSpan.textContent.trim();
-      if (currentText === 'Sign In' || container.dataset.userNavUpdated !== 'true') {
+      if (currentText === 'Sign In') {
         // 使用 nickName 或 userName 或 email
         const displayName = userInfo.nickName || userInfo.userName || userInfo.email || 'User';
 
@@ -95,16 +98,13 @@
           dropdown.style.display = 'none';
         }
 
-        // 标记已更新，避免重复处理
-        container.dataset.userNavUpdated = 'true';
-
         // 查找图标元素
         const iconDiv = link.querySelector('.icon');
         if (iconDiv) {
           const iconElement = iconDiv.querySelector('i, img');
           if (iconElement) {
-            // 默认头像SVG - 使用深绿色 #2F562A
-            const defaultAvatarSvg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232F562A"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
+            // 默认头像SVG - 使用橄榄绿色 #5C7524
+            const defaultAvatarSvg = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%235C7524"%3E%3Cpath d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/%3E%3C/svg%3E';
 
             // 如果有上传头像则使用上传的，否则使用默认头像
             const avatarUrl = userInfo.avatar || defaultAvatarSvg;
@@ -129,6 +129,9 @@
             iconElement.replaceWith(avatar);
           }
         }
+
+        // 标记已更新，避免重复处理
+        container.dataset.userNavUpdated = 'true';
       }
     });
   }
