@@ -73,6 +73,9 @@
         const displayName = userInfo.nickName || userInfo.userName || userInfo.email || 'User';
         contentSpan.textContent = displayName;
 
+        // 修改链接指向个人中心
+        link.href = '/Personal-Center/';
+
         // 查找图标元素
         const iconDiv = link.querySelector('.icon');
         if (iconDiv) {
@@ -95,73 +98,6 @@
 
             // 替换图标
             iconElement.replaceWith(avatar);
-          }
-        }
-
-        // 添加下拉菜单
-        const dropdown = container.querySelector('.account-dropdown');
-        if (dropdown && dropdown.children.length === 0) {
-          dropdown.innerHTML = `
-            <div style="
-              position: absolute;
-              top: 100%;
-              right: 0;
-              background: white;
-              border: 1px solid #ddd;
-              border-radius: 4px;
-              box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-              min-width: 150px;
-              z-index: 1000;
-              margin-top: 10px;
-              display: none;
-            " class="user-dropdown-menu">
-              <a href="/Personal-Center/" style="
-                display: block;
-                padding: 10px 15px;
-                color: #333;
-                text-decoration: none;
-                border-bottom: 1px solid #eee;
-              " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
-                Personal Center
-              </a>
-              <a href="/my-account/" style="
-                display: block;
-                padding: 10px 15px;
-                color: #333;
-                text-decoration: none;
-                border-bottom: 1px solid #eee;
-              " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
-                My Orders
-              </a>
-              <a href="#" class="logout-link" style="
-                display: block;
-                padding: 10px 15px;
-                color: #333;
-                text-decoration: none;
-              " onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='white'">
-                Logout
-              </a>
-            </div>
-          `;
-
-          // 添加鼠标悬停事件
-          container.addEventListener('mouseenter', () => {
-            const menu = dropdown.querySelector('.user-dropdown-menu');
-            if (menu) menu.style.display = 'block';
-          });
-
-          container.addEventListener('mouseleave', () => {
-            const menu = dropdown.querySelector('.user-dropdown-menu');
-            if (menu) menu.style.display = 'none';
-          });
-
-          // 添加登出事件
-          const logoutLink = dropdown.querySelector('.logout-link');
-          if (logoutLink) {
-            logoutLink.addEventListener('click', (e) => {
-              e.preventDefault();
-              handleLogout();
-            });
           }
         }
       }
