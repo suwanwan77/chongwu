@@ -56,8 +56,6 @@ model SysConfig {
 model SysDept {
   deptId     Int       @id @default(autoincrement())
   parentId   Int?
-  parentDept SysDept?  @relation("deptParentDept", fields: [parentId], references: [deptId])
-  childDept  SysDept[] @relation("deptParentDept")
   ancestors  String    @default("") @db.VarChar(50)
   deptName   String?   @default("") @db.VarChar(30)
   orderNum   Int?      @default(0)
@@ -70,9 +68,12 @@ model SysDept {
   createTime DateTime?
   updateBy   String?   @default("") @db.VarChar(64)
   updateTime DateTime?
+  parentDept SysDept?  @relation("deptParentDept", fields: [parentId], references: [deptId])
+  childDept  SysDept[] @relation("deptParentDept")
   users      SysUser[]
   roles      SysRole[] @relation("sys_dept_to_sys_role")
 
+  @@index([parentId], map: "sys_dept_parentId_fkey")
   @@map("sys_dept")
 }
 
@@ -169,8 +170,6 @@ model SysMenu {
   menuId     Int       @id @default(autoincrement())
   menuName   String    @db.VarChar(50)
   parentId   Int?
-  parentMenu SysMenu?  @relation("menuParentMenu", fields: [parentId], references: [menuId])
-  childMenu  SysMenu[] @relation("menuParentMenu")
   orderNum   Int?      @default(0)
   path       String?   @default("") @db.VarChar(200)
   component  String?   @db.VarChar(255)
@@ -187,8 +186,11 @@ model SysMenu {
   updateBy   String?   @default("") @db.VarChar(64)
   updateTime DateTime?
   remark     String?   @default("") @db.VarChar(500)
+  parentMenu SysMenu?  @relation("menuParentMenu", fields: [parentId], references: [menuId])
+  childMenu  SysMenu[] @relation("menuParentMenu")
   roles      SysRole[] @relation("sys_menu_to_sys_role")
 
+  @@index([parentId], map: "sys_menu_parentId_fkey")
   @@map("sys_menu")
 }
 
@@ -197,7 +199,7 @@ model SysNotice {
   noticeId      Int       @id @default(autoincrement())
   noticeTitle   String    @db.VarChar(50)
   noticeType    String    @db.Char(1)
-  noticeContent Bytes?    @db.LongBlob
+  noticeContent Bytes?
   status        String?   @default("0") @db.Char(1)
   createBy      String?   @default("") @db.VarChar(64)
   createTime    DateTime?
@@ -302,4 +304,62 @@ model SysUser {
 
   @@index([deptId], map: "sys_user_deptId_fkey")
   @@map("sys_user")
+}
+
+/// 前端用户表（客户表）
+model Customer {
+  customerId     Int       @id @default(autoincrement())
+  userName       String    @unique @db.VarChar(50)
+  nickName       String    @db.VarChar(50)
+  email          String    @unique @db.VarChar(100)
+  phonenumber    String?   @db.VarChar(20)
+  password       String    @db.VarChar(100)
+  avatar         String?   @default("") @db.VarChar(200)
+  sex            String?   @default("0") @db.Char(1)
+  status         String?   @default("0") @db.Char(1)
+  delFlag        String?   @default("0") @db.Char(1)
+  loginIp        String?   @default("") @db.VarChar(128)
+  loginDate      DateTime?
+  createTime     DateTime? @default(now())
+  updateTime     DateTime? @updatedAt
+  remark         String?   @db.VarChar(500)
+  lockUntil      DateTime?
+  loginFailCount Int?      @default(0)
+
+  @@index([createTime], map: "idx_customer_createTime")
+  @@index([status], map: "idx_customer_status")
+  @@map("customer")
+}
+
+/// 前端用户登录日志表
+model CustomerLoginLog {
+  logId         Int       @id @default(autoincrement())
+  customerId    Int?
+  userName      String?   @default("") @db.VarChar(50)
+  ipaddr        String?   @default("") @db.VarChar(128)
+  loginLocation String?   @default("") @db.VarChar(255)
+  browser       String?   @default("") @db.VarChar(50)
+  os            String?   @default("") @db.VarChar(50)
+  status        String?   @default("0") @db.Char(1)
+  msg           String?   @default("") @db.VarChar(255)
+  loginTime     DateTime? @default(now())
+
+  @@index([customerId], map: "idx_customer_login_log_customerId")
+  @@index([loginTime], map: "idx_customer_login_log_loginTime")
+  @@map("customer_login_log")
+}
+
+/// 密码重置令牌表
+model PasswordResetToken {
+  tokenId    Int       @id @default(autoincrement())
+  customerId Int
+  email      String    @db.VarChar(100)
+  token      String    @unique @db.VarChar(100)
+  expiresAt  DateTime
+  used       Int?      @default(0) @db.TinyInt
+  createTime DateTime? @default(now())
+
+  @@index([customerId], map: "idx_password_reset_token_customerId")
+  @@index([expiresAt], map: "idx_password_reset_token_expiresAt")
+  @@map("password_reset_token")
 }
