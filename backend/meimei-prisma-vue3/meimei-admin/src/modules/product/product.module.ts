@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { ImageProcessorService } from './image-processor.service';
+import { CategoryController } from './category.controller';
+import { CategoryService } from './category.service';
+import { AdminOrderController } from './admin-order.controller';
+import { AdminOrderService } from './admin-order.service';
 import { FrontendProductController } from './frontend-product.controller';
 import { FrontendProductService } from './frontend-product.service';
 import { CartController } from './cart.controller';
@@ -18,6 +22,8 @@ import { CommonModule } from '../common/common.module';
   imports: [CommonModule],
   controllers: [
     ProductController,
+    CategoryController,
+    AdminOrderController,
     FrontendProductController,
     CartController,
     WishlistController,
@@ -27,6 +33,8 @@ import { CommonModule } from '../common/common.module';
   providers: [
     ProductService,
     ImageProcessorService,
+    CategoryService,
+    AdminOrderService,
     FrontendProductService,
     CartService,
     WishlistService,
@@ -36,6 +44,8 @@ import { CommonModule } from '../common/common.module';
   exports: [
     ProductService,
     ImageProcessorService,
+    CategoryService,
+    AdminOrderService,
     FrontendProductService,
     CartService,
     WishlistService,
