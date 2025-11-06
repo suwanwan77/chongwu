@@ -208,6 +208,11 @@
    * 使用事件委托，确保动态显示的表单也能正常工作
    */
   function setupLoginFormHandler() {
+    // 监听所有submit事件，用于调试
+    document.addEventListener('submit', function(e) {
+      console.log('Submit event detected on:', e.target.className, e.target);
+    }, true);
+
     // 使用事件委托，监听document上的submit事件
     // 使用capture阶段，确保在其他处理器之前执行
     document.addEventListener('submit', async function(e) {
@@ -277,6 +282,66 @@
     }, true); // 使用capture阶段
 
     console.log('Login form handler setup complete');
+
+    // 额外添加：直接监听登录按钮的点击事件
+    document.addEventListener('click', async function(e) {
+      // 检查是否是登录表单中的提交按钮
+      const button = e.target.closest('button[type="submit"]');
+      if (!button) return;
+
+      const form = button.closest('.gopet-login-form-ajax');
+      if (!form) return;
+
+      console.log('Login button clicked, form found:', form);
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      const usernameInput = form.querySelector('input[name="username"]');
+      const passwordInput = form.querySelector('input[name="password"]');
+
+      if (!usernameInput || !passwordInput) {
+        console.error('Login form inputs not found');
+        return;
+      }
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!username || !password) {
+        alert('Please enter username and password');
+        return;
+      }
+
+      // 禁用提交按钮，防止重复提交
+      const originalButtonText = button.textContent;
+      button.disabled = true;
+      button.textContent = 'Logging in...';
+
+      try {
+        console.log('Attempting login with username:', username);
+        const result = await AuthService.login(username, password);
+        console.log('Login result:', result);
+
+        if (result.code === 200) {
+          // 登录成功，跳转到个人中心
+          console.log('Login successful, redirecting to Personal Center');
+          window.location.href = '/Personal-Center/';
+        } else {
+          alert(result.msg || 'Login failed');
+          // 恢复按钮状态
+          button.disabled = false;
+          button.textContent = originalButtonText;
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        alert(error.message || 'Login failed, please try again');
+        // 恢复按钮状态
+        button.disabled = false;
+        button.textContent = originalButtonText;
+      }
+    }, true);
   }
 
   // 导出到全局（如果需要）
