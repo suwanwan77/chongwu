@@ -74,14 +74,35 @@ const AuthService = {
           throw new Error('登录响应数据不完整：缺少token');
         }
 
-        // 只保存token，不保存用户信息（用户信息通过API实时获取）
+        // 保存token和用户信息
         const storage = rememberMe ? localStorage : sessionStorage;
         storage.setItem('customer_token', data.data.token);
 
-        console.log('=== STORAGE SAVED ===');
-        console.log('Token saved:', storage.getItem('customer_token'));
-        console.log('User info will be fetched from API when needed');
-        console.log('=====================');
+        // 如果返回了用户信息，也保存到localStorage
+        if (data.data.user) {
+          // 保存用户信息，确保包含userId字段
+          const userInfo = {
+            userId: data.data.user.customerId,
+            customerId: data.data.user.customerId,
+            userName: data.data.user.userName,
+            nickName: data.data.user.nickName,
+            email: data.data.user.email,
+            phone: data.data.user.phone,
+            gender: data.data.user.gender,
+            avatar: data.data.user.avatar,
+          };
+          storage.setItem('customer_info', JSON.stringify(userInfo));
+
+          console.log('=== STORAGE SAVED ===');
+          console.log('Token saved:', storage.getItem('customer_token'));
+          console.log('User info saved:', storage.getItem('customer_info'));
+          console.log('=====================');
+        } else {
+          console.log('=== STORAGE SAVED ===');
+          console.log('Token saved:', storage.getItem('customer_token'));
+          console.log('User info not available in login response');
+          console.log('=====================');
+        }
 
         console.log('Login successful:', data);
         return data;
@@ -113,9 +134,11 @@ const AuthService = {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      // 清除本地存储（只清除token）
+      // 清除本地存储（清除token和用户信息）
       localStorage.removeItem('customer_token');
+      localStorage.removeItem('customer_info');
       sessionStorage.removeItem('customer_token');
+      sessionStorage.removeItem('customer_info');
     }
   },
 
