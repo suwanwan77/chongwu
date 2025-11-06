@@ -3,6 +3,8 @@
  * 提供注册、登录、个人信息管理等功能
  */
 
+console.log('🔄 Loading auth.js...');
+
 const AuthService = {
   // API基础URL
   baseURL: 'http://localhost:3000/api/frontend/auth',
@@ -361,4 +363,7 @@ const AuthService = {
 
 // 导出到全局
 window.AuthService = AuthService;
+
+// 调试：确认 AuthService 已加载
+console.log('✅ AuthService loaded successfully!', typeof window.AuthService);
 
