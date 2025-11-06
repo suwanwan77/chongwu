@@ -1374,9 +1374,6 @@ var wc_cart_fragments_params = {"ajax_url":"\/gopet\/wp-admin\/admin-ajax.php","
 </script>
 <script src="../wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min.js" id="wc-cart-fragments-js" defer data-wp-strategy="defer"></script>
 
-<!-- 自定义导航栏样式 -->
-<link rel='stylesheet' href='../assets/css/custom-nav.css' media='all'>
-
 <!-- 用户认证服务 - 必须在登录功能脚本之前加载 -->
 <script src="../assets/js/auth.js"></script>
 
@@ -1510,44 +1507,59 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 处理右上角下拉框的登录表单（如果存在）
-  const dropdownLoginForm = document.querySelector('.site-header-account .woocommerce-form-login');
-  if (dropdownLoginForm && dropdownLoginForm !== loginForm) {
+  // 处理右上角下拉框的登录表单（gopet-login-form-ajax）
+  const dropdownLoginForm = document.querySelector('.gopet-login-form-ajax');
+  console.log('Dropdown login form found:', !!dropdownLoginForm);
+
+  if (dropdownLoginForm) {
+    console.log('Adding submit event listener to dropdown login form');
+
     dropdownLoginForm.addEventListener('submit', async (e) => {
+      console.log('🔥 Dropdown login form submit event triggered!');
       e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      console.log('Default action prevented');
 
       const username = dropdownLoginForm.querySelector('input[name="username"]').value.trim();
       const password = dropdownLoginForm.querySelector('input[name="password"]').value;
-      const rememberMe = dropdownLoginForm.querySelector('input[name="rememberme"]')?.checked || false;
+
+      console.log('Dropdown Username:', username);
+      console.log('Dropdown Password length:', password.length);
 
       if (!username || !password) {
-        showMessage('Please enter username and password', 'warning');
+        alert('Please enter username and password');
         return;
       }
 
-      try {
-        const result = await AuthService.login(username, password, rememberMe);
+      const submitButton = dropdownLoginForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
+      }
 
-        console.log('=== LOGIN DEBUG INFO ===');
+      try {
+        const result = await AuthService.login(username, password, false);
+
+        console.log('=== DROPDOWN LOGIN SUCCESS ===');
         console.log('Login result:', result);
         console.log('Token saved:', localStorage.getItem('customer_token'));
-        console.log('User info saved:', localStorage.getItem('customer_info'));
-        console.log('=======================');
-
-        // 暂停执行，让你有时间查看控制台
-        debugger;
+        console.log('==============================');
 
         if (result.code === 200) {
-          showMessage('Login successful! Check console for debug info. Click Resume to continue...', 'success');
-          setTimeout(() => {
-            window.location.href = '../Personal-Center/';
-          }, 30000);
+          console.log('Redirecting to Personal Center...');
+          window.location.href = '../Personal-Center/';
         }
       } catch (error) {
-        console.error('=== LOGIN ERROR ===');
+        console.error('=== DROPDOWN LOGIN ERROR ===');
         console.error('Error:', error);
-        console.error('==================');
-        showMessage(error.message || 'Login failed, please try again', 'error');
+        console.error('============================');
+        alert(error.message || 'Login failed, please try again');
+
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Login';
+        }
       }
     });
   }

@@ -103,8 +103,6 @@
 
         // 设置昵称，如果太长则截断
         newContentSpan.textContent = displayName;
-        // 始终添加tooltip，让CSS决定是否显示
-        newContentSpan.setAttribute('data-tooltip', displayName);
         newContentSpan.style.cssText = `
           max-width: 60px !important;
           overflow: hidden !important;
