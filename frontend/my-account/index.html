@@ -1543,7 +1543,27 @@ var wc_cart_fragments_params = {"ajax_url":"\/gopet\/wp-admin\/admin-ajax.php","
 <script src="../assets/js/auth.js"></script>
 
 <!-- 用户导航栏状态脚本 -->
-<script src="../assets/js/user-nav.js"></script>
+<script>
+// 确保 AuthService 加载完成后再加载 user-nav.js
+(function() {
+  function loadUserNav() {
+    if (typeof AuthService !== 'undefined') {
+      var script = document.createElement('script');
+      script.src = '../assets/js/user-nav.js';
+      document.body.appendChild(script);
+    } else {
+      console.warn('AuthService not loaded, retrying in 100ms...');
+      setTimeout(loadUserNav, 100);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadUserNav);
+  } else {
+    loadUserNav();
+  }
+})();
+</script>
 
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98390c17aeff0540',t:'MTc1ODYyMDA3Ng=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

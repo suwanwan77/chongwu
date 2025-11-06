@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Auth.js Loading</title>
+</head>
+<body>
+    <h1>Test Auth.js Loading</h1>
+    <div id="result"></div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        const resultDiv = document.getElementById('result');
+        
+        if (typeof AuthService !== 'undefined') {
+            resultDiv.innerHTML = '<p style="color: green;">✅ AuthService loaded successfully!</p>';
+            console.log('AuthService:', AuthService);
+        } else {
+            resultDiv.innerHTML = '<p style="color: red;">❌ AuthService is not defined!</p>';
+            console.error('AuthService is not defined');
+        }
+    </script>
+</body>
+</html>
+
