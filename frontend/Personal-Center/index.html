@@ -2036,23 +2036,23 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                                 // 重新加载用户信息以获取最新的头像URL
                                 await loadUserInfo();
 
-                                // 更新导航栏的头像显示
+                                // 强制更新导航栏的头像显示
                                 console.log('Checking UserNav:', window.UserNav);
-                                if (window.UserNav && typeof window.UserNav.update === 'function') {
-                                    console.log('Calling UserNav.update()...');
+                                if (window.UserNav && typeof window.UserNav.forceUpdate === 'function') {
+                                    console.log('Calling UserNav.forceUpdate()...');
                                     try {
-                                        await window.UserNav.update();
-                                        console.log('UserNav.update() completed');
+                                        await window.UserNav.forceUpdate();
+                                        console.log('UserNav.forceUpdate() completed');
                                     } catch (error) {
-                                        console.error('Error calling UserNav.update():', error);
+                                        console.error('Error calling UserNav.forceUpdate():', error);
                                     }
                                 } else {
-                                    console.warn('UserNav.update not found. window.UserNav:', window.UserNav);
+                                    console.warn('UserNav.forceUpdate not found. window.UserNav:', window.UserNav);
                                     // 如果UserNav不可用，等待一下再试
                                     setTimeout(async () => {
-                                        if (window.UserNav && typeof window.UserNav.update === 'function') {
-                                            console.log('Retrying UserNav.update()...');
-                                            await window.UserNav.update();
+                                        if (window.UserNav && typeof window.UserNav.forceUpdate === 'function') {
+                                            console.log('Retrying UserNav.forceUpdate()...');
+                                            await window.UserNav.forceUpdate();
                                         }
                                     }, 100);
                                 }
