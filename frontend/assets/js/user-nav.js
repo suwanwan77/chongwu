@@ -3,23 +3,30 @@
  * 根据登录状态更新导航栏显示
  */
 
+console.log('🔄 Loading user-nav.js...');
+
 (function() {
   'use strict';
 
   // 等待DOM加载完成
   if (document.readyState === 'loading') {
+    console.log('user-nav.js: DOM is loading, waiting for DOMContentLoaded...');
     document.addEventListener('DOMContentLoaded', init);
   } else {
+    console.log('user-nav.js: DOM already loaded, initializing immediately...');
     init();
   }
 
   function init() {
+    console.log('user-nav.js: init() called');
+
     // 检查AuthService是否存在
     if (typeof AuthService === 'undefined') {
       console.warn('AuthService not loaded, user nav will not update');
       return;
     }
 
+    console.log('user-nav.js: AuthService found, setting up...');
     updateUserNav();
     setupLoginFormHandler();
   }

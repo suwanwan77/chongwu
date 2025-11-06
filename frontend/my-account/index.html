@@ -1507,62 +1507,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // 处理右上角下拉框的登录表单（gopet-login-form-ajax）
-  const dropdownLoginForm = document.querySelector('.gopet-login-form-ajax');
-  console.log('Dropdown login form found:', !!dropdownLoginForm);
-
-  if (dropdownLoginForm) {
-    console.log('Adding submit event listener to dropdown login form');
-
-    dropdownLoginForm.addEventListener('submit', async (e) => {
-      console.log('🔥 Dropdown login form submit event triggered!');
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      console.log('Default action prevented');
-
-      const username = dropdownLoginForm.querySelector('input[name="username"]').value.trim();
-      const password = dropdownLoginForm.querySelector('input[name="password"]').value;
-
-      console.log('Dropdown Username:', username);
-      console.log('Dropdown Password length:', password.length);
-
-      if (!username || !password) {
-        alert('Please enter username and password');
-        return;
-      }
-
-      const submitButton = dropdownLoginForm.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Logging in...';
-      }
-
-      try {
-        const result = await AuthService.login(username, password, false);
-
-        console.log('=== DROPDOWN LOGIN SUCCESS ===');
-        console.log('Login result:', result);
-        console.log('Token saved:', localStorage.getItem('customer_token'));
-        console.log('==============================');
-
-        if (result.code === 200) {
-          console.log('Redirecting to Personal Center...');
-          window.location.href = '../Personal-Center/';
-        }
-      } catch (error) {
-        console.error('=== DROPDOWN LOGIN ERROR ===');
-        console.error('Error:', error);
-        console.error('============================');
-        alert(error.message || 'Login failed, please try again');
-
-        if (submitButton) {
-          submitButton.disabled = false;
-          submitButton.textContent = 'Login';
-        }
-      }
-    });
-  }
+  // 下拉表单的登录由 user-nav.js 处理，这里不需要重复处理
+  console.log('Dropdown login form will be handled by user-nav.js');
 });
 </script>
 
