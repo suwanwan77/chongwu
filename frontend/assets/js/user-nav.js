@@ -88,21 +88,8 @@
 
         // 设置昵称，如果太长则截断
         newContentSpan.textContent = displayName;
-
-        // 只有当昵称被截断时才添加tooltip
-        // 使用临时span测量文本宽度
-        const tempSpan = document.createElement('span');
-        tempSpan.style.cssText = 'position: absolute; visibility: hidden; white-space: nowrap;';
-        tempSpan.textContent = displayName;
-        document.body.appendChild(tempSpan);
-        const textWidth = tempSpan.offsetWidth;
-        document.body.removeChild(tempSpan);
-
-        // 如果文本宽度超过60px，添加tooltip
-        if (textWidth > 60) {
-          newContentSpan.setAttribute('data-tooltip', displayName);
-        }
-
+        // 始终添加tooltip，让CSS决定是否显示
+        newContentSpan.setAttribute('data-tooltip', displayName);
         newContentSpan.style.cssText = `
           max-width: 60px !important;
           overflow: hidden !important;

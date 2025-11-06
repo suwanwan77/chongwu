@@ -2035,6 +2035,14 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                                 showMessage('Avatar updated successfully!', 'success');
                                 // 重新加载用户信息以获取最新的头像URL
                                 await loadUserInfo();
+
+                                // 更新导航栏的头像显示
+                                if (window.UserNav && typeof window.UserNav.update === 'function') {
+                                    console.log('Updating navigation bar avatar...');
+                                    await window.UserNav.update();
+                                } else {
+                                    console.warn('UserNav.update not found');
+                                }
                             } else {
                                 throw new Error(result.msg || 'Failed to update avatar');
                             }

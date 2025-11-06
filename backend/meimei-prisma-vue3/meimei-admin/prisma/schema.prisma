@@ -314,7 +314,7 @@ model Customer {
   email          String    @unique @db.VarChar(100)
   phonenumber    String?   @db.VarChar(20)
   password       String    @db.VarChar(100)
-  avatar         String?   @default("") @db.Text
+  avatar         String?   @db.Text
   sex            String?   @default("0") @db.Char(1)
   status         String?   @default("0") @db.Char(1)
   delFlag        String?   @default("0") @db.Char(1)
