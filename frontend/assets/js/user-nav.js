@@ -130,7 +130,14 @@ console.log('🔄 Loading user-nav.js...');
         }
 
         // 修改链接指向个人中心
-        newLink.href = '/Personal-Center/';
+        const currentPath = window.location.pathname;
+        if (currentPath === '/' || currentPath === '/index.html') {
+          // 首页
+          newLink.href = 'Personal-Center/index.html';
+        } else {
+          // 其他页面，使用绝对路径
+          newLink.href = '/Personal-Center/index.html';
+        }
 
         // 移除下拉菜单（如果存在）
         const dropdown = container.querySelector('.account-dropdown');
@@ -198,8 +205,42 @@ console.log('🔄 Loading user-nav.js...');
       contentSpan.title = '';
       contentSpan.style.cssText = '';
 
-      // 重置链接
-      link.href = '/my-account/';
+      // 重置链接 - 使用相对路径或绝对路径到 index.html
+      // 检查当前页面路径，设置正确的相对路径
+      const currentPath = window.location.pathname;
+      console.log('Current path:', currentPath);
+
+      if (currentPath === '/' || currentPath === '/index.html') {
+        // 首页
+        link.href = 'my-account/index.html';
+        console.log('Set Sign In link to:', link.href);
+      } else {
+        // 其他页面，使用绝对路径
+        link.href = '/my-account/index.html';
+        console.log('Set Sign In link to:', link.href);
+      }
+
+      // 确保链接可以点击
+      link.style.pointerEvents = 'auto';
+      link.style.cursor = 'pointer';
+
+      console.log('Final Sign In link href:', link.href);
+
+      // 移除所有现有的点击事件监听器，添加新的强制跳转监听器
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+
+      // 添加点击事件监听器，强制跳转到登录页面
+      newLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+
+        console.log('Sign In link clicked! Redirecting to:', this.href);
+        window.location.href = this.href;
+      }, true);
+
+      console.log('Added click handler to Sign In link');
 
       // 清除更新标记
       container.dataset.userNavUpdated = 'false';
