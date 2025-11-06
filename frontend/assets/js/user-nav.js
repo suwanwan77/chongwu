@@ -88,7 +88,7 @@
 
         // 设置昵称，如果太长则截断
         newContentSpan.textContent = displayName;
-        newContentSpan.title = displayName; // 鼠标悬浮显示完整昵称
+        newContentSpan.setAttribute('data-tooltip', displayName); // 使用自定义tooltip
         newContentSpan.style.cssText = `
           max-width: 60px !important;
           overflow: hidden !important;
@@ -96,6 +96,7 @@
           white-space: nowrap !important;
           display: inline-block !important;
           vertical-align: middle !important;
+          position: relative !important;
         `;
 
         // 确保父容器也有正确的样式

@@ -562,6 +562,7 @@ body {
 <!-- 引入认证服务 -->
 <script src="../assets/js/auth.js"></script>
 <link rel='stylesheet' href='../assets/css/custom-nav.css' media='all'>
+<link rel='stylesheet' href='../assets/css/custom-tooltip.css' media='all'>
 
 </head>
 <body class="wp-singular page-template-default page page-id-7 wp-custom-logo wp-embed-responsive wp-theme-gopet wp-child-theme-demo-child theme-gopet woocommerce-cart woocommerce-page woocommerce-no-js ehf-header ehf-footer ehf-template-gopet ehf-stylesheet-demo-child woo-variation-swatches wvs-behavior-blur wvs-theme-demo-child wvs-show-label wvs-tooltip chrome woocommerce-active product-style-1 elementor-default elementor-kit-4">
@@ -780,11 +781,6 @@ body {
 											<i class="fa fa-map-marker-alt" style="margin-right: 8px;"></i> Addresses
 										</a>
 									</li>
-									<li style="margin-bottom: 10px;">
-										<a href="#settings" class="nav-link" data-tab="settings" style="display: block; padding: 12px 15px; background: #fff; color: #666; text-decoration: none; border-radius: 4px; transition: all 0.3s;">
-											<i class="fa fa-cog" style="margin-right: 8px;"></i> Settings
-										</a>
-									</li>
 									<li>
 										<a href="#" id="logout-btn" style="display: block; padding: 12px 15px; background: #fff; color: #dc3545; text-decoration: none; border-radius: 4px; transition: all 0.3s;">
 											<i class="fa fa-sign-out-alt" style="margin-right: 8px;"></i> Logout
@@ -904,38 +900,6 @@ body {
 
 								<div class="address-cards-container" id="pc-address-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
 									<!-- Address cards will be inserted here -->
-								</div>
-							</div>
-
-							<!-- Settings Tab -->
-							<div class="tab-content" id="settings-tab" style="display: none;">
-								<h2 style="margin-bottom: 20px; color: #2F562A;">Account Settings</h2>
-
-								<div class="settings-card" style="background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-									<h3 style="margin-bottom: 20px; color: #333;">Change Password</h3>
-
-									<form id="change-password-form">
-										<div class="form-group" style="margin-bottom: 20px;">
-											<label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Current Password</label>
-											<input type="password" name="current_password" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-										</div>
-
-										<div class="form-group" style="margin-bottom: 20px;">
-											<label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">New Password</label>
-											<input type="password" name="new_password" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-										</div>
-
-										<div class="form-group" style="margin-bottom: 20px;">
-											<label style="display: block; margin-bottom: 8px; font-weight: 600; color: #333;">Confirm New Password</label>
-											<input type="password" name="confirm_password" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
-										</div>
-
-										<div style="text-align: right;">
-											<button type="submit" style="padding: 12px 30px; background: #2F562A; color: #fff; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; transition: background 0.3s;">
-												Update Password
-											</button>
-										</div>
-									</form>
 								</div>
 							</div>
 
@@ -2033,7 +1997,7 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                 });
             }
 
-            uploadInput.addEventListener('change', function(e) {
+            uploadInput.addEventListener('change', async function(e) {
                 const file = e.target.files[0];
                 if (file) {
                     // 验证文件类型
@@ -2048,27 +2012,42 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                         return;
                     }
 
-                    // 读取并显示图片
+                    // 读取并显示图片（先显示预览）
                     const reader = new FileReader();
-                    reader.onload = function(e) {
-                        avatarImg.src = e.target.result;
+                    reader.onload = async function(e) {
+                        const base64Image = e.target.result;
+
+                        // 立即显示预览
+                        avatarImg.src = base64Image;
                         avatarImg.style.display = 'block';
                         avatarPlaceholder.style.display = 'none';
 
-                        // 保存到 localStorage
-                        localStorage.setItem('userAvatar', e.target.result);
+                        // 上传到服务器
+                        try {
+                            showMessage('Uploading avatar...', 'info');
+
+                            // 调用API更新头像
+                            const result = await AuthService.updateProfile({
+                                avatar: base64Image
+                            });
+
+                            if (result.code === 200) {
+                                showMessage('Avatar updated successfully!', 'success');
+                                // 重新加载用户信息以获取最新的头像URL
+                                await loadUserInfo();
+                            } else {
+                                throw new Error(result.msg || 'Failed to update avatar');
+                            }
+                        } catch (error) {
+                            console.error('Failed to upload avatar:', error);
+                            showMessage('Failed to upload avatar: ' + error.message, 'error');
+                            // 上传失败，恢复原来的头像
+                            await loadUserInfo();
+                        }
                     };
                     reader.readAsDataURL(file);
                 }
             });
-
-            // 加载已保存的头像
-            const savedAvatar = localStorage.getItem('userAvatar');
-            if (savedAvatar) {
-                avatarImg.src = savedAvatar;
-                avatarImg.style.display = 'block';
-                avatarPlaceholder.style.display = 'none';
-            }
         }
     }
 
