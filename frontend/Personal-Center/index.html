@@ -1633,12 +1633,11 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
 
     const API_BASE_URL = 'http://localhost:3000';
 
-    // 检查登录状态
-    function checkLogin() {
-        const token = localStorage.getItem('customer_token');
-        const userInfo = localStorage.getItem('customer_info');
+    // 检查登录状态（异步）
+    async function checkLogin() {
+        const token = localStorage.getItem('customer_token') || sessionStorage.getItem('customer_token');
 
-        if (!token || !userInfo) {
+        if (!token) {
             // 未登录，跳转到登录页面
             showMessage('Please login first to access your personal center', 'warning');
             setTimeout(() => {
@@ -1647,7 +1646,26 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
             return false;
         }
 
-        return true;
+        // 验证token是否有效（通过调用API）
+        try {
+            const result = await AuthService.getProfile();
+            if (result.code === 200 && result.data) {
+                console.log('Login verified, user:', result.data);
+                return true;
+            } else {
+                throw new Error('Invalid token');
+            }
+        } catch (error) {
+            console.error('Token validation failed:', error);
+            // Token无效，清除并跳转到登录页面
+            localStorage.removeItem('customer_token');
+            sessionStorage.removeItem('customer_token');
+            showMessage('Session expired, please login again', 'warning');
+            setTimeout(() => {
+                window.location.href = '../my-account/';
+            }, 1500);
+            return false;
+        }
     }
 
     // 加载用户信息（直接从API获取，不使用localStorage缓存）
@@ -1933,11 +1951,12 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
     }
 
     // 页面加载完成后执行
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
         console.log('=== Personal Center Page Loaded ===');
 
-        // 检查登录状态
-        if (!checkLogin()) {
+        // 检查登录状态（异步）
+        const isLoggedIn = await checkLogin();
+        if (!isLoggedIn) {
             console.log('Not logged in, redirecting...');
             return;
         }
@@ -2109,18 +2128,24 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     return;
                 }
 
-                // 获取当前用户信息
-                const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
-                const userId = userInfo.userId;
-
-                if (!userId) {
-                    showMessage('User not logged in. Please login first.', 'warning');
-                    return;
-                }
-
                 // 获取提交按钮
                 const submitBtn = editForm.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
+
+                // 从API获取当前用户信息
+                let userId;
+                try {
+                    const result = await AuthService.getProfile();
+                    if (result.code === 200 && result.data) {
+                        userId = result.data.customerId;
+                    } else {
+                        throw new Error('Failed to get user info');
+                    }
+                } catch (error) {
+                    console.error('Failed to get user info:', error);
+                    showMessage('Failed to get user information. Please login again.', 'error');
+                    return;
+                }
 
                 try {
                     // 显示保存中状态
@@ -2259,18 +2284,24 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                     return;
                 }
 
-                // 获取当前用户信息
-                const userInfo = JSON.parse(localStorage.getItem('customer_info') || '{}');
-                const userId = userInfo.userId;
-
-                if (!userId) {
-                    showMessage('User not logged in. Please login first.', 'warning');
-                    return;
-                }
-
                 // 获取提交按钮
                 const submitBtn = changePasswordForm.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.innerHTML;
+
+                // 从API获取当前用户信息
+                let userId;
+                try {
+                    const result = await AuthService.getProfile();
+                    if (result.code === 200 && result.data) {
+                        userId = result.data.customerId;
+                    } else {
+                        throw new Error('Failed to get user info');
+                    }
+                } catch (error) {
+                    console.error('Failed to get user info:', error);
+                    showMessage('Failed to get user information. Please login again.', 'error');
+                    return;
+                }
 
                 try {
                     // 显示保存中状态
