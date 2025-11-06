@@ -205,68 +205,78 @@
 
   /**
    * 设置原始登录表单的处理器
+   * 使用事件委托，确保动态显示的表单也能正常工作
    */
   function setupLoginFormHandler() {
-    // 查找所有的登录表单
-    const loginForms = document.querySelectorAll('.gopet-login-form-ajax');
+    // 使用事件委托，监听document上的submit事件
+    // 使用capture阶段，确保在其他处理器之前执行
+    document.addEventListener('submit', async function(e) {
+      // 检查是否是登录表单
+      if (!e.target.classList.contains('gopet-login-form-ajax')) {
+        return;
+      }
 
-    loginForms.forEach(form => {
-      // 移除可能存在的旧事件监听器
-      const newForm = form.cloneNode(true);
-      form.parentNode.replaceChild(newForm, form);
+      console.log('Login form submit event captured');
 
-      // 添加新的提交事件监听器
-      newForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
+      // 阻止默认行为和其他事件处理器
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
 
-        const usernameInput = this.querySelector('input[name="username"]');
-        const passwordInput = this.querySelector('input[name="password"]');
-        const submitButton = this.querySelector('button[type="submit"]');
+      const form = e.target;
+      const usernameInput = form.querySelector('input[name="username"]');
+      const passwordInput = form.querySelector('input[name="password"]');
+      const submitButton = form.querySelector('button[type="submit"]');
 
-        if (!usernameInput || !passwordInput) {
-          console.error('Login form inputs not found');
-          return;
-        }
+      if (!usernameInput || !passwordInput) {
+        console.error('Login form inputs not found');
+        return;
+      }
 
-        const username = usernameInput.value.trim();
-        const password = passwordInput.value;
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
 
-        if (!username || !password) {
-          alert('Please enter username and password');
-          return;
-        }
+      if (!username || !password) {
+        alert('Please enter username and password');
+        return;
+      }
 
-        // 禁用提交按钮，防止重复提交
-        if (submitButton) {
-          submitButton.disabled = true;
-          submitButton.textContent = 'Logging in...';
-        }
+      // 禁用提交按钮，防止重复提交
+      const originalButtonText = submitButton ? submitButton.textContent : 'Login';
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
+      }
 
-        try {
-          const result = await AuthService.login(username, password);
+      try {
+        console.log('Attempting login with username:', username);
+        const result = await AuthService.login(username, password);
+        console.log('Login result:', result);
 
-          if (result.code === 200) {
-            // 登录成功，跳转到个人中心
-            window.location.href = '/Personal-Center/';
-          } else {
-            alert(result.msg || 'Login failed');
-            // 恢复按钮状态
-            if (submitButton) {
-              submitButton.disabled = false;
-              submitButton.textContent = 'Login';
-            }
-          }
-        } catch (error) {
-          console.error('Login error:', error);
-          alert(error.message || 'Login failed, please try again');
+        if (result.code === 200) {
+          // 登录成功，跳转到个人中心
+          console.log('Login successful, redirecting to Personal Center');
+          window.location.href = '/Personal-Center/';
+        } else {
+          alert(result.msg || 'Login failed');
           // 恢复按钮状态
           if (submitButton) {
             submitButton.disabled = false;
-            submitButton.textContent = 'Login';
+            submitButton.textContent = originalButtonText;
           }
         }
-      });
-    });
+      } catch (error) {
+        console.error('Login error:', error);
+        alert(error.message || 'Login failed, please try again');
+        // 恢复按钮状态
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalButtonText;
+        }
+      }
+    }, true); // 使用capture阶段
+
+    console.log('Login form handler setup complete');
   }
 
   // 导出到全局（如果需要）
