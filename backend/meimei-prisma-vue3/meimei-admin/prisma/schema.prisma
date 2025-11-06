@@ -308,23 +308,28 @@ model SysUser {
 
 /// 前端用户表（客户表）
 model Customer {
-  customerId     Int       @id @default(autoincrement())
-  userName       String    @unique @db.VarChar(50)
-  nickName       String    @db.VarChar(50)
-  email          String    @unique @db.VarChar(100)
-  phonenumber    String?   @db.VarChar(20)
-  password       String    @db.VarChar(100)
-  avatar         String?   @db.Text
-  sex            String?   @default("0") @db.Char(1)
-  status         String?   @default("0") @db.Char(1)
-  delFlag        String?   @default("0") @db.Char(1)
-  loginIp        String?   @default("") @db.VarChar(128)
+  customerId     Int               @id @default(autoincrement())
+  userName       String            @unique @db.VarChar(50)
+  nickName       String            @db.VarChar(50)
+  email          String            @unique @db.VarChar(100)
+  phonenumber    String?           @db.VarChar(20)
+  password       String            @db.VarChar(100)
+  avatar         String?           @db.Text
+  sex            String?           @default("0") @db.Char(1)
+  status         String?           @default("0") @db.Char(1)
+  delFlag        String?           @default("0") @db.Char(1)
+  loginIp        String?           @default("") @db.VarChar(128)
   loginDate      DateTime?
-  createTime     DateTime? @default(now())
-  updateTime     DateTime? @updatedAt
-  remark         String?   @db.VarChar(500)
+  createTime     DateTime?         @default(now())
+  updateTime     DateTime?         @updatedAt
+  remark         String?           @db.VarChar(500)
   lockUntil      DateTime?
-  loginFailCount Int?      @default(0)
+  loginFailCount Int?              @default(0)
+  // 关联关系
+  shoppingCarts  ShoppingCart[]
+  orders         CustomerOrder[]
+  wishlists      Wishlist[]
+  addresses      CustomerAddress[]
 
   @@index([createTime], map: "idx_customer_createTime")
   @@index([status], map: "idx_customer_status")
@@ -362,4 +367,181 @@ model PasswordResetToken {
   @@index([customerId], map: "idx_password_reset_token_customerId")
   @@index([expiresAt], map: "idx_password_reset_token_expiresAt")
   @@map("password_reset_token")
+}
+
+/// 商品分类表
+model ProductCategory {
+  categoryId      Int               @id @default(autoincrement())
+  categoryName    String            @db.VarChar(100)
+  parentId        Int?              @default(0)
+  level           Int?              @default(1)
+  sort            Int?              @default(0)
+  icon            String?           @db.VarChar(200)
+  description     String?           @db.VarChar(500)
+  status          String?           @default("0") @db.Char(1)
+  delFlag         String?           @default("0") @db.Char(1)
+  createBy        String?           @default("") @db.VarChar(64)
+  createTime      DateTime?         @default(now())
+  updateBy        String?           @default("") @db.VarChar(64)
+  updateTime      DateTime?         @updatedAt
+  // 关联关系
+  products        Product[]
+  parentCategory  ProductCategory?  @relation("CategoryParent", fields: [parentId], references: [categoryId], onDelete: NoAction, onUpdate: NoAction)
+  childCategories ProductCategory[] @relation("CategoryParent")
+
+  @@index([parentId], map: "idx_product_category_parentId")
+  @@index([status], map: "idx_product_category_status")
+  @@map("product_category")
+}
+
+/// 商品表
+model Product {
+  productId        Int              @id @default(autoincrement())
+  productName      String           @db.VarChar(200)
+  productCode      String           @unique @db.VarChar(50)
+  categoryId       Int?
+  tags             String?          @db.VarChar(200)
+  price            Decimal          @db.Decimal(10, 2)
+  originalPrice    Decimal?         @db.Decimal(10, 2)
+  costPrice        Decimal?         @db.Decimal(10, 2)
+  stock            Int              @default(0)
+  unit             String?          @default("件") @db.VarChar(20)
+  weight           Decimal?         @db.Decimal(10, 2)
+  volume           Decimal?         @db.Decimal(10, 2)
+  mainImage        String?          @db.Text
+  images           String?          @db.Text
+  shortDescription String?          @db.VarChar(500)
+  description      String?          @db.Text
+  specifications   String?          @db.Text
+  status           String?          @default("0") @db.Char(1)
+  isFeatured       Int?             @default(0) @db.TinyInt
+  isNew            Int?             @default(0) @db.TinyInt
+  isHot            Int?             @default(0) @db.TinyInt
+  displayPosition  String?          @db.VarChar(100)
+  displayOrder     Int?             @default(0)
+  viewCount        Int?             @default(0)
+  salesCount       Int?             @default(0)
+  rating           Decimal?         @default(0.00) @db.Decimal(3, 2)
+  reviewCount      Int?             @default(0)
+  sort             Int?             @default(0)
+  delFlag          String?          @default("0") @db.Char(1)
+  createBy         String?          @default("") @db.VarChar(64)
+  createTime       DateTime?        @default(now())
+  updateBy         String?          @default("") @db.VarChar(64)
+  updateTime       DateTime?        @updatedAt
+  // 关联关系
+  category         ProductCategory? @relation(fields: [categoryId], references: [categoryId])
+  shoppingCarts    ShoppingCart[]
+  orderItems       OrderItem[]
+  wishlists        Wishlist[]
+
+  @@index([categoryId], map: "idx_product_categoryId")
+  @@index([status], map: "idx_product_status")
+  @@index([displayPosition], map: "idx_product_displayPosition")
+  @@index([createTime], map: "idx_product_createTime")
+  @@map("product")
+}
+
+/// 购物车表
+model ShoppingCart {
+  cartId     Int       @id @default(autoincrement())
+  customerId Int
+  productId  Int
+  quantity   Int       @default(1)
+  createTime DateTime? @default(now())
+  updateTime DateTime? @updatedAt
+  // 关联关系
+  customer   Customer  @relation(fields: [customerId], references: [customerId])
+  product    Product   @relation(fields: [productId], references: [productId])
+
+  @@index([customerId], map: "idx_shopping_cart_customerId")
+  @@index([productId], map: "idx_shopping_cart_productId")
+  @@map("shopping_cart")
+}
+
+/// 心愿单表
+model Wishlist {
+  wishlistId Int       @id @default(autoincrement())
+  customerId Int
+  productId  Int
+  createTime DateTime? @default(now())
+  // 关联关系
+  customer   Customer  @relation(fields: [customerId], references: [customerId])
+  product    Product   @relation(fields: [productId], references: [productId])
+
+  @@index([customerId], map: "idx_wishlist_customerId")
+  @@index([productId], map: "idx_wishlist_productId")
+  @@map("wishlist")
+}
+
+/// 收货地址表（新西兰格式）
+model CustomerAddress {
+  addressId            Int             @id @default(autoincrement())
+  customerId           Int
+  receiverName         String          @db.VarChar(100)
+  receiverPhone        String          @db.VarChar(20)
+  streetAddress        String          @db.VarChar(200)
+  suburb               String?         @db.VarChar(100)
+  city                 String          @db.VarChar(100)
+  region               String?         @db.VarChar(100)
+  postalCode           String          @db.VarChar(10)
+  country              String          @default("New Zealand") @db.VarChar(50)
+  deliveryInstructions String?         @db.VarChar(500)
+  addressLabel         String?         @db.VarChar(50)
+  isDefault            Int?            @default(0) @db.TinyInt
+  delFlag              String?         @default("0") @db.Char(1)
+  createTime           DateTime?       @default(now())
+  updateTime           DateTime?       @updatedAt
+  // 关联关系
+  customer             Customer        @relation(fields: [customerId], references: [customerId])
+  orders               CustomerOrder[]
+
+  @@index([customerId], map: "idx_customer_address_customerId")
+  @@map("customer_address")
+}
+
+/// 订单表
+model CustomerOrder {
+  orderId       Int              @id @default(autoincrement())
+  orderNo       String           @unique @db.VarChar(50)
+  customerId    Int
+  addressId     Int?
+  totalAmount   Decimal          @db.Decimal(10, 2)
+  paymentMethod String?          @db.VarChar(50)
+  paymentStatus String?          @default("0") @db.Char(1)
+  orderStatus   String?          @default("0") @db.Char(1)
+  remark        String?          @db.VarChar(500)
+  delFlag       String?          @default("0") @db.Char(1)
+  createTime    DateTime?        @default(now())
+  updateTime    DateTime?        @updatedAt
+  paymentTime   DateTime?
+  deliveryTime  DateTime?
+  completeTime  DateTime?
+  // 关联关系
+  customer      Customer         @relation(fields: [customerId], references: [customerId])
+  address       CustomerAddress? @relation(fields: [addressId], references: [addressId])
+  orderItems    OrderItem[]
+
+  @@index([customerId], map: "idx_customer_order_customerId")
+  @@index([orderNo], map: "idx_customer_order_orderNo")
+  @@index([orderStatus], map: "idx_customer_order_orderStatus")
+  @@index([createTime], map: "idx_customer_order_createTime")
+  @@map("customer_order")
+}
+
+/// 订单明细表
+model OrderItem {
+  itemId     Int           @id @default(autoincrement())
+  orderId    Int
+  productId  Int
+  quantity   Int
+  price      Decimal       @db.Decimal(10, 2)
+  totalPrice Decimal       @db.Decimal(10, 2)
+  // 关联关系
+  order      CustomerOrder @relation(fields: [orderId], references: [orderId])
+  product    Product       @relation(fields: [productId], references: [productId])
+
+  @@index([orderId], map: "idx_order_item_orderId")
+  @@index([productId], map: "idx_order_item_productId")
+  @@map("order_item")
 }

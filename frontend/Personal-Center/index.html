@@ -1212,33 +1212,8 @@ body {
 		</div>		</footer>
 
 </div><!-- #page -->
-
-        <div class="account-wrap d-none">
-            <div class="account-inner ">
-                        <div class="login-form-head">
-            <span class="login-form-title">Sign in</span>
-            <span class="pull-right">
-                <a class="register-link" href="../register/index.html" title="Register">Create an Account</a>
-            </span>
-        </div>
-        <form class="gopet-login-form-ajax" data-toggle="validator">
-            <p>
-                <label>Username or email <span class="required">*</span></label>
-                <input name="username" type="text" required placeholder="Username">
-            </p>
-            <p>
-                <label>Password <span class="required">*</span></label>
-                <input name="password" type="password" required placeholder="Password">
-            </p>
-            <button type="submit" data-button-action class="btn btn-primary btn-block w-100 mt-1" style="background-color: #5C7524 !important;">Login</button>
-            <input type="hidden" name="action" value="gopet_login">
-            <input type="hidden" id="security-login" name="security-login" value="1d757d723c"><input type="hidden" name="_wp_http_referer" value="/gopet/cart/">        </form>
-        <div class="login-form-bottom">
-            <a href="../my-account/lost-password/index.html" class="lostpass-link" title="Lost your password?">Lost your password?</a>
-        </div>
-                    </div>
-        </div>
-                                        <div class="gopet-mobile-nav">
+        <!-- 涓嬫媺鐧诲綍琛ㄥ崟宸插垹闄わ紝鐐瑰嚮 Sign In 鐩存帴璺宠浆鍒扮櫥褰曢〉闈?-->
+<div class="gopet-mobile-nav">
                 <div class="menu-scroll-mobile">
                     <a href="#" class="mobile-nav-close"><i class="gopet-icon-times"></i></a>
                             <div class="mobile-nav-tabs">
@@ -2032,30 +2007,12 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
                             });
 
                             if (result.code === 200) {
-                                showMessage('Avatar updated successfully!', 'success');
-                                // 重新加载用户信息以获取最新的头像URL
-                                await loadUserInfo();
+                                showMessage('Avatar updated successfully! Refreshing page...', 'success');
 
-                                // 强制更新导航栏的头像显示
-                                console.log('Checking UserNav:', window.UserNav);
-                                if (window.UserNav && typeof window.UserNav.forceUpdate === 'function') {
-                                    console.log('Calling UserNav.forceUpdate()...');
-                                    try {
-                                        await window.UserNav.forceUpdate();
-                                        console.log('UserNav.forceUpdate() completed');
-                                    } catch (error) {
-                                        console.error('Error calling UserNav.forceUpdate():', error);
-                                    }
-                                } else {
-                                    console.warn('UserNav.forceUpdate not found. window.UserNav:', window.UserNav);
-                                    // 如果UserNav不可用，等待一下再试
-                                    setTimeout(async () => {
-                                        if (window.UserNav && typeof window.UserNav.forceUpdate === 'function') {
-                                            console.log('Retrying UserNav.forceUpdate()...');
-                                            await window.UserNav.forceUpdate();
-                                        }
-                                    }, 100);
-                                }
+                                // 等待一下让用户看到成功消息，然后刷新页面
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 800);
                             } else {
                                 throw new Error(result.msg || 'Failed to update avatar');
                             }
@@ -3155,14 +3112,13 @@ var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false
         });
 
         if (result.code === 200) {
-          showMessage('Profile updated successfully!', 'success');
+          showMessage('Profile updated successfully! Refreshing page...', 'success');
           editProfileModal.classList.remove('show');
-          // 重新加载用户信息（从 API 获取最新数据）
-          await loadUserInfo();
-          // 更新导航栏显示
-          if (window.updateUserNav) {
-            window.updateUserNav();
-          }
+
+          // 等待一下让用户看到成功消息，然后刷新页面
+          setTimeout(() => {
+            window.location.reload();
+          }, 800);
         }
       } catch (error) {
         showMessage(error.message || 'Failed to update profile', 'error');

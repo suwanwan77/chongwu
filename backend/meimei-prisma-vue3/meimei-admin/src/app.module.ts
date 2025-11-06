@@ -15,9 +15,10 @@ import { LoginModule } from './modules/login/login.module';
 import { MonitorModule } from './modules/monitor/monitor.module';
 import { CommonModule } from './modules/common/common.module';
 import { FrontendAuthModule } from './modules/frontend-auth/frontend-auth.module';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
-  imports: [SharedModule, CommonModule, SysModule, LoginModule, MonitorModule, FrontendAuthModule],
+  imports: [SharedModule, CommonModule, SysModule, LoginModule, MonitorModule, FrontendAuthModule, ProductModule],
   controllers: [AppController],
 })
 export class AppModule {}

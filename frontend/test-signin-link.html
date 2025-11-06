@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Sign In Link</title>
+</head>
+<body>
+    <h1>测试 Sign In 链接</h1>
+    
+    <div class="site-header-account">
+        <a href="my-account/index.html">
+            <div class="icon">
+                <i class="gopet-icon-account"></i>
+            </div>
+            <div class="account-content">
+                <span class="content-content">Sign In</span>
+            </div>
+        </a>
+    </div>
+    
+    <hr>
+    
+    <h2>诊断信息</h2>
+    <div id="info"></div>
+    
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/user-nav.js"></script>
+    
+    <script>
+        // 监听所有点击事件
+        document.addEventListener('click', function(e) {
+            console.log('=== CLICK EVENT ===');
+            console.log('Target:', e.target);
+            console.log('Current target:', e.currentTarget);
+            console.log('Default prevented:', e.defaultPrevented);
+            console.log('==================');
+        }, true);
+        
+        // 监听 Sign In 链接的点击
+        const signInLink = document.querySelector('.site-header-account a');
+        if (signInLink) {
+            console.log('Sign In link found:', signInLink.href);
+            
+            signInLink.addEventListener('click', function(e) {
+                console.log('=== SIGN IN LINK CLICKED ===');
+                console.log('Link href:', this.href);
+                console.log('Default prevented:', e.defaultPrevented);
+                console.log('============================');
+            }, true);
+        }
+        
+        // 显示诊断信息
+        setTimeout(() => {
+            const info = document.getElementById('info');
+            info.innerHTML = `
+                <p><strong>Sign In link href:</strong> ${signInLink ? signInLink.href : 'N/A'}</p>
+                <p><strong>AuthService loaded:</strong> ${typeof AuthService !== 'undefined'}</p>
+                <p><strong>Current path:</strong> ${window.location.pathname}</p>
+            `;
+        }, 1000);
+    </script>
+</body>
+</html>
+

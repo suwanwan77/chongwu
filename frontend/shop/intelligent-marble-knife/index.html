@@ -270,11 +270,13 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 }
 
 /* 隐藏 icon-list 的默认元素 */
-.elementor-element-cb1b8ff .elementor-icon-list-items {
+.elementor-element-cb1b8ff .elementor-icon-list-items,
+.elementor-element-945b96b .elementor-icon-list-items {
   display: none !important;
 }
 
-.elementor-element-cb1b8ff .elementor-widget-container > *:not(.search-box) {
+.elementor-element-cb1b8ff .elementor-widget-container > *:not(.search-box),
+.elementor-element-945b96b .elementor-widget-container > *:not(.search-box) {
   display: none !important;
 }
 
@@ -288,47 +290,66 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 .elementor-element-cb1b8ff::before,
 .elementor-element-cb1b8ff::after,
 .elementor-element-cb1b8ff *::before,
-.elementor-element-cb1b8ff *::after {
+.elementor-element-cb1b8ff *::after,
+.elementor-element-945b96b ul,
+.elementor-element-945b96b li,
+.elementor-element-945b96b i,
+.elementor-element-945b96b a,
+.elementor-element-945b96b button:not(.search-box button),
+.elementor-element-945b96b svg:not(.search-box svg),
+.elementor-element-945b96b::before,
+.elementor-element-945b96b::after,
+.elementor-element-945b96b *::before,
+.elementor-element-945b96b *::after {
   display: none !important;
 }
 
 /* 确保搜索框显示 */
 .elementor-element-cb1b8ff .search-box,
-.elementor-element-cb1b8ff .search-box * {
+.elementor-element-cb1b8ff .search-box *,
+.elementor-element-945b96b .search-box,
+.elementor-element-945b96b .search-box * {
   display: flex !important;
 }
 
-.elementor-element-cb1b8ff .search-box input {
+.elementor-element-cb1b8ff .search-box input,
+.elementor-element-945b96b .search-box input {
   display: block !important;
 }
 
-.elementor-element-cb1b8ff .search-box button {
+.elementor-element-cb1b8ff .search-box button,
+.elementor-element-945b96b .search-box button {
   display: flex !important;
 }
 
 .elementor-element-cb1b8ff .search-box button::before,
-.elementor-element-cb1b8ff .search-box button::after {
+.elementor-element-cb1b8ff .search-box button::after,
+.elementor-element-945b96b .search-box button::before,
+.elementor-element-945b96b .search-box button::after {
   display: none !important;
 }
 
 /* 确保右侧栏搜索、登录和购物车在一行对齐 */
-.elementor-column-c275075 .elementor-widget-wrap {
+.elementor-column-c275075 .elementor-widget-wrap,
+.elementor-element-719d371 .elementor-widget-wrap {
   display: flex !important;
   flex-wrap: nowrap !important;
   align-items: center !important;
   justify-content: flex-end !important;
-  gap: 10px !important;
+  gap: 24px !important;
   height: 100% !important;
 }
 
-.elementor-column-c275075 .elementor-widget {
+.elementor-column-c275075 .elementor-widget,
+.elementor-element-719d371 .elementor-widget {
   flex-shrink: 0 !important;
   display: flex !important;
   align-items: center !important;
 }
 
 /* 强制所有widget-container垂直居中对齐 */
-.elementor-column-c275075 .elementor-widget-container {
+.elementor-column-c275075 .elementor-widget-container,
+.elementor-element-719d371 .elementor-widget-container {
   display: flex !important;
   align-items: center !important;
   height: 100% !important;
@@ -395,7 +416,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 }
 
 /* Search box visuals with correct background color */
-.elementor-element-cb1b8ff .search-box {
+.elementor-element-cb1b8ff .search-box,
+.elementor-element-945b96b .search-box {
   display: flex !important;
   align-items: center !important;
   background: #FFF9E9 !important;
@@ -408,7 +430,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   margin: 0 !important;
 }
 
-.elementor-element-cb1b8ff .search-box input {
+.elementor-element-cb1b8ff .search-box input,
+.elementor-element-945b96b .search-box input {
   background: transparent !important;
   border: none !important;
   outline: none !important;
@@ -418,7 +441,8 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
   width: 100% !important;
 }
 
-.elementor-element-cb1b8ff .search-box button {
+.elementor-element-cb1b8ff .search-box button,
+.elementor-element-945b96b .search-box button {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -429,7 +453,9 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 }
 
 .elementor-element-cb1b8ff .search-box button svg,
-.elementor-element-cb1b8ff .search-box button svg path {
+.elementor-element-cb1b8ff .search-box button svg path,
+.elementor-element-945b96b .search-box button svg,
+.elementor-element-945b96b .search-box button svg path {
   width: 16px !important;
   height: 16px !important;
   fill: #5C7524 !important;
@@ -437,14 +463,27 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 }
 
 /* 移除所有widget的默认margin和padding */
-.elementor-column-c275075 .elementor-widget {
+.elementor-column-c275075 .elementor-widget,
+.elementor-element-719d371 .elementor-widget {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.elementor-column-c275075 .elementor-widget-container {
+.elementor-column-c275075 .elementor-widget-container,
+.elementor-element-719d371 .elementor-widget-container {
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* 为每个widget添加右侧间距 */
+.elementor-element-cb1b8ff,
+.elementor-element-945b96b {
+  margin-right: 24px !important;
+}
+
+.elementor-element-84fb1c3,
+.elementor-element-bbe2feb {
+  margin-right: 24px !important;
 }
 
 /* 确保icon和文字在同一行 */
@@ -457,7 +496,10 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 /* 统一所有元素的高度为28px */
 .elementor-column-c275075 .elementor-widget-cb1b8ff,
 .elementor-column-c275075 .elementor-widget-84fb1c3,
-.elementor-column-c275075 .elementor-widget-fb16421 {
+.elementor-column-c275075 .elementor-widget-fb16421,
+.elementor-element-719d371 .elementor-element-945b96b,
+.elementor-element-719d371 .elementor-element-bbe2feb,
+.elementor-element-719d371 .elementor-element-1886de6 {
   height: 28px !important;
   min-height: 28px !important;
   max-height: 28px !important;
@@ -465,7 +507,10 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 
 .elementor-column-c275075 .elementor-widget-cb1b8ff .elementor-widget-container,
 .elementor-column-c275075 .elementor-widget-84fb1c3 .elementor-widget-container,
-.elementor-column-c275075 .elementor-widget-fb16421 .elementor-widget-container {
+.elementor-column-c275075 .elementor-widget-fb16421 .elementor-widget-container,
+.elementor-element-719d371 .elementor-element-945b96b .elementor-widget-container,
+.elementor-element-719d371 .elementor-element-bbe2feb .elementor-widget-container,
+.elementor-element-719d371 .elementor-element-1886de6 .elementor-widget-container {
   height: 28px !important;
   min-height: 28px !important;
   max-height: 28px !important;
@@ -488,11 +533,13 @@ var _wpUtilSettings = {"ajax":{"url":"\/gopet\/wp-admin\/admin-ajax.php"}};
 
 /* Breakpoints: do not shrink search; hide login first, then search */
 @media (max-width: 1710px) {
-  .elementor-element-84fb1c3 { display: none !important; } /* hide login */
+  .elementor-element-84fb1c3,
+  .elementor-element-bbe2feb { display: none !important; } /* hide login */
 }
 
 @media (max-width: 1310px) {
-  .elementor-element-cb1b8ff { display: none !important; } /* then hide search */
+  .elementor-element-cb1b8ff,
+  .elementor-element-945b96b { display: none !important; } /* then hide search */
 }
 
 /* Mobile responsive */
@@ -813,7 +860,7 @@ body {
 	</div>
 
     <div class="summary entry-summary">
-                <div class="content-single-title-wrapper"><h1 class="product_title entry-title">Intelligent Marble Knife</h1><div class="product-brand">Brands: <a href="../../product-brand/ainsworth/index.html" rel="tag">Ainsworth</a></div><div class="product_meta">
+                <div class="content-single-title-wrapper"><h1 class="product_title entry-title">Intelligent Marble Knife</h1><div class="product_meta">
 
 
 
@@ -822,7 +869,6 @@ body {
 
 	<span class="posted_in">Categories: <a href="../../product-category/dry-food/index.html" rel="tag">Dry Food</a>, <a href="../../product-category/uncategorized/index.html" rel="tag">Uncategorized</a></span>
 
-	 <span class="posted_in">Brands: <a href="../../product-brand/ainsworth/index.html" rel="tag">Ainsworth</a></span>
 </div>
 </div>
         <p class="price"><del aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>134.27</bdi></span></del> <span class="screen-reader-text">Original price was: &#036;134.27.</span><ins aria-hidden="true"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">&#36;</span>132.93</bdi></span></ins><span class="screen-reader-text">Current price is: &#036;132.93.</span></p>
@@ -853,7 +899,6 @@ body {
 
 	<span class="posted_in">Categories: <a href="../../product-category/dry-food/index.html" rel="tag">Dry Food</a>, <a href="../../product-category/uncategorized/index.html" rel="tag">Uncategorized</a></span>
 
-	 <span class="posted_in">Brands: <a href="../../product-brand/ainsworth/index.html" rel="tag">Ainsworth</a></span>
 </div>
     <div class="gopet-social-share">
         <span class="social-share-header">Share:</span>                    <a class="social-facebook" href="https://www.facebook.com/sharer.php?u=/gopet/shop/intelligent-marble-knife/&display=page" target="_blank" title="Share on facebook">
