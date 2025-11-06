@@ -62,18 +62,33 @@
     const accountContainers = document.querySelectorAll('.site-header-account');
 
     accountContainers.forEach(originalContainer => {
-      // 检查是否已经更新过
-      if (originalContainer.dataset.userNavUpdated === 'true') return;
-
       const link = originalContainer.querySelector('a[href*="my-account"]');
       if (!link) return;
 
       const contentSpan = link.querySelector('.content-content');
       if (!contentSpan) return;
 
-      // 检查是否是"Sign In"文本
+      // 检查是否是"Sign In"文本或者已经是用户信息（需要更新头像）
       const currentText = contentSpan.textContent.trim();
-      if (currentText === 'Sign In') {
+      const isSignIn = currentText === 'Sign In';
+      const isAlreadyLoggedIn = originalContainer.dataset.userNavUpdated === 'true';
+
+      // 如果已经是登录状态，只更新头像，不重新创建整个结构
+      if (isAlreadyLoggedIn && !isSignIn) {
+        console.log('Updating avatar for already logged in user');
+        const iconDiv = link.querySelector('.icon');
+        if (iconDiv) {
+          const avatarImg = iconDiv.querySelector('img.user-avatar-nav');
+          if (avatarImg && userInfo.avatar) {
+            console.log('Updating avatar src to:', userInfo.avatar.substring(0, 50) + '...');
+            avatarImg.src = userInfo.avatar;
+          }
+        }
+        return;
+      }
+
+      // 如果是"Sign In"，进行完整的更新
+      if (isSignIn) {
         // 使用 nickName 或 userName 或 email
         const displayName = userInfo.nickName || userInfo.userName || userInfo.email || 'User';
 
