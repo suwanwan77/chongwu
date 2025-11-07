@@ -29,7 +29,8 @@ export class ProductController {
    */
   @Get('list')
   async getProductList(@Query() query: any) {
-    return await this.productService.getProductList(query);
+    const data = await this.productService.getProductList(query);
+    return { code: 200, msg: '查询成功', data };
   }
 
   /**
@@ -37,7 +38,8 @@ export class ProductController {
    */
   @Get(':id')
   async getProductDetail(@Param('id') id: string) {
-    return await this.productService.getProductDetail(parseInt(id));
+    const data = await this.productService.getProductDetail(parseInt(id));
+    return { code: 200, msg: '查询成功', data };
   }
 
   /**
@@ -53,7 +55,8 @@ export class ProductController {
     @UploadedFile() mainImage?: Express.Multer.File,
     @UploadedFiles() images?: Express.Multer.File[]
   ) {
-    return await this.productService.createProduct(data, mainImage, images);
+    const result = await this.productService.createProduct(data, mainImage, images);
+    return { code: 200, msg: '新增成功', data: result };
   }
 
   /**
@@ -71,7 +74,7 @@ export class ProductController {
     @UploadedFiles() images?: Express.Multer.File[]
   ) {
     const { deleteMainImage, deleteImageIndexes, ...productData } = data;
-    return await this.productService.updateProduct(
+    const result = await this.productService.updateProduct(
       parseInt(id),
       productData,
       mainImage,
@@ -79,6 +82,7 @@ export class ProductController {
       deleteMainImage,
       deleteImageIndexes
     );
+    return { code: 200, msg: '修改成功', data: result };
   }
 
   /**
@@ -86,7 +90,8 @@ export class ProductController {
    */
   @Delete(':id')
   async deleteProduct(@Param('id') id: string) {
-    return await this.productService.deleteProduct(parseInt(id));
+    await this.productService.deleteProduct(parseInt(id));
+    return { code: 200, msg: '删除成功' };
   }
 
   /**
@@ -94,7 +99,8 @@ export class ProductController {
    */
   @Post('position/batch')
   async updateProductPositions(@Body() positions: any[]) {
-    return await this.productService.updateProductPositions(positions);
+    await this.productService.updateProductPositions(positions);
+    return { code: 200, msg: '更新成功' };
   }
 
   /**
@@ -102,7 +108,8 @@ export class ProductController {
    */
   @Get('position/:position')
   async getProductsByPosition(@Param('position') position: string) {
-    return await this.productService.getProductsByPosition(position);
+    const data = await this.productService.getProductsByPosition(position);
+    return { code: 200, msg: '查询成功', data };
   }
 }
 
