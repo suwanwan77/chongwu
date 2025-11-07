@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../common/prisma/prisma.service';
+import { PrismaService } from 'nestjs-prisma';
 
 /**
  * 订单服务
@@ -43,7 +43,7 @@ export class OrderService {
    * 创建订单
    */
   async createOrder(customerId: number, data: any) {
-    const { addressId, items, remark } = data;
+    const { addressId, items, remark, paymentMethod } = data;
 
     // 验证地址
     const address = await this.prisma.customerAddress.findFirst({
@@ -102,16 +102,13 @@ export class OrderService {
       const newOrder = await tx.customerOrder.create({
         data: {
           customerId,
-          orderNumber,
+          orderNo: orderNumber,
+          addressId,
           totalAmount,
-          paymentAmount: totalAmount,  // 暂时等于总金额，后续可加入优惠券等
-          status: '0',  // 待支付
+          paymentMethod: paymentMethod || 'Credit Card',
+          orderStatus: '0',  // 待支付
           paymentStatus: '0',  // 未支付
-          shippingStatus: '0',  // 未发货
-          receiverName: address.receiverName,
-          receiverPhone: address.receiverPhone,
-          shippingAddress: `${address.streetAddress}, ${address.suburb}, ${address.city}, ${address.region} ${address.postalCode}`,
-          remark,
+          remark: remark || `收货地址: ${address.streetAddress}, ${address.suburb || ''}, ${address.city}, ${address.region || ''} ${address.postalCode}`,
           createTime: new Date(),
           updateTime: new Date()
         }
@@ -273,7 +270,7 @@ export class OrderService {
     }
 
     // 只有待支付的订单可以取消
-    if (order.status !== '0') {
+    if (order.orderStatus !== '0') {
       throw new Error('只有待支付的订单可以取消');
     }
 
@@ -283,8 +280,7 @@ export class OrderService {
       await tx.customerOrder.update({
         where: { orderId },
         data: {
-          status: '5',  // 已取消
-          cancelTime: new Date(),
+          orderStatus: '5',  // 已取消
           updateTime: new Date()
         }
       });
@@ -325,16 +321,15 @@ export class OrderService {
     }
 
     // 只有已发货的订单可以确认收货
-    if (order.shippingStatus !== '1') {
+    if (order.orderStatus !== '2') {
       throw new Error('只有已发货的订单可以确认收货');
     }
 
     return await this.prisma.customerOrder.update({
       where: { orderId },
       data: {
-        status: '3',  // 已完成
-        shippingStatus: '2',  // 已收货
-        receiveTime: new Date(),
+        orderStatus: '3',  // 已完成
+        completeTime: new Date(),
         updateTime: new Date()
       }
     });

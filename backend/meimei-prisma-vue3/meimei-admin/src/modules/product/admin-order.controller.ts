@@ -9,7 +9,7 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { AdminOrderService } from './admin-order.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 /**
  * 订单Controller（后台管理）

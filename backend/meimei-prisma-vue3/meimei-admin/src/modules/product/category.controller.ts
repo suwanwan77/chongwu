@@ -10,7 +10,7 @@ import {
   UseGuards
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 /**
  * 商品分类Controller（后台管理）

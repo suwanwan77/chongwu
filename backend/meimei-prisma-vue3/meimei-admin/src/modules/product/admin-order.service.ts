@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../common/prisma/prisma.service';
+import { PrismaService } from 'nestjs-prisma';
 
 /**
  * 订单服务（后台管理）
@@ -39,9 +39,10 @@ export class AdminOrderService {
           customer: {
             select: {
               customerId: true,
-              customerName: true,
+              userName: true,
+              nickName: true,
               email: true,
-              phone: true
+              phonenumber: true
             }
           }
         },
@@ -75,9 +76,10 @@ export class AdminOrderService {
         customer: {
           select: {
             customerId: true,
-            customerName: true,
+            userName: true,
+            nickName: true,
             email: true,
-            phone: true
+            phonenumber: true
           }
         },
         orderItems: {
@@ -130,7 +132,7 @@ export class AdminOrderService {
       throw new Error('订单不存在');
     }
 
-    if (order.status !== '1') {
+    if (order.orderStatus !== '1') {
       throw new Error('订单状态不正确，无法发货');
     }
 
@@ -141,11 +143,9 @@ export class AdminOrderService {
     return await this.prisma.customerOrder.update({
       where: { orderId },
       data: {
-        status: '2', // 已发货
-        shippingStatus: '1', // 已发货
-        shippingCompany,
-        trackingNumber,
-        shippingTime: new Date(),
+        orderStatus: '2', // 已发货
+        deliveryTime: new Date(),
+        remark: `物流公司: ${shippingCompany}, 物流单号: ${trackingNumber}`,
         updateTime: new Date()
       }
     });
@@ -169,7 +169,7 @@ export class AdminOrderService {
     return await this.prisma.customerOrder.update({
       where: { orderId },
       data: {
-        status,
+        orderStatus: status,
         updateTime: new Date()
       }
     });
